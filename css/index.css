@@ -2717,3 +2717,51 @@ body::before {
   color: #fc6423;
   border-color: #49b1f5;
 }
+.postlist .postlist-item {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: #fff;
+  -webkit-box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+.postlist .post-body img {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 0.5rem 0 1rem;
+}
+.postlist .post-excerpt {
+  color: #4a5568;
+}
+.postlist .post-readmore {
+  margin-top: 0.75rem;
+}
+.postlist .post-readmore__link {
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-box;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  color: #fff;
+  background: #73c8ff;
+  border-radius: 999px;
+  -webkit-transition: background 0.2s ease;
+  -moz-transition: background 0.2s ease;
+  -o-transition: background 0.2s ease;
+  -ms-transition: background 0.2s ease;
+  transition: background 0.2s ease;
+}
+.postlist .post-readmore__link:hover {
+  background: #49b1f5;
+}
