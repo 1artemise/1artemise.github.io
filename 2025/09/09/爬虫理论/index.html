@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="1.什么是爬虫？       爬虫顾名思义，就像一个在互联网这张大网上沿着链接不断爬行的虫子，不断获取它收集到的所有信息 它按照一定的规则，自动地抓取互联网信息的脚本或程序                     2.爬虫的工作原理是什么？       爬虫的本质其实是不断发送http请求 那么如何发送http请求呢？ 可以用python的requests库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫理论入门">
+<meta property="og:url" content="https://1artemise.github.io/2025/09/09/%E7%88%AC%E8%99%AB%E7%90%86%E8%AE%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.什么是爬虫？       爬虫顾名思义，就像一个在互联网这张大网上沿着链接不断爬行的虫子，不断获取它收集到的所有信息 它按照一定的规则，自动地抓取互联网信息的脚本或程序                     2.爬虫的工作原理是什么？       爬虫的本质其实是不断发送http请求 那么如何发送http请求呢？ 可以用python的requests库">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-20T01:37:48.359Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="pythob">
+<meta name="twitter:card" content="summary"><title>爬虫理论入门 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/09/09/%E7%88%AC%E8%99%AB%E7%90%86%E8%AE%BA/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">爬虫理论入门</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-sync-alt"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2025-09-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2025-09-20</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-chart-bar"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.2k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-hourglass-half"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">14分</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon" data-popover="阅读次数" data-popover-pos="up"><i class="fas fa-eye"></i></span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h3 id="1-什么是爬虫？"   >
+          <a href="#1-什么是爬虫？" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-什么是爬虫？" class="headerlink" title="1.什么是爬虫？"></a>1.什么是爬虫？</h3>
+      <p>爬虫顾名思义，就像一个在互联网这张大网上沿着链接不断爬行的虫子，不断获取它收集到的所有信息</p>
+<p>它按照一定的规则，<strong>自动地抓取互联网信息的脚本或程序</strong></p>
+
+        <h3 id="2-爬虫的工作原理是什么？"   >
+          <a href="#2-爬虫的工作原理是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-爬虫的工作原理是什么？" class="headerlink" title="2.爬虫的工作原理是什么？"></a>2.爬虫的工作原理是什么？</h3>
+      <p>爬虫的本质其实是<strong>不断发送http请求</strong></p>
+<p>那么如何发送http请求呢？</p>
+<p>可以用python的<code>requests</code>库</p>
+<p>只要我们获取到了URL(<strong>统一资源定位符</strong>，每个网页都有自己对应的唯一的URL)，就可以通过一些方法发送http请求</p>
+<p>发送之后服务器就会收到我们的请求，向我们发出响应，为http响应，它通常包含<strong>状态码，头部信息，内容主体</strong></p>
+<p>通过服务器的响应，我们可以储存和分析数据，这里由于我们爬取的目的不同，做法也不尽相同。</p>
+
+        <h3 id="3-什么是http协议？"   >
+          <a href="#3-什么是http协议？" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-什么是http协议？" class="headerlink" title="3.什么是http协议？"></a>3.什么是http协议？</h3>
+      <p>我们经常可以看到http协议这个词，那么http到底是什么？</p>
+<p>如果你学过计算机导论或者计算机网络，对这个名词一定不陌生</p>
+<p><strong>HTTP全称 “<code>HyperText Transfer Protoca</code>”<strong>即</strong>超文本传输协议</strong>，它是位于<strong>应用层</strong>的一种从<strong>客户到服务器</strong>的协议。</p>
+<p>一个完整的Http请求包含三个部分</p>
+<p><strong>请求行，请求头，请求体</strong></p>
+
+        <h3 id="4-请求行-Request-Line"   >
+          <a href="#4-请求行-Request-Line" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-请求行-Request-Line" class="headerlink" title="4.请求行(Request Line)"></a>4.请求行(Request Line)</h3>
+      <p>一个完整的请求行长这样 </p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“GET /index.html HTTP/1.1”</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><p><strong>方法</strong>: GET（获取资源）、POST（提交数据）、PUT、DELETE等</p>
+</li>
+<li><p><strong>路径</strong>: &#x2F;index.html（请求的资源路径）（有时候除了资源路径，我们还可以设置查询参数来查询信息，不同信息用&amp;分割，查询参数通常在问号后面），比如</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.douban.com/movie/top250?start=75&amp;filter=unwatched</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p><strong>协议版本</strong>: HTTP&#x2F;1.1</p>
+</li>
+</ul>
+
+        <h3 id="5-请求方法有哪些？"   >
+          <a href="#5-请求方法有哪些？" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-请求方法有哪些？" class="headerlink" title="5.请求方法有哪些？"></a>5.请求方法有哪些？</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>从服务器<strong>获取资源</strong>，不能更改数据，只能请求</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>向服务器发送数据，<strong>创建新资源</strong>。可以提交表单，文件（发送的数据包含在请求体中）</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>向服务器发送数据，<strong>更新现有资源（修改资源）</strong>。不存在则创新。与POST的区别是，PUT 通常是幂等的，即多次执行相同的 PUT 请求不会产生不同的结果。</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>从服务器中<strong>删除指定资源</strong>，请求中包含要删除的资源符</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>部分<strong>修改资源</strong>，与PUT类似，但是PATCH不替换整个资源，只修改部分数据</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>类似于GET,服务器<strong>只返回响应头部</strong>，不返回实际数据</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>返回服务器支持的<strong>HTTP方法</strong>，用于检查服务支持哪些请求方法，通常用于跨域资源共享的预检请求</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td><strong>回显服务器收到的请求</strong>，主要用于诊断。客户端可以查看请求在服务器中的处理路径。</td>
+</tr>
+<tr>
+<td>CONNECTION</td>
+<td>建立一个到服务器的隧道，通常用于 HTTPS 连接。客户端可以通过该隧道发送加密的数据。</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="6-请求头（Request-Headers）"   >
+          <a href="#6-请求头（Request-Headers）" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-请求头（Request-Headers）" class="headerlink" title="6.请求头（Request Headers）"></a>6.请求头（Request Headers）</h3>
+      <p>它包含了关于客户端请求的附加信息，以<strong>键值对</strong>的形式传递给服务器</p>
+<p> <strong>1.基础标识头 User-Agent</strong>(用户代理)</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</span><br></pre></td></tr></table></div></figure>
+
+<p>它告诉服务器，客户端的类型和版本</p>
+<p><strong>爬虫重要性</strong>：⭐⭐⭐⭐⭐</p>
+<p><strong>说明</strong>：服务器通过这个字段判断是浏览器还是爬虫。<strong>如果不设置或使用默认值，很容易被识别为爬虫</strong>。</p>
+<p><code>Mozilla/5.0</code>其实是一个出于兼容性考虑而保留的“遗产”令牌，当时很多网站会检查User-Agent,如果是Mozilla就提供高级功能（框架），否则提供基础页面。为了能接收到最好的网页，现在几乎所有浏览器都自称是Mozilla以保持兼容。</p>
+<p><code>Windows NT 10.0; Win64; x64</code>描述操作系统平台。</p>
+<p>注意：由于 <code>User-Agent</code>字符串变得非常复杂、容易伪造，并且可能被用于<strong>指纹追踪</strong>用户，谷歌等公司正在推动一项名为 <strong><code>User-Agent Client Hints</code></strong> 的新标准来逐步取代它。新标准旨在让用户拥有更多隐私控制权，只在必要时向服务器提供特定的设备信息，而不是一次性全部发送。</p>
+<p>2.<strong>主机（host）</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Host: cgyy.nenu.edu.cn</span><br></pre></td></tr></table></div></figure>
+
+<p>它是HTTP&#x2F;1.1必需字段，可以<strong>指定请求的目标服务器域名</strong></p>
+<p>3.<strong>内容协商头 Accept</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br></pre></td></tr></table></div></figure>
+
+<p>告诉服务器，客户端能够处理哪些内容类型</p>
+<p>常见值：</p>
+<p>text&#x2F;html  HTML文档</p>
+<p>application&#x2F;json  json数据</p>
+<p>image&#x2F;*-  所有图片类型</p>
+<p>4.<strong>可接受语言Accept-Language</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept-Language: zh-CN,zh;q=0.9,en;q=0.8</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：告诉服务器客户端的语言偏好</li>
+<li><strong>爬虫重要性</strong>：⭐⭐⭐<ul>
+<li><strong><code>zh-CN</code></strong>: 这是首选语言。<code>zh</code>代表中文，<code>-CN</code>是子标签，代表中国大陆地区使用的中文（简体中文）。</li>
+<li><strong><code>zh;q=0.9</code></strong>: 这是次选语言。<code>zh</code>代表所有中文变体（如简体或繁体），如果没有 <code>zh-CN</code>，也可以用其他中文版本。<code>q=0.9</code>表示优先级权重是 0.9（范围 0-1，1 是最高）。</li>
+<li><strong><code>en;q=0.8</code></strong>: 这是第三选择。<code>en</code>代表英语，优先级权重是 0.8。</li>
+</ul>
+</li>
+</ul>
+<p><strong>5.Accept-Encoding（可接受的编码）</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept-Encoding: gzip, deflate, br</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：告诉服务器客户端支持的压缩格式</li>
+<li><strong>说明</strong>：服务器可能会返回压缩后的内容，需要解压</li>
+</ul>
+<ol start="6">
+<li><strong>连接管理头</strong></li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection: keep-alive</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：控制连接是否保持活跃</li>
+<li><strong>常见值</strong>：<ul>
+<li><code>keep-alive</code>- 保持连接</li>
+<li><code>close</code>- 关闭连接</li>
+</ul>
+</li>
+</ul>
+<p><strong>7.缓存相关头If-Modified-Since</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If-Modified-Since: Wed, 18 Sep 2025 01:00:00 GMT</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：如果资源在此时间后没有修改，返回304状态码</li>
+</ul>
+<p><strong>8. 认证和安全头</strong>Authorization（认证）</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：包含认证凭证</li>
+<li><strong>常见类型</strong>：<ul>
+<li><code>Basic</code>- 基本认证</li>
+<li><code>Bearer</code>- Token认证</li>
+<li><code>Digest</code>- 摘要认证</li>
+</ul>
+</li>
+</ul>
+<p><strong>9.Cookie</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: session_id=abc123; user_token=xyz456</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：向服务器发送之前存储的Cookie</li>
+<li><strong>爬虫重要性</strong>：⭐⭐⭐⭐⭐</li>
+<li><strong>格式</strong>：<code>name=value</code>对，用分号分隔</li>
+</ul>
+<p><strong>10. 来源和引用头</strong>Referer（引用来源）</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: https://cgyy.nenu.edu.cn/booking</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：告诉服务器当前请求是从哪个页面链接过来的</li>
+<li><strong>爬虫重要性</strong>：⭐⭐⭐⭐</li>
+<li><strong>注意</strong>：有些网站会检查Referer来防止盗链</li>
+</ul>
+
+        <h4 id="Origin（来源）"   >
+          <a href="#Origin（来源）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Origin（来源）" class="headerlink" title="Origin（来源）"></a>Origin（来源）</h4>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Origin: https://cgyy.nenu.edu.cn</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li><strong>作用</strong>：表明请求的来源，用于CORS（跨域资源共享）</li>
+</ul>
+<p>这是一个爬虫常用请求头举例</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;Host&#x27;</span>: <span class="string">&#x27;cgyy.nenu.edu.cn&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Connection&#x27;</span>: <span class="string">&#x27;keep-alive&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Accept&#x27;</span>: <span class="string">&#x27;*/*&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&#x27;acw_tc=ac11000117581585555872261e488f4d176bbf7b6670727206b5636e12a130&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Origin&#x27;</span>: <span class="string">&#x27;https://cgyy.nenu.edu.cn&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;token&#x27;</span>: <span class="string">&#x27;eyJhbGciOiJSUzI1NiJ9...&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Referer&#x27;</span>: <span class="string">&#x27;https://cgyy.nenu.edu.cn/&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>除了这一种方法，还可以使用Session对象</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">session = requests.Session()</span><br><span class="line">session.headers.update(&#123;</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Accept-Language&#x27;</span>: <span class="string">&#x27;zh-CN,zh;q=0.9&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">response = session.get(<span class="string">&#x27;https://example.com&#x27;</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p>后续我会对这两种的使用进行扩展说明（其实是我觉得我现在水平还不够）</p>
+
+        <h3 id="7-如何获取查看请求头？"   >
+          <a href="#7-如何获取查看请求头？" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-如何获取查看请求头？" class="headerlink" title="7.如何获取查看请求头？"></a>7.如何获取查看请求头？</h3>
+      <p><strong>浏览器开发者工具查看</strong></p>
+<ol>
+<li>按F12打开开发者工具</li>
+<li>切换到Network（网络）标签</li>
+<li>刷新页面或触发请求</li>
+<li>点击具体请求，查看Headers标签</li>
+</ol>
+<p><strong>Python中查看响应头</strong></p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://httpbin.org/headers&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;请求头:&quot;</span>, response.request.headers)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;响应头:&quot;</span>, response.headers)</span><br></pre></td></tr></table></div></figure>
+
+<p>注意！网站通常会检测以下头信息来识别爬虫：</p>
+<ol>
+<li><strong>User-Agent</strong>：非浏览器或默认Python UA</li>
+<li><strong>Accept</strong>、<strong>Accept-Language</strong>：缺失或不合理</li>
+<li><strong>Referer</strong>：缺失或不符合正常浏览流程</li>
+<li><strong>Cookie</strong>：缺失或异常</li>
+<li><strong>其他头字段</strong>：如<code>Sec-</code>开头的安全头</li>
+</ol>
+
+        <h3 id="8-HTTP状态码"   >
+          <a href="#8-HTTP状态码" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-HTTP状态码" class="headerlink" title="8.HTTP状态码"></a>8.HTTP状态码</h3>
+      <p>1开头的状态码（信息类）：表示请求正在处理</p>
+<p>2开头的状态码（成功）：请求正常处理</p>
+<p>3开头的状态码（重定向）：需要后续操作才能完成请求</p>
+<p>4开头的状态码（客户端错误）：请求包含语法错误或无法完成</p>
+<p>5开头的状态码（服务器错误）：服务器处理请求过程中发生错误了</p>
+<p><strong>常见状态码</strong></p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>200</th>
+<th>请求成功</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>301</td>
+<td>资源被永久移动到新地址</td>
+</tr>
+<tr>
+<td>400</td>
+<td>客户端不能被服务器理解</td>
+</tr>
+<tr>
+<td>401</td>
+<td>客户未经授权</td>
+</tr>
+<tr>
+<td>403</td>
+<td>服务器拒绝提供服务</td>
+</tr>
+<tr>
+<td>404</td>
+<td>请求资源不存在</td>
+</tr>
+<tr>
+<td>500</td>
+<td>服务器发生不可预期的错误</td>
+</tr>
+<tr>
+<td>503</td>
+<td>服务器不能处理客户端请求</td>
+</tr>
+</tbody></table></div>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&quot;URL&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> response.ok:</span><br><span class="line">    <span class="built_in">print</span>(response.text)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请求失败&quot;</span>)</span><br></pre></td></tr></table></div></figure>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/09/09/%E7%88%AC%E8%99%AB%E7%90%86%E8%AE%BA/">https://1artemise.github.io/2025/09/09/%E7%88%AC%E8%99%AB%E7%90%86%E8%AE%BA/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E7%88%AC%E8%99%AB/">爬虫</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/pythob/">pythob</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2025/09/09/%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">列表元组字符串</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2025/09/08/%E7%BD%91%E7%AB%99%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97/"><span class="paginator-prev__text">网站食用方法（推荐阅读！）</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="waline-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%88%AC%E8%99%AB%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">
+          1.什么是爬虫？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%88%AC%E8%99%AB%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          2.爬虫的工作原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BB%80%E4%B9%88%E6%98%AFhttp%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">
+          3.什么是http协议？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%AF%B7%E6%B1%82%E8%A1%8C-Request-Line"><span class="toc-number">4.</span> <span class="toc-text">
+          4.请求行(Request Line)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">
+          5.请求方法有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%AF%B7%E6%B1%82%E5%A4%B4%EF%BC%88Request-Headers%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">
+          6.请求头（Request Headers）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Origin%EF%BC%88%E6%9D%A5%E6%BA%90%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">
+          Origin（来源）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E6%9F%A5%E7%9C%8B%E8%AF%B7%E6%B1%82%E5%A4%B4%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">
+          7.如何获取查看请求头？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-HTTP%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-number">8.</span> <span class="toc-text">
+          8.HTTP状态码</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script type="module" src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script><script>function loadWaline () {
+  import('https://unpkg.com/@waline/client@v3/dist/waline.js').then(({ init }) => {
+    var GUEST_INFO = ['nick', 'mail', 'link'];
+    var guest_info = 'nick,mail,link';
+
+    if (typeof guest_info === 'string') {
+      guest_info = guest_info.split(',').filter(function(item) {
+        return GUEST_INFO.indexOf(item) > -1;
+      });
+    }
+
+    init({
+      el: '#waline-container',
+      serverURL: 'https://whie-jade.vercel.app',
+      placeholder: '留下你来过的痕迹',
+      pageSize: parseInt('10') || 10,
+      lang: 'zh-CN,zh-TW,en' || 'zh-CN',
+      visitor: false,
+      avatar: 'mp',
+      path: window.location.pathname,
+      meta: guest_info,
+      requiredMeta: ["nick","mail"],
+      dark: 'auto',
+      locale: {
+        nick: '昵称',
+        mail: '邮箱',
+        link: '网站',
+        placeholder: '留下你来过的痕迹',
+        sofa: '来发评论吧~',
+        submit: '提交',
+        like: '喜欢',
+        reply: '回复',
+        more: '加载更多...',
+        preview: '预览',
+        emoji: '表情',
+        uploadImage: '上传图片',
+        seconds: '秒前',
+        minutes: '分钟前',
+        hours: '小时前',
+        days: '天前',
+        now: '刚刚'
+      }
+    });
+  }).catch(error => {
+    console.error('Failed to load Waline:', error);
+  });
+}
+
+if (false) {
+  loadWaline();
+} else {
+  window.addEventListener('DOMContentLoaded', loadWaline, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

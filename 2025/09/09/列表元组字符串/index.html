@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="1. 列表都可以存放一些什么东西？       我们说 Python 的列表是一个打了激素的数组，如果把数组比喻成集装箱，那么 Python 的列表就是一个大仓库，Ta 可以存放我们已经学习过的任何数据类型。 1mix &#x3D; [1, ‘小’, 3.14, [1, 2, 3]]                        2. 向列表增加元素有哪些方法？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="列表元组字符串">
+<meta property="og:url" content="https://1artemise.github.io/2025/09/09/%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 列表都可以存放一些什么东西？       我们说 Python 的列表是一个打了激素的数组，如果把数组比喻成集装箱，那么 Python 的列表就是一个大仓库，Ta 可以存放我们已经学习过的任何数据类型。 1mix &#x3D; [1, ‘小’, 3.14, [1, 2, 3]]                        2. 向列表增加元素有哪些方法？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20250909084404231.png">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20250909095256638.png">
+<meta property="article:published_time" content="2025-09-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T06:12:03.944Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1artemise.github.io/images/image-20250909084404231.png"><title>列表元组字符串 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/09/09/%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">列表元组字符串</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-sync-alt"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2025-09-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2025-09-22</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-chart-bar"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-hourglass-half"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon" data-popover="阅读次数" data-popover-pos="up"><i class="fas fa-eye"></i></span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h3 id="1-列表都可以存放一些什么东西？"   >
+          <a href="#1-列表都可以存放一些什么东西？" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-列表都可以存放一些什么东西？" class="headerlink" title="1. 列表都可以存放一些什么东西？"></a><strong>1.</strong> <strong>列表都可以存放一些什么东西？</strong></h3>
+      <p>我们说 Python 的列表是一个打了激素的数组，如果把数组比喻成集装箱，那么 Python 的列表就是一个大仓库，Ta 可以存放我们已经学习过的任何数据类型。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mix = [1, ‘小’, 3.14, [1, 2, 3]]</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="2-向列表增加元素有哪些方法？"   >
+          <a href="#2-向列表增加元素有哪些方法？" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-向列表增加元素有哪些方法？" class="headerlink" title="2. 向列表增加元素有哪些方法？"></a><strong>2. 向列表增加元素有哪些方法？</strong></h3>
+      <p>append(),extend(),insert()</p>
+
+        <h5 id="extend-和append-都是向列表末端添加元素，区别在于："   >
+          <a href="#extend-和append-都是向列表末端添加元素，区别在于：" class="heading-link"><i class="fas fa-link"></i></a><a href="#extend-和append-都是向列表末端添加元素，区别在于：" class="headerlink" title="extend()和append()都是向列表末端添加元素，区别在于："></a>extend()和append()都是向列表末端添加元素，区别在于：</h5>
+      <p>append是将参数作为一个元素添加到列表的末尾</p>
+<p>extend是将参数作为一个列表去扩展列表的末尾</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;h&#x27;</span>]</span><br><span class="line">name.append(<span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">name</span><br><span class="line">[<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;C&#x27;</span>]</span><br><span class="line">name.extend([<span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;c&#x27;</span>])</span><br><span class="line">name</span><br><span class="line">[<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line">name.append([<span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;m&#x27;</span>])</span><br><span class="line">name</span><br><span class="line">[<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, [<span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;m&#x27;</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">insert()：有两个参数，第一个参数是插入的位置，第二个参数是插入的元素</span><br><span class="line"></span><br><span class="line">member = [<span class="string">&#x27;小甲鱼&#x27;</span>, <span class="string">&#x27;小布丁&#x27;</span>, <span class="string">&#x27;小宝贝&#x27;</span>]</span><br><span class="line"></span><br><span class="line">\&gt;&gt;&gt; member.insert(<span class="number">1</span>, <span class="string">&#x27;厉害&#x27;</span>)</span><br><span class="line"></span><br><span class="line">\&gt;&gt;&gt; menber</span><br><span class="line"></span><br><span class="line">[<span class="string">&#x27;小甲鱼&#x27;</span>, <span class="string">&#x27;厉害&#x27;</span>, <span class="string">&#x27;小布丁&#x27;</span>, <span class="string">&#x27;小宝贝&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.for循环的应用</span></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"></span><br><span class="line">member = [<span class="string">&#x27;小甲鱼&#x27;</span>, <span class="number">88</span>, <span class="string">&#x27;黑夜&#x27;</span>, <span class="number">90</span>, <span class="string">&#x27;迷途&#x27;</span>, <span class="number">85</span>, <span class="string">&#x27;怡静&#x27;</span>, <span class="number">90</span>, <span class="string">&#x27;秋舞斜阳&#x27;</span>, <span class="number">88</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> member:</span><br><span class="line"></span><br><span class="line">​    <span class="built_in">print</span>(each)</span><br></pre></td></tr></table></div></figure></blockquote>
+</blockquote>
+</blockquote>
+
+        <h3 id="4-下边的列表分片操作会打印什么内容？"   >
+          <a href="#4-下边的列表分片操作会打印什么内容？" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-下边的列表分片操作会打印什么内容？" class="headerlink" title="4. 下边的列表分片操作会打印什么内容？"></a>4. 下边的列表分片操作会打印什么内容？</h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"></span><br><span class="line">list1[<span class="number">2</span>:<span class="number">5</span>]</span><br></pre></td></tr></table></div></figure>
+
+<p>左闭右开 应该是[2,9,7]</p>
+
+        <h3 id="5-请问-list1-0-和-list1-0-1-一样吗？"   >
+          <a href="#5-请问-list1-0-和-list1-0-1-一样吗？" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-请问-list1-0-和-list1-0-1-一样吗？" class="headerlink" title="5. 请问 list1[0] 和 list1[0:1] 一样吗？"></a>5. 请问 list1[0] 和 list1[0:1] 一样吗？</h3>
+      <p>不一样，list1[0] 返回第0个元素的值，list1[0:1] 返回一个只含有第0个元素的列表。</p>
+
+        <h3 id="6-如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？"   >
+          <a href="#6-如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？" class="headerlink" title="6.如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？"></a>6.如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？</h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list1.insert(<span class="number">0</span>,list1.pop())</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="7-在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。"   >
+          <a href="#7-在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。" class="headerlink" title="7. 在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。"></a>7. 在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。</h3>
+      <blockquote>
+<p>在普通的分片操作中，步长默认设置为1，表示逐个遍历元素。其实我们可以人为调整步长以达到不可告人的秘密。</p>
+</blockquote>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line">list1[<span class="number">0</span>:<span class="number">6</span>:<span class="number">2</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>]</span><br></pre></td></tr></table></div></figure>
+
+<p>之前提到的“简洁”分片操作在这里有效：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1[::<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>]</span><br></pre></td></tr></table></div></figure>
+
+<p>步长可以是负数，改变方向（从尾部开始向左走）：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list1[::-<span class="number">2</span>]</span><br><span class="line">[<span class="number">8</span>, <span class="number">9</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="8-可以利用分片完成列表的拷贝-list2-list1-，那事实上可不可以直接写成-list2-list1-更加简洁呢？"   >
+          <a href="#8-可以利用分片完成列表的拷贝-list2-list1-，那事实上可不可以直接写成-list2-list1-更加简洁呢？" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-可以利用分片完成列表的拷贝-list2-list1-，那事实上可不可以直接写成-list2-list1-更加简洁呢？" class="headerlink" title="8. 可以利用分片完成列表的拷贝 list2 &#x3D; list1[:]，那事实上可不可以直接写成 list2 &#x3D; list1 更加简洁呢？"></a>8. 可以利用分片完成列表的拷贝 list2 &#x3D; list1[:]，那事实上可不可以直接写成 list2 &#x3D; list1 更加简洁呢？</h3>
+      <p>千万不可以！</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list1 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list2 = list1[:]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list2</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list3 = list1</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list3</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></div></figure>
+
+<p>如果对list1进行排序，list1变为[1，2，3，7，8，9]</p>
+
+        <h5 id="list2不变，而输出list3会发现，它也被排序了"   >
+          <a href="#list2不变，而输出list3会发现，它也被排序了" class="heading-link"><i class="fas fa-link"></i></a><a href="#list2不变，而输出list3会发现，它也被排序了" class="headerlink" title="list2不变，而输出list3会发现，它也被排序了"></a>list2不变，而输出list3会发现，它也被排序了</h5>
+      <p><img src="/images/image-20250909084404231.png" alt="image-20250909084404231"></p>
+
+        <h3 id="9-列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy-和-clear"   >
+          <a href="#9-列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy-和-clear" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy-和-clear" class="headerlink" title="9.列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy() 和 clear()"></a>9.列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy() 和 clear()</h3>
+      <p>copy() 方法跟使用切片拷贝是一样的：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; list2 = list1.copy()</span><br><span class="line">&gt;&gt;&gt; list2</span><br><span class="line">&gt;&gt;&gt; [1, [1, 2, [&#x27;小甲鱼&#x27;]], 3, 5, 8, 13, 18]</span><br><span class="line"></span><br><span class="line">**clear() 方法用于清空列表的元素，但要注意，清空完后列表仍然还在哦，只是变成一个空列表。**</span><br><span class="line">list2.clear()</span><br><span class="line">list2</span><br><span class="line">[]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 10.列表推导式/列表解析</span><br><span class="line"></span><br></pre></td></tr></table></div></figure><p> [i*i for i in range(10)]<br>输出 [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 11.补充列表的一些内置函数BIF</span><br><span class="line"></span><br><span class="line">list.count(a)：列表list中元素a出现的次数；</span><br><span class="line"></span><br><span class="line">list.index(a)：列表list中元素a第一次出现的索引号</span><br><span class="line"></span><br><span class="line">list.index(a，b，c)：列表list中元素a在索引范围[b，c]中第一次出现的索引号</span><br><span class="line"></span><br><span class="line">list.reverse()：翻转list</span><br><span class="line"></span><br><span class="line">list.sort()：排序，默认从小到大排序</span><br><span class="line"></span><br><span class="line">list.sort(reverse=True)：从大到小排序</span><br><span class="line"></span><br><span class="line">### 12.元组和列表的最大区别是什么？</span><br><span class="line"></span><br><span class="line">元组不可修改，而列表可以修改。所以要求数据不能修改时使用元组，频繁要求修改数据时使用列表</span><br><span class="line"></span><br><span class="line">当然格式也有区别</span><br><span class="line"></span><br><span class="line">元组是（）括号</span><br><span class="line"></span><br><span class="line">列表是[]</span><br><span class="line"></span><br><span class="line">### 13.元组可以使用的方法有哪些</span><br><span class="line"></span><br><span class="line">count():计算并返回指定函数的数量</span><br><span class="line"></span><br><span class="line">index():寻找并返回参数的索引值</span><br><span class="line"></span><br><span class="line">### 13.创建一个元组，什么情况下逗号和小括号必须同时存在，缺一不可？</span><br><span class="line"></span><br><span class="line">在拼接只有一个元素的元组的时候，例如我们课上举的例题：</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; temp = (‘小甲鱼’, ‘黑夜’, ‘迷途’, ‘小布丁’)</span><br><span class="line">###### 如果我想在“黑夜”和“迷途”之间插入“怡静”，我们应该：</span><br><span class="line">&gt;&gt;&gt; temp = temp[:2] + (‘怡静’,) + temp[2:]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 14.x, y, z = 1, 2, 3 请问x, y, z是元组吗？</span><br><span class="line"></span><br><span class="line">**&lt;u&gt;所有的多对象的、逗号分隔的、没有明确用符号定义的这些集合默认的类型都是元组&lt;/u&gt;**，自己在IDLE中键入以下代码，并体会一下：</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ```python</span><br><span class="line">&gt;&gt;&gt; x, y, z = 1, 2, 3</span><br><span class="line">&gt;&gt;&gt; type(x)</span><br><span class="line">&gt;&gt;&gt; &lt;class &#x27;int&#x27;&gt;</span><br><span class="line">&gt;&gt;&gt; h = x, y, z</span><br><span class="line">&gt;&gt;&gt; type(h)</span><br><span class="line">&gt;&gt;&gt; &lt;class &#x27;tuple&#x27;&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="15-file1-open-‘C-windows-temp-readme-txt’-‘r’-表示以只读方式打开“C-windows-temp-readme-txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？"   >
+          <a href="#15-file1-open-‘C-windows-temp-readme-txt’-‘r’-表示以只读方式打开“C-windows-temp-readme-txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-file1-open-‘C-windows-temp-readme-txt’-‘r’-表示以只读方式打开“C-windows-temp-readme-txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？" class="headerlink" title="15.file1 &#x3D; open(‘C:\windows\temp\readme.txt’, ‘r’) 表示以只读方式打开“C:\windows\temp\readme.txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？"></a>15.file1 &#x3D; open(‘C:\windows\temp\readme.txt’, ‘r’) 表示以只读方式打开“C:\windows\temp\readme.txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？</h3>
+      <p>会报错是因为在字符串中，我们约<strong>定“\t”和“\r”分别表示“横向制表符（TAB）”和“回车符</strong>”（详见：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://bbs.fishc.com/thread-92997-1-1.html%EF%BC%89%EF%BC%8C%E5%9B%A0%E6%AD%A4%E5%B9%B6%E4%B8%8D%E4%BC%9A%E6%8C%89%E7%85%A7%E6%88%91%E4%BB%AC%E8%AE%A1%E5%88%92%E7%9A%84%E8%B7%AF%E5%BE%84%E5%8E%BB%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E3%80%82" >http://bbs.fishc.com/thread-92997-1-1.html），因此并不会按照我们计划的路径去打开文件。</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>Python 为我们铺好了解决的道路，只需要使用原始字符串操作符（R或r）即可：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>file1 &#x3D; open(r’C:\windows\temp\readme.txt’, ‘r’)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+        <h3 id="16-写一个检查密码安全性的代码"   >
+          <a href="#16-写一个检查密码安全性的代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#16-写一个检查密码安全性的代码" class="headerlink" title="16.写一个检查密码安全性的代码"></a>16.写一个检查密码安全性的代码</h3>
+      <p><img src="/images/image-20250909095256638.png" alt="image-20250909095256638"></p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">symbols = <span class="string">r&#x27;&#x27;&#x27;`!@#$%^&amp;*()_+-=/*&#123;&#125;[]\|&#x27;&quot;;:/?,.&lt;&gt;&#x27;&#x27;&#x27;</span></span><br><span class="line">chars = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#x27;</span></span><br><span class="line">nums = <span class="string">&#x27;0123456789&#x27;</span></span><br><span class="line"></span><br><span class="line">passwd = <span class="built_in">input</span>(<span class="string">&#x27;请输入需要检查的密码组合：&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断长度</span></span><br><span class="line"></span><br><span class="line">length = <span class="built_in">len</span>(passwd)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (passwd.isspace() <span class="keyword">or</span> length == <span class="number">0</span>) :</span><br><span class="line">    passwd = <span class="built_in">input</span>(<span class="string">&quot;您输入的密码为空（或空格），请重新输入：&quot;</span>)</span><br><span class="line">    length = <span class="built_in">len</span>(passwd)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> length &lt;= <span class="number">8</span>:</span><br><span class="line">    flag_len = <span class="number">1</span></span><br><span class="line"><span class="keyword">elif</span> <span class="number">8</span> &lt; length &lt; <span class="number">16</span>:</span><br><span class="line">    flag_len = <span class="number">2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    flag_len = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">flag_con = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否包含特殊字符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> passwd:</span><br><span class="line">    <span class="keyword">if</span> each <span class="keyword">in</span> symbols:</span><br><span class="line">        flag_con += <span class="number">1</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否包含字母</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> passwd:</span><br><span class="line">    <span class="keyword">if</span> each <span class="keyword">in</span> chars:</span><br><span class="line">        flag_con += <span class="number">1</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否包含数字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> passwd:</span><br><span class="line">    <span class="keyword">if</span> each <span class="keyword">in</span> nums:</span><br><span class="line">        flag_con += <span class="number">1</span></span><br><span class="line">        <span class="keyword">break</span>    </span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span> :</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;您的密码安全级别评定为：&quot;</span>, end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> flag_len == <span class="number">1</span> <span class="keyword">or</span> flag_con == <span class="number">1</span> :</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;低&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> flag_len == <span class="number">3</span> <span class="keyword">and</span> flag_con == <span class="number">3</span> <span class="keyword">and</span> (passwd[<span class="number">0</span>] <span class="keyword">in</span> chars):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;高&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;请继续保持&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;中&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请按以下方式提升您的密码安全级别：\n\</span></span><br><span class="line"><span class="string">    \t1. 密码必须由数字、字母及特殊字符三种组合\n\</span></span><br><span class="line"><span class="string">    \t2. 密码只能由字母开头\n\</span></span><br><span class="line"><span class="string">    \t3. 密码长度不能低于16位&quot;</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="17-字符串常用方法"   >
+          <a href="#17-字符串常用方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#17-字符串常用方法" class="headerlink" title="17.字符串常用方法"></a>17.字符串常用方法</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>capitalize()</th>
+<th>把字符串的第一个字母修改为大写</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>casefold()</td>
+<td>把整个字符串的内容转为小写</td>
+</tr>
+<tr>
+<td>center(width)</td>
+<td>把字符串居中并用空格填充至长度width的新字符串</td>
+</tr>
+<tr>
+<td>count(sub,start,end)</td>
+<td>统计字符串sub在索引start到end（不包括end）中出现了几次</td>
+</tr>
+<tr>
+<td>find(sub,start,end)</td>
+<td>检查sub字符串是否被包含，有则返回索引值，否则返回-1</td>
+</tr>
+<tr>
+<td>index(sub,start,end)</td>
+<td>和find方法一致，但是如果sub不在指定字符串中会返回异常</td>
+</tr>
+<tr>
+<td>isalnum()</td>
+<td>如果字符串至少有一个字符且字符都是数字或字母则返回True，否则返回false</td>
+</tr>
+<tr>
+<td>isalpha（）</td>
+<td>如果字符串至少有一个字符且字符都是字母则返回True，否则返回false</td>
+</tr>
+<tr>
+<td>isdigit（）</td>
+<td>如果字符串中只包含数字则返回true，否则false</td>
+</tr>
+<tr>
+<td>isdemical()</td>
+<td>十进制数</td>
+</tr>
+<tr>
+<td>islower()</td>
+<td>如果字符串中至少包含一个区分大小写的字符，并且这些字符都是小写，则返回 True，否则返回 False。</td>
+</tr>
+<tr>
+<td>isupper()</td>
+<td>如果字符串中至少包含一个区分大小写的字符，并且这些字符都是大写，则返回 True，否则返回 False。</td>
+</tr>
+<tr>
+<td>join(sub)</td>
+<td>以字符串作为分隔符，插入到sub的所有字符间</td>
+</tr>
+<tr>
+<td>ljuest(width)</td>
+<td>返回一个左对齐的字符串，并使用空格填充</td>
+</tr>
+<tr>
+<td>lower()</td>
+<td>把大写字符转为小写</td>
+</tr>
+<tr>
+<td>lstrip()</td>
+<td>去掉字符串左边所有空格</td>
+</tr>
+<tr>
+<td>replace(“old”,”new”,count)</td>
+<td>把字符串中的 old 子字符串替换成 new 子字符串，如果 count 指定，则替换不超过 count 次。</td>
+</tr>
+<tr>
+<td>translate(table)</td>
+<td>根据 table 的规则（可以由 str.maketrans(‘a’, ‘b’) 定制）转换字符串中的字符。</td>
+</tr>
+<tr>
+<td>zfill(width)</td>
+<td>返回长度为 width 的字符串，原字符串右对齐，前边用 0 填充。</td>
+</tr>
+<tr>
+<td>strip(chars)</td>
+<td>删除字符串前边和后边所有的空格，chars 参数可以定制删除的字符，可选。</td>
+</tr>
+<tr>
+<td>swapcase()</td>
+<td>翻转大小写</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table></div>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/09/09/%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">https://1artemise.github.io/2025/09/09/%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/python/">python</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%AD%A6%E4%B9%A0/">学习</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2025/09/10/%E5%87%BD%E6%95%B0/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">函数 &amp;&amp; 文件存储 &amp;&amp; 异常</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2025/09/09/%E7%88%AC%E8%99%AB%E7%90%86%E8%AE%BA/"><span class="paginator-prev__text">爬虫理论入门</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="waline-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%97%E8%A1%A8%E9%83%BD%E5%8F%AF%E4%BB%A5%E5%AD%98%E6%94%BE%E4%B8%80%E4%BA%9B%E4%BB%80%E4%B9%88%E4%B8%9C%E8%A5%BF%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">
+          1. 列表都可以存放一些什么东西？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%91%E5%88%97%E8%A1%A8%E5%A2%9E%E5%8A%A0%E5%85%83%E7%B4%A0%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          2. 向列表增加元素有哪些方法？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#extend-%E5%92%8Cappend-%E9%83%BD%E6%98%AF%E5%90%91%E5%88%97%E8%A1%A8%E6%9C%AB%E7%AB%AF%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0%EF%BC%8C%E5%8C%BA%E5%88%AB%E5%9C%A8%E4%BA%8E%EF%BC%9A"><span class="toc-number">2.0.1.</span> <span class="toc-text">
+          extend()和append()都是向列表末端添加元素，区别在于：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%8B%E8%BE%B9%E7%9A%84%E5%88%97%E8%A1%A8%E5%88%86%E7%89%87%E6%93%8D%E4%BD%9C%E4%BC%9A%E6%89%93%E5%8D%B0%E4%BB%80%E4%B9%88%E5%86%85%E5%AE%B9%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">
+          4. 下边的列表分片操作会打印什么内容？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AF%B7%E9%97%AE-list1-0-%E5%92%8C-list1-0-1-%E4%B8%80%E6%A0%B7%E5%90%97%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">
+          5. 请问 list1[0] 和 list1[0:1] 一样吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%A6%82%E6%9E%9C%E4%BD%A0%E6%AF%8F%E6%AC%A1%E6%83%B3%E4%BB%8E%E5%88%97%E8%A1%A8%E7%9A%84%E6%9C%AB%E5%B0%BE%E5%8F%96%E5%87%BA%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%EF%BC%8C%E5%B9%B6%E5%B0%86%E8%BF%99%E4%B8%AA%E5%85%83%E7%B4%A0%E6%8F%92%E5%85%A5%E5%88%B0%E5%88%97%E8%A1%A8%E7%9A%84%E6%9C%80%E5%89%8D%E8%BE%B9%EF%BC%8C%E4%BD%A0%E4%BC%9A%E6%80%8E%E4%B9%88%E5%81%9A%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">
+          6.如果你每次想从列表的末尾取出一个元素，并将这个元素插入到列表的最前边，你会怎么做？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%88%86%E7%89%87%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%88%91%E4%BB%AC%E7%9F%A5%E9%81%93%E5%88%86%E7%89%87%E7%9A%84%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F%E4%BD%8D%E7%BD%AE%E9%9C%80%E8%A6%81%E8%BF%9B%E8%A1%8C%E6%8C%87%E5%AE%9A%EF%BC%8C%E4%BD%86%E5%85%B6%E5%AE%9E%E8%BF%98%E6%9C%89%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E9%9A%90%E8%97%8F%E7%9A%84%E8%AE%BE%E7%BD%AE%EF%BC%9A%E6%AD%A5%E9%95%BF%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">
+          7. 在进行分片的时候，我们知道分片的开始和结束位置需要进行指定，但其实还有另外一个隐藏的设置：步长。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%8F%AF%E4%BB%A5%E5%88%A9%E7%94%A8%E5%88%86%E7%89%87%E5%AE%8C%E6%88%90%E5%88%97%E8%A1%A8%E7%9A%84%E6%8B%B7%E8%B4%9D-list2-list1-%EF%BC%8C%E9%82%A3%E4%BA%8B%E5%AE%9E%E4%B8%8A%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E5%86%99%E6%88%90-list2-list1-%E6%9B%B4%E5%8A%A0%E7%AE%80%E6%B4%81%E5%91%A2%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">
+          8. 可以利用分片完成列表的拷贝 list2 &#x3D; list1[:]，那事实上可不可以直接写成 list2 &#x3D; list1 更加简洁呢？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#list2%E4%B8%8D%E5%8F%98%EF%BC%8C%E8%80%8C%E8%BE%93%E5%87%BAlist3%E4%BC%9A%E5%8F%91%E7%8E%B0%EF%BC%8C%E5%AE%83%E4%B9%9F%E8%A2%AB%E6%8E%92%E5%BA%8F%E4%BA%86"><span class="toc-number">7.0.1.</span> <span class="toc-text">
+          list2不变，而输出list3会发现，它也被排序了</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%88%97%E8%A1%A8%E8%BF%98%E6%9C%89%E4%B8%A4%E4%B8%AA%E5%86%85%E7%BD%AE%E6%96%B9%E6%B3%95%E6%B2%A1%E7%BB%99%E5%A4%A7%E5%AE%B6%E4%BB%8B%E7%BB%8D%EF%BC%8C%E4%B8%8D%E8%BF%87%E8%81%AA%E6%98%8E%E7%9A%84%E4%BD%A0%E5%BA%94%E8%AF%A5%E5%8F%AF%E4%BB%A5%E8%87%AA%E5%B7%B1%E6%91%B8%E7%B4%A2%E4%BD%BF%E7%94%A8%E7%9A%84%E9%97%A8%E9%81%93%E5%90%A7%EF%BC%9Acopy-%E5%92%8C-clear"><span class="toc-number">8.</span> <span class="toc-text">
+          9.列表还有两个内置方法没给大家介绍，不过聪明的你应该可以自己摸索使用的门道吧：copy() 和 clear()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-file1-open-%E2%80%98C-windows-temp-readme-txt%E2%80%99-%E2%80%98r%E2%80%99-%E8%A1%A8%E7%A4%BA%E4%BB%A5%E5%8F%AA%E8%AF%BB%E6%96%B9%E5%BC%8F%E6%89%93%E5%BC%80%E2%80%9CC-windows-temp-readme-txt%E2%80%9D%E8%BF%99%E4%B8%AA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E4%BD%86%E4%BA%8B%E5%AE%9E%E4%B8%8A%E8%BF%99%E4%B8%AA%E8%AF%AD%E5%8F%A5%E4%BC%9A%E6%8A%A5%E9%94%99%EF%BC%8C%E7%9F%A5%E9%81%93%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%97%EF%BC%9F%E4%BD%A0%E4%BC%9A%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">
+          15.file1 &#x3D; open(‘C:\windows\temp\readme.txt’, ‘r’) 表示以只读方式打开“C:\windows\temp\readme.txt”这个文本文件，但事实上这个语句会报错，知道为什么吗？你会如何修改？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-%E5%86%99%E4%B8%80%E4%B8%AA%E6%A3%80%E6%9F%A5%E5%AF%86%E7%A0%81%E5%AE%89%E5%85%A8%E6%80%A7%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">10.</span> <span class="toc-text">
+          16.写一个检查密码安全性的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">11.</span> <span class="toc-text">
+          17.字符串常用方法</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script type="module" src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script><script>function loadWaline () {
+  import('https://unpkg.com/@waline/client@v3/dist/waline.js').then(({ init }) => {
+    var GUEST_INFO = ['nick', 'mail', 'link'];
+    var guest_info = 'nick,mail,link';
+
+    if (typeof guest_info === 'string') {
+      guest_info = guest_info.split(',').filter(function(item) {
+        return GUEST_INFO.indexOf(item) > -1;
+      });
+    }
+
+    init({
+      el: '#waline-container',
+      serverURL: 'https://whie-jade.vercel.app',
+      placeholder: '留下你来过的痕迹',
+      pageSize: parseInt('10') || 10,
+      lang: 'zh-CN,zh-TW,en' || 'zh-CN',
+      visitor: false,
+      avatar: 'mp',
+      path: window.location.pathname,
+      meta: guest_info,
+      requiredMeta: ["nick","mail"],
+      dark: 'auto',
+      locale: {
+        nick: '昵称',
+        mail: '邮箱',
+        link: '网站',
+        placeholder: '留下你来过的痕迹',
+        sofa: '来发评论吧~',
+        submit: '提交',
+        like: '喜欢',
+        reply: '回复',
+        more: '加载更多...',
+        preview: '预览',
+        emoji: '表情',
+        uploadImage: '上传图片',
+        seconds: '秒前',
+        minutes: '分钟前',
+        hours: '小时前',
+        days: '天前',
+        now: '刚刚'
+      }
+    });
+  }).catch(error => {
+    console.error('Failed to load Waline:', error);
+  });
+}
+
+if (false) {
+  loadWaline();
+} else {
+  window.addEventListener('DOMContentLoaded', loadWaline, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

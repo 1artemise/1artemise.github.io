@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="1.什么是BIF？       BIF 就是 Built-in Functions，内置函数                     2.python中的变量名不能以数字开头                           3.       1234a&#x3D;1b&#x3D;&#x27;1&#x27;a&#x3D;bprint(a)  会输出1，没有单引号，因为它用print打印">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python前言">
+<meta property="og:url" content="https://1artemise.github.io/2025/09/08/py%E5%89%8D%E8%A8%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.什么是BIF？       BIF 就是 Built-in Functions，内置函数                     2.python中的变量名不能以数字开头                           3.       1234a&#x3D;1b&#x3D;&#x27;1&#x27;a&#x3D;bprint(a)  会输出1，没有单引号，因为它用print打印">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-17T01:27:40.842Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="博客搭建">
+<meta name="twitter:card" content="summary"><title>python前言 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/09/08/py%E5%89%8D%E8%A8%80/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">python前言</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-sync-alt"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2025-09-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2025-09-17</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-chart-bar"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.2k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-hourglass-half"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">9分</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon" data-popover="阅读次数" data-popover-pos="up"><i class="fas fa-eye"></i></span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h3 id="1-什么是BIF？"   >
+          <a href="#1-什么是BIF？" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-什么是BIF？" class="headerlink" title="1.什么是BIF？"></a>1.<strong>什么是BIF？</strong></h3>
+      <p>BIF 就是 Built-in Functions，内置函数</p>
+
+        <h3 id="2-python中的变量名不能以数字开头"   >
+          <a href="#2-python中的变量名不能以数字开头" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-python中的变量名不能以数字开头" class="headerlink" title="2.python中的变量名不能以数字开头"></a>2.python中的变量名不能以数字开头</h3>
+      
+        <h3 id="3"   >
+          <a href="#3" class="heading-link"><i class="fas fa-link"></i></a><a href="#3" class="headerlink" title="3."></a>3.</h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">1</span></span><br><span class="line">b=<span class="string">&#x27;1&#x27;</span></span><br><span class="line">a=b</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></div></figure>
+
+<p>会输出1，没有单引号，因为它用print打印</p>
+
+        <h3 id="4-除了使用反斜杠（-）进行字符转义，还有什么方法可以打印：Let’s-go-这个字符串？"   >
+          <a href="#4-除了使用反斜杠（-）进行字符转义，还有什么方法可以打印：Let’s-go-这个字符串？" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-除了使用反斜杠（-）进行字符转义，还有什么方法可以打印：Let’s-go-这个字符串？" class="headerlink" title="4. 除了使用反斜杠（\）进行字符转义，还有什么方法可以打印：Let’s go! 这个字符串？"></a><strong>4. 除了使用反斜杠（\）进行字符转义，还有什么方法可以打印：Let’s go! 这个字符串？</strong></h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Let&#x27;s go!&quot;</span>)  *<span class="comment"># 双引号内单引号无需转义*</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;&#x27;Let&#x27;s go!&#x27;&#x27;&#x27;</span>)  *<span class="comment"># 三单引号* print(&quot;&quot;&quot;Let&#x27;s go!&quot;&quot;&quot;)  *# 三双引号*</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="5-如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？"   >
+          <a href="#5-如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？" class="headerlink" title="5. 如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？"></a><strong>5. 如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？</strong></h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*<span class="comment"># 在原始字符串外手动转义* </span></span><br><span class="line"></span><br><span class="line">path = <span class="string">r&#x27;C:\Users\Documents&#x27;</span><span class="string">&#x27;\\&#x27;</span>  *<span class="comment"># 注意两字符串间无空格* </span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(path)  *<span class="comment"># 输出: C:\Users\Documents\</span></span><br><span class="line"></span><br><span class="line">*<span class="comment"># 将结尾反斜杠单独用普通字符串拼接* </span></span><br><span class="line"></span><br><span class="line">path = <span class="string">r&#x27;C:\Users\Documents&#x27;</span> + <span class="string">&#x27;\\&#x27;</span></span><br><span class="line"></span><br><span class="line"> <span class="built_in">print</span>(path)  <span class="comment"># 输出: C:\Users\Documents\</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="6-如果输出格式复杂的空行多空格多的文本怎么办？"   >
+          <a href="#6-如果输出格式复杂的空行多空格多的文本怎么办？" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-如果输出格式复杂的空行多空格多的文本怎么办？" class="headerlink" title="6.如果输出格式复杂的空行多空格多的文本怎么办？"></a>6.如果输出格式复杂的空行多空格多的文本怎么办？</h3>
+      
+        <h4 id="三重引号字符串‘’‘-xxx-‘’’"   >
+          <a href="#三重引号字符串‘’‘-xxx-‘’’" class="heading-link"><i class="fas fa-link"></i></a><a href="#三重引号字符串‘’‘-xxx-‘’’" class="headerlink" title="三重引号字符串‘’‘  xxx ‘’’"></a>三重引号字符串‘’‘  xxx ‘’’</h4>
+      <p>如果希望得到一个跨越多行的字符串，我们就可以使用三重引号字符串，这里的三重引号可以是三个单引号也可以是三个双引号。</p>
+<p>&gt;&gt;&gt; str &#x3D; “””轻轻的我走了，</p>
+<p>正如我轻轻的来；</p>
+<p>我轻轻的招手，</p>
+<p>作别西天的云彩。…</p>
+<p>“””</p>
+
+        <h3 id="7-Python3-中，一行可以书写多个语句吗？"   >
+          <a href="#7-Python3-中，一行可以书写多个语句吗？" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-Python3-中，一行可以书写多个语句吗？" class="headerlink" title="7. Python3 中，一行可以书写多个语句吗？"></a>7. Python3 中，一行可以书写多个语句吗？</h3>
+      <p>可以，语句之间用分号隔开即可，不妨试试：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;I love fishc&#x27;);print(&#x27;very much!&#x27;)</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="8-我们人类思维是习惯于“四舍五入”法，你有什么办法使得-int-按照“四舍五入”的方式取整吗？"   >
+          <a href="#8-我们人类思维是习惯于“四舍五入”法，你有什么办法使得-int-按照“四舍五入”的方式取整吗？" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-我们人类思维是习惯于“四舍五入”法，你有什么办法使得-int-按照“四舍五入”的方式取整吗？" class="headerlink" title="8.我们人类思维是习惯于“四舍五入”法，你有什么办法使得 int() 按照“四舍五入”的方式取整吗？"></a>8.我们人类思维是习惯于“四舍五入”法，你有什么办法使得 int() 按照“四舍五入”的方式取整吗？</h3>
+      <p>5.4 “四舍五入”结果为：5，int(5.4+0.5) &#x3D;&#x3D; 5<br>5.6 “四舍五入”结果为：6，int(5.6+0.5) &#x3D;&#x3D; 6</p>
+
+        <h3 id="9-取得一个变量的类型，视频中介绍可以使用-type-和-isinstance-，你更倾向于使用哪个？"   >
+          <a href="#9-取得一个变量的类型，视频中介绍可以使用-type-和-isinstance-，你更倾向于使用哪个？" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-取得一个变量的类型，视频中介绍可以使用-type-和-isinstance-，你更倾向于使用哪个？" class="headerlink" title="9. 取得一个变量的类型，视频中介绍可以使用 type() 和 isinstance()，你更倾向于使用哪个？"></a>9. 取得一个变量的类型，视频中介绍可以使用 type() 和 isinstance()，你更倾向于使用哪个？</h3>
+      <p>建议使用 isinstance()，因为它的返回结果比较直接，另外 type() 其实并没有你想象的那么简单，我们后边会讲到。</p>
+
+        <h5 id="🤔-为什么-isinstance-更胜一筹？"   >
+          <a href="#🤔-为什么-isinstance-更胜一筹？" class="heading-link"><i class="fas fa-link"></i></a><a href="#🤔-为什么-isinstance-更胜一筹？" class="headerlink" title="🤔 为什么 isinstance()更胜一筹？"></a>🤔 <strong>为什么 <code>isinstance()</code>更胜一筹？</strong></h5>
+      
+        <h5 id="1-继承链检查能力（核心优势）"   >
+          <a href="#1-继承链检查能力（核心优势）" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-继承链检查能力（核心优势）" class="headerlink" title="1. 继承链检查能力（核心优势）"></a>1. <strong>继承链检查能力</strong>（核心优势）</h5>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Animal:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class Dog(Animal):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">dog = Dog()</span><br><span class="line"></span><br><span class="line"># type() 的局限性</span><br><span class="line">print(type(dog) == Animal)  # False - 只检查精确类型</span><br><span class="line"></span><br><span class="line"># isinstance() 的智能检查</span><br><span class="line">print(isinstance(dog, Animal))  # True - 识别继承关系</span><br><span class="line">print(isinstance(dog, (Animal, Dog)))  # True - 支持多类型检查</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="2-多类型联合检查"   >
+          <a href="#2-多类型联合检查" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-多类型联合检查" class="headerlink" title="2. 多类型联合检查"></a>2. <strong>多类型联合检查</strong></h5>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def process_input(value):</span><br><span class="line">    if isinstance(value, (int, float, str)):</span><br><span class="line">        # 同时检查多种类型</span><br><span class="line">        return f&quot;Processing: &#123;value&#125;&quot;</span><br><span class="line">    raise TypeError(&quot;Invalid type&quot;)</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="10-Python-的-floor-除法现在使用-“-”-实现，那-3-0-2-0-您目测会显示什么内容呢？"   >
+          <a href="#10-Python-的-floor-除法现在使用-“-”-实现，那-3-0-2-0-您目测会显示什么内容呢？" class="heading-link"><i class="fas fa-link"></i></a><a href="#10-Python-的-floor-除法现在使用-“-”-实现，那-3-0-2-0-您目测会显示什么内容呢？" class="headerlink" title="10. Python 的 floor 除法现在使用 “&#x2F;&#x2F;” 实现，那 3.0 &#x2F;&#x2F; 2.0 您目测会显示什么内容呢？"></a>10. Python 的 floor 除法现在使用 “&#x2F;&#x2F;” 实现，那 3.0 &#x2F;&#x2F; 2.0 您目测会显示什么内容呢？</h3>
+      <p>Python 这里会义无反顾地执行 floor 除法原则，答案是：1.0</p>
+
+        <h3 id="11-请用最快速度说出答案：not-1-or-0-and-1-or-3-and-4-or-5-and-6-or-7-and-8-and-9"   >
+          <a href="#11-请用最快速度说出答案：not-1-or-0-and-1-or-3-and-4-or-5-and-6-or-7-and-8-and-9" class="heading-link"><i class="fas fa-link"></i></a><a href="#11-请用最快速度说出答案：not-1-or-0-and-1-or-3-and-4-or-5-and-6-or-7-and-8-and-9" class="headerlink" title="11.请用最快速度说出答案：not 1 or 0 and 1 or 3 and 4 or 5 and 6 or 7 and 8 and 9"></a>11.请用最快速度说出答案：not 1 or 0 and 1 or 3 and 4 or 5 and 6 or 7 and 8 and 9</h3>
+      <p>答案是：4</p>
+<p>not or and 的优先级是不同的：not &gt; and &gt; or</p>
+<p>我们按照优先级给它们加上括号：(not 1) or (0 and 1) or (3 and 4) or (5 and 6) or (7 and 8 and 9)<br>&#x3D;&#x3D; 0 or 0 or 4 or 6 or 9<br>&#x3D;&#x3D; 4</p>
+<p>为什么是 4？提到的“短路逻辑”：3 and 4 &#x3D;&#x3D; 4，而 3 or 4 &#x3D;&#x3D; 3。<br>所以答案是：4</p>
+
+        <h3 id="12-假设有-x-1，y-2，z-3，请问如何快速将三个变量的值互相交换？"   >
+          <a href="#12-假设有-x-1，y-2，z-3，请问如何快速将三个变量的值互相交换？" class="heading-link"><i class="fas fa-link"></i></a><a href="#12-假设有-x-1，y-2，z-3，请问如何快速将三个变量的值互相交换？" class="headerlink" title="12. 假设有 x &#x3D; 1，y &#x3D; 2，z &#x3D; 3，请问如何快速将三个变量的值互相交换？"></a>12. 假设有 x &#x3D; 1，y &#x3D; 2，z &#x3D; 3，请问如何快速将三个变量的值互相交换？</h3>
+      <p>x, y, z &#x3D; z, y, x</p>
+
+        <h3 id="13-猜猜-x-y-and-x-or-y-0-实现什么样的功能"   >
+          <a href="#13-猜猜-x-y-and-x-or-y-0-实现什么样的功能" class="heading-link"><i class="fas fa-link"></i></a><a href="#13-猜猜-x-y-and-x-or-y-0-实现什么样的功能" class="headerlink" title="13. 猜猜 (x &lt; y and [x] or [y])[0] 实现什么样的功能"></a>13. 猜猜 (x &lt; y and [x] or [y])[0] 实现什么样的功能</h3>
+      <p>即：<strong>返回 <code>x</code>和 <code>y</code>中的较小值</strong>（类似 <code>min(x, y)</code>的基础版）</p>
+<hr>
+
+        <h3 id="🔍-分步拆解"   >
+          <a href="#🔍-分步拆解" class="heading-link"><i class="fas fa-link"></i></a><a href="#🔍-分步拆解" class="headerlink" title="🔍 分步拆解"></a>🔍 <strong>分步拆解</strong></h3>
+      <p>假设 <code>x = 3</code>, <code>y = 5</code>：</p>
+<ol>
+<li><ol>
+<li></li>
+</ol>
+<p><strong>第一步：<code>x &lt; y</code>判断</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3 &lt; 5 → True</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><ol start="2">
+<li></li>
+</ol>
+<p><strong>第二步：<code>and [x]</code></strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">True and [3] → [3]  # and操作返回最后一个真值</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><ol start="3">
+<li></li>
+</ol>
+<p><strong>第三步：<code>or [y]</code></strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[3] or [5] → [3]  # or操作在左值为真时短路返回</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><ol start="4">
+<li></li>
+</ol>
+<p><strong>第四步：取列表首元素</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[3][0] → 3</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h3 id="14-请将以下代码修改为三元操作符实现："   >
+          <a href="#14-请将以下代码修改为三元操作符实现：" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-请将以下代码修改为三元操作符实现：" class="headerlink" title="14.请将以下代码修改为三元操作符实现："></a>14.请将以下代码修改为三元操作符实现：</h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x, y, z = <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span></span><br><span class="line"><span class="keyword">if</span> x &lt; y:</span><br><span class="line">    small = x</span><br><span class="line">    <span class="keyword">if</span> z &lt; small:</span><br><span class="line">        small = z</span><br><span class="line"><span class="keyword">elif</span> y &lt; z:</span><br><span class="line">    small = y</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    small = z</span><br></pre></td></tr></table></div></figure>
+
+
+
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">small = x <span class="keyword">if</span> (x &lt; y <span class="keyword">and</span> x &lt; z) <span class="keyword">else</span> (y <span class="keyword">if</span> y &lt; z <span class="keyword">else</span> z)</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="15-断言（assert）"   >
+          <a href="#15-断言（assert）" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-断言（assert）" class="headerlink" title="15.断言（assert）"></a>15.断言（assert）</h3>
+      <p>assert这个关键字我们称之为“断言”，当这个关键字后边的条件为假时，程序自动崩溃并抛出AssertionError的异常。当这个关键字后边的条件为真时，程序无影响。</p>
+<p>举个例子：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>assert 3 &gt; 4</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>一般来说我们可以用Ta在程序中置入检查点，当需要确保程序中的某个条件一定为真才能让程序正常工作的话，assert关键字就非常有用了。</p>
+
+        <h3 id="16-下面的循环会打印多少次”I-Love-you”？"   >
+          <a href="#16-下面的循环会打印多少次”I-Love-you”？" class="heading-link"><i class="fas fa-link"></i></a><a href="#16-下面的循环会打印多少次”I-Love-you”？" class="headerlink" title="16. 下面的循环会打印多少次”I Love you”？"></a>16. 下面的循环会打印多少次”I Love you”？</h3>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I Love you&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+<p>5 次，因为从 0 开始，到 10 结束，步进为 2。（0 2 4 6 8）</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/09/08/py%E5%89%8D%E8%A8%80/">https://1artemise.github.io/2025/09/08/py%E5%89%8D%E8%A8%80/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/python/">python</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2025/09/08/%E7%BD%91%E7%AB%99%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">网站食用方法（推荐阅读！）</span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="waline-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFBIF%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">
+          1.什么是BIF？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-python%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%90%8D%E4%B8%8D%E8%83%BD%E4%BB%A5%E6%95%B0%E5%AD%97%E5%BC%80%E5%A4%B4"><span class="toc-number">2.</span> <span class="toc-text">
+          2.python中的变量名不能以数字开头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3"><span class="toc-number">3.</span> <span class="toc-text">
+          3.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%99%A4%E4%BA%86%E4%BD%BF%E7%94%A8%E5%8F%8D%E6%96%9C%E6%9D%A0%EF%BC%88-%EF%BC%89%E8%BF%9B%E8%A1%8C%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%EF%BC%8C%E8%BF%98%E6%9C%89%E4%BB%80%E4%B9%88%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E6%89%93%E5%8D%B0%EF%BC%9ALet%E2%80%99s-go-%E8%BF%99%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">
+          4. 除了使用反斜杠（\）进行字符转义，还有什么方法可以打印：Let’s go! 这个字符串？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%A6%82%E6%9E%9C%E9%9D%9E%E8%A6%81%E5%9C%A8%E5%8E%9F%E5%A7%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%93%E5%B0%BE%E8%BE%93%E5%85%A5%E5%8F%8D%E6%96%9C%E6%9D%A0%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%A6%82%E4%BD%95%E7%81%B5%E6%B4%BB%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">
+          5. 如果非要在原始字符串结尾输入反斜杠，可以如何灵活处理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%A6%82%E6%9E%9C%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F%E5%A4%8D%E6%9D%82%E7%9A%84%E7%A9%BA%E8%A1%8C%E5%A4%9A%E7%A9%BA%E6%A0%BC%E5%A4%9A%E7%9A%84%E6%96%87%E6%9C%AC%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">
+          6.如果输出格式复杂的空行多空格多的文本怎么办？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E9%87%8D%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%98%E2%80%99%E2%80%98-xxx-%E2%80%98%E2%80%99%E2%80%99"><span class="toc-number">6.1.</span> <span class="toc-text">
+          三重引号字符串‘’‘  xxx ‘’’</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Python3-%E4%B8%AD%EF%BC%8C%E4%B8%80%E8%A1%8C%E5%8F%AF%E4%BB%A5%E4%B9%A6%E5%86%99%E5%A4%9A%E4%B8%AA%E8%AF%AD%E5%8F%A5%E5%90%97%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">
+          7. Python3 中，一行可以书写多个语句吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%88%91%E4%BB%AC%E4%BA%BA%E7%B1%BB%E6%80%9D%E7%BB%B4%E6%98%AF%E4%B9%A0%E6%83%AF%E4%BA%8E%E2%80%9C%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5%E2%80%9D%E6%B3%95%EF%BC%8C%E4%BD%A0%E6%9C%89%E4%BB%80%E4%B9%88%E5%8A%9E%E6%B3%95%E4%BD%BF%E5%BE%97-int-%E6%8C%89%E7%85%A7%E2%80%9C%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5%E2%80%9D%E7%9A%84%E6%96%B9%E5%BC%8F%E5%8F%96%E6%95%B4%E5%90%97%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">
+          8.我们人类思维是习惯于“四舍五入”法，你有什么办法使得 int() 按照“四舍五入”的方式取整吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%8F%96%E5%BE%97%E4%B8%80%E4%B8%AA%E5%8F%98%E9%87%8F%E7%9A%84%E7%B1%BB%E5%9E%8B%EF%BC%8C%E8%A7%86%E9%A2%91%E4%B8%AD%E4%BB%8B%E7%BB%8D%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8-type-%E5%92%8C-isinstance-%EF%BC%8C%E4%BD%A0%E6%9B%B4%E5%80%BE%E5%90%91%E4%BA%8E%E4%BD%BF%E7%94%A8%E5%93%AA%E4%B8%AA%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">
+          9. 取得一个变量的类型，视频中介绍可以使用 type() 和 isinstance()，你更倾向于使用哪个？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%F0%9F%A4%94-%E4%B8%BA%E4%BB%80%E4%B9%88-isinstance-%E6%9B%B4%E8%83%9C%E4%B8%80%E7%AD%B9%EF%BC%9F"><span class="toc-number">9.0.1.</span> <span class="toc-text">
+          🤔 为什么 isinstance()更胜一筹？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E7%BB%A7%E6%89%BF%E9%93%BE%E6%A3%80%E6%9F%A5%E8%83%BD%E5%8A%9B%EF%BC%88%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF%EF%BC%89"><span class="toc-number">9.0.2.</span> <span class="toc-text">
+          1. 继承链检查能力（核心优势）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%A4%9A%E7%B1%BB%E5%9E%8B%E8%81%94%E5%90%88%E6%A3%80%E6%9F%A5"><span class="toc-number">9.0.3.</span> <span class="toc-text">
+          2. 多类型联合检查</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Python-%E7%9A%84-floor-%E9%99%A4%E6%B3%95%E7%8E%B0%E5%9C%A8%E4%BD%BF%E7%94%A8-%E2%80%9C-%E2%80%9D-%E5%AE%9E%E7%8E%B0%EF%BC%8C%E9%82%A3-3-0-2-0-%E6%82%A8%E7%9B%AE%E6%B5%8B%E4%BC%9A%E6%98%BE%E7%A4%BA%E4%BB%80%E4%B9%88%E5%86%85%E5%AE%B9%E5%91%A2%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">
+          10. Python 的 floor 除法现在使用 “&#x2F;&#x2F;” 实现，那 3.0 &#x2F;&#x2F; 2.0 您目测会显示什么内容呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E8%AF%B7%E7%94%A8%E6%9C%80%E5%BF%AB%E9%80%9F%E5%BA%A6%E8%AF%B4%E5%87%BA%E7%AD%94%E6%A1%88%EF%BC%9Anot-1-or-0-and-1-or-3-and-4-or-5-and-6-or-7-and-8-and-9"><span class="toc-number">11.</span> <span class="toc-text">
+          11.请用最快速度说出答案：not 1 or 0 and 1 or 3 and 4 or 5 and 6 or 7 and 8 and 9</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%81%87%E8%AE%BE%E6%9C%89-x-1%EF%BC%8Cy-2%EF%BC%8Cz-3%EF%BC%8C%E8%AF%B7%E9%97%AE%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%B0%86%E4%B8%89%E4%B8%AA%E5%8F%98%E9%87%8F%E7%9A%84%E5%80%BC%E4%BA%92%E7%9B%B8%E4%BA%A4%E6%8D%A2%EF%BC%9F"><span class="toc-number">12.</span> <span class="toc-text">
+          12. 假设有 x &#x3D; 1，y &#x3D; 2，z &#x3D; 3，请问如何快速将三个变量的值互相交换？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E7%8C%9C%E7%8C%9C-x-y-and-x-or-y-0-%E5%AE%9E%E7%8E%B0%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">13.</span> <span class="toc-text">
+          13. 猜猜 (x &lt; y and [x] or [y])[0] 实现什么样的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%8D-%E5%88%86%E6%AD%A5%E6%8B%86%E8%A7%A3"><span class="toc-number">14.</span> <span class="toc-text">
+          🔍 分步拆解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E8%AF%B7%E5%B0%86%E4%BB%A5%E4%B8%8B%E4%BB%A3%E7%A0%81%E4%BF%AE%E6%94%B9%E4%B8%BA%E4%B8%89%E5%85%83%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-number">15.</span> <span class="toc-text">
+          14.请将以下代码修改为三元操作符实现：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-%E6%96%AD%E8%A8%80%EF%BC%88assert%EF%BC%89"><span class="toc-number">16.</span> <span class="toc-text">
+          15.断言（assert）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-%E4%B8%8B%E9%9D%A2%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BC%9A%E6%89%93%E5%8D%B0%E5%A4%9A%E5%B0%91%E6%AC%A1%E2%80%9DI-Love-you%E2%80%9D%EF%BC%9F"><span class="toc-number">17.</span> <span class="toc-text">
+          16. 下面的循环会打印多少次”I Love you”？</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script type="module" src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script><script>function loadWaline () {
+  import('https://unpkg.com/@waline/client@v3/dist/waline.js').then(({ init }) => {
+    var GUEST_INFO = ['nick', 'mail', 'link'];
+    var guest_info = 'nick,mail,link';
+
+    if (typeof guest_info === 'string') {
+      guest_info = guest_info.split(',').filter(function(item) {
+        return GUEST_INFO.indexOf(item) > -1;
+      });
+    }
+
+    init({
+      el: '#waline-container',
+      serverURL: 'https://whie-jade.vercel.app',
+      placeholder: '留下你来过的痕迹',
+      pageSize: parseInt('10') || 10,
+      lang: 'zh-CN,zh-TW,en' || 'zh-CN',
+      visitor: false,
+      avatar: 'mp',
+      path: window.location.pathname,
+      meta: guest_info,
+      requiredMeta: ["nick","mail"],
+      dark: 'auto',
+      locale: {
+        nick: '昵称',
+        mail: '邮箱',
+        link: '网站',
+        placeholder: '留下你来过的痕迹',
+        sofa: '来发评论吧~',
+        submit: '提交',
+        like: '喜欢',
+        reply: '回复',
+        more: '加载更多...',
+        preview: '预览',
+        emoji: '表情',
+        uploadImage: '上传图片',
+        seconds: '秒前',
+        minutes: '分钟前',
+        hours: '小时前',
+        days: '天前',
+        now: '刚刚'
+      }
+    });
+  }).catch(error => {
+    console.error('Failed to load Waline:', error);
+  });
+}
+
+if (false) {
+  loadWaline();
+} else {
+  window.addEventListener('DOMContentLoaded', loadWaline, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
