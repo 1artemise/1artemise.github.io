@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="shell的学习其实是有些反人类的，这意味着你对着的界面是单调的黑屏和一行行的代码。图形化时代一去不复返。但是同时它也是炫酷的，可以让你的工作效率大幅度增加。学习过程中作者感到有些痛苦，因为shell作为一个工具型脚本语言，并没有很具体的教程。csdiy上推荐的MIT教程应该是最好的了，推荐食用。附上链接。这篇文章中我会对我学到的知识，以关键词的分类方式进行总结(这样比较系统方便查找记忆)，对课上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell修炼手册">
+<meta property="og:url" content="https://1artemise.github.io/2025/09/28/shell%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="shell的学习其实是有些反人类的，这意味着你对着的界面是单调的黑屏和一行行的代码。图形化时代一去不复返。但是同时它也是炫酷的，可以让你的工作效率大幅度增加。学习过程中作者感到有些痛苦，因为shell作为一个工具型脚本语言，并没有很具体的教程。csdiy上推荐的MIT教程应该是最好的了，推荐食用。附上链接。这篇文章中我会对我学到的知识，以关键词的分类方式进行总结(这样比较系统方便查找记忆)，对课上">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1artemise.github.io/2025/09/28/images/image-20250928104213117.png">
+<meta property="article:published_time" content="2025-09-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-28T04:58:31.183Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="shell">
+<meta property="article:tag" content="计算机工具">
+<meta property="article:tag" content="csdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1artemise.github.io/2025/09/28/images/image-20250928104213117.png"><title>shell修炼手册 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/09/28/shell%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">shell修炼手册</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2025-09-27T16:00:00.000Z">2025-09-28</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><p>shell的学习其实是有些反人类的，这意味着你对着的界面是<strong>单调的黑屏</strong>和<strong>一行行的代码</strong>。图形化时代一去不复返。但是同时它也是炫酷的，<strong>可以让你的工作效率大幅度增加</strong>。学习过程中作者感到有些痛苦，因为shell作为一个工具型脚本语言，并没有很具体的教程。csdiy上推荐的MIT教程应该是最好的了，推荐食用。<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/" >附上链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>。这篇文章中我会对我学到的知识，以<strong>关键词的分类方式进行总结</strong>(这样比较系统方便查找记忆)，对课上的知识点进行实际运用。</p>
+
+        <h2 id="什么是Shell"   >
+          <a href="#什么是Shell" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是Shell" class="headerlink" title="什么是Shell?"></a>什么是Shell?</h2>
+      <p>shell其实是一种<strong>脚本语言</strong>，什么是脚本语言？它又与<strong>编译语言</strong>进行区分。</p>
+<p>我们知道有的编程语言，如c&#x2F;c++，必须在程序运行前将代码翻译成二进制形式，也就是生成可执行文件。</p>
+<p>这个过程叫做<strong>编译</strong>,这样的编程语言叫做编译语言。</p>
+<p>而有的编程语言，如 Shell、JavaScript、Python、PHP等，需要一边执行一边翻译，不会生成任何可执行文件，用户必须拿到源码才能运行程序。程序运行后会即时翻译，翻译完一部分执行一部分，不用等到所有代码都翻译完。 </p>
+<p>这个过程叫做<strong>解释</strong>。这样的语言叫做解释型语言或脚本语言。</p>
+<p>这是它的定义，那它到底能干什么？引用MIT的话说</p>
+<blockquote>
+<p>如今的计算机有着多种多样的交互接口让我们可以进行指令的的输入，从炫酷的图像用户界面（GUI），语音输入甚至是 AR&#x2F;VR 都已经无处不在。 这些交互接口可以覆盖 80% 的使用场景，但是它们也从根本上限制了您的操作方式——你不能点击一个不存在的按钮或者是用语音输入一个还没有被录入的指令。 为了充分利用计算机的能力，我们不得不回到最根本的方式，使用文字接口：Shell</p>
+</blockquote>
+
+        <h2 id="如何配置shell"   >
+          <a href="#如何配置shell" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何配置shell" class="headerlink" title="如何配置shell?"></a>如何配置shell?</h2>
+      <p>前人所述备矣，这里附上作者学长的<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://virgiling.wiki/03-tools/how-to-use-wsl2" >博客文章</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，供大家参考。</p>
+<p>进入正题!</p>
+
+        <h2 id="课前提醒！"   >
+          <a href="#课前提醒！" class="heading-link"><i class="fas fa-link"></i></a><a href="#课前提醒！" class="headerlink" title="课前提醒！"></a>课前提醒！</h2>
+      <p>1.请确保你的环境是正确的（推荐wsl2）</p>
+<blockquote>
+<ol>
+<li>本课程需要使用类 Unix shell，例如 Bash 或 ZSH。如果您在 Linux 或者 MacOS 上面完成本课程的练习，则不需要做任何特殊的操作。如果您使用的是 Windows，则您不应该使用 cmd 或是 Powershell；您可以使用 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/wsl/" >Windows Subsystem for Linux</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 或者是 Linux 虚拟机。使用 <code>echo $SHELL</code> 命令可以查看您的 shell 是否满足要求。如果打印结果为 <code>/bin/bash</code> 或 <code>/usr/bin/zsh</code> 则是可以的。</li>
+</ol>
+</blockquote>
+<p>2.请在你的home中进行学习测试，在其他地方你的权限有限，如果自己添加权限可能会导致权力过大的滥用（总之就是不安全）。运行以下代码即可</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="echo-cat"   >
+          <a href="#echo-cat" class="heading-link"><i class="fas fa-link"></i></a><a href="#echo-cat" class="headerlink" title="echo &amp;&amp; cat"></a>echo &amp;&amp; cat</h2>
+      <p>1.echo其实类似c的printf。</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ echo &quot;hello word&quot;</span><br><span class="line">hello word</span><br></pre></td></tr></table></div></figure>
+
+<p>2.那么对应c的&amp;，在shell中则是$。（解决了作者对键盘上为什么要出现美元符号的困扰）</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ name=&quot;jade&quot;</span><br><span class="line">wjy06@wjy:~$ echo &quot;My name is $name&quot;</span><br><span class="line">My name is jade</span><br></pre></td></tr></table></div></figure>
+
+<p>3.我们知道c中会解析转义字符，但是echo<strong>默认不会解析</strong></p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ echo &quot;Line 1\nLine 2&quot;</span><br><span class="line">Line 1\nLine 2</span><br></pre></td></tr></table></div></figure>
+
+<p>4.当然如果你想用转义字符比如‘\n’进行换行也是可以的（-e）后面会展开讲解</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ echo -e &quot;Line 1\nLine 2&quot;</span><br><span class="line">Line 1</span><br><span class="line">Line 2</span><br></pre></td></tr></table></div></figure>
+
+<p>5.我们知道echo不会解析转义字符，但这不意味着它不会解析特殊字符，比如上面用到的“$”，那我们不想特定字符被解析时如何避免呢？</p>
+<p>在Shell中，<code>echo</code>命令使用 <strong>单引号（<code>&#39;</code>）</strong> 时，会 <strong>禁用所有特殊字符的解释</strong>，包括变量、转义字符和通配符（如 <code>$</code>、<code>*</code>、&#96;&#96;等）</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ echo &#x27;Hello, $USER! Today is $(date)&#x27;</span><br><span class="line">Hello, $USER! Today is $(date)</span><br></pre></td></tr></table></div></figure>
+
+<p>6.echo还可以和<strong>重定向</strong>一起使用</p>
+<p>在shell中，程序有两个主要的流，输入流和输出流。通常，程序的输入流输出流都是我们的终端。键盘作为输入，显示器作为输出。但是我们可以重定向这些流</p>
+<p>最简单的重定向是 <code>&lt; file</code> 和 <code>&gt; file</code>。这两个命令可以将程序的输入输出流分别重定向到文件。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">missing:~$ <span class="built_in">echo</span> hello &gt; hello.txt </span><br><span class="line"><span class="comment">#创建文件并写入内容</span></span><br><span class="line"><span class="comment">#echo hello：输出字符串 hello到标准输出（屏幕）&gt; hello.txt：将标准输出重定向到文件 hello.txt（覆盖写入）</span></span><br><span class="line">missing:~$ <span class="built_in">cat</span> hello.txt</span><br><span class="line">hello</span><br><span class="line"><span class="comment">#cat：直接读取文件内容并输出</span></span><br><span class="line">missing:~$ <span class="built_in">cat</span> &lt; hello.txt</span><br><span class="line">hello</span><br><span class="line"><span class="comment">#&lt; hello.txt：将文件 hello.txt的内容作为 cat的输入</span></span><br><span class="line">missing:~$ <span class="built_in">cat</span> &lt; hello.txt &gt; hello2.txt</span><br><span class="line">missing:~$ <span class="built_in">cat</span> hello2.txt</span><br><span class="line">hello</span><br><span class="line"><span class="comment">#通过重定向复制文件</span></span><br><span class="line"><span class="comment">#&lt; hello.txt：将 hello.txt内容作为 cat的输入</span></span><br><span class="line"><span class="comment">#&gt; hello2.txt：将 cat的输出重定向到 hello2.txt</span></span><br><span class="line"><span class="comment">#结果：创建 hello2.txt，内容与 hello.txt相同（相当于文件复制）</span></span><br></pre></td></tr></table></div></figure>
+
+<p>7.echo追加写入</p>
+<p>上面提到的 “&gt;”是覆盖写入，也就是说前面写的内容会被覆盖。当然我们也可以选择追加写入。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> world &gt;&gt; hello.txt  <span class="comment"># 追加内容</span></span><br><span class="line"><span class="built_in">cat</span> hello.txt</span><br><span class="line">hello</span><br><span class="line">world</span><br></pre></td></tr></table></div></figure>
+
+<p>8.重定向与管道符’|‘</p>
+<blockquote>
+<p>使用管道（ <em>pipes</em> ），我们能够更好的利用文件重定向。 <code>|</code> 操作符允许我们将一个程序的输出和另外一个程序的输入连接起来：</p>
+</blockquote>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &lt; hello.txt | grep &quot;hello&quot; &gt; filtered.txt</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>“&lt; hello.txt”:  将hello.txt的内容作为cat命令的输入（其实和cat hello.txt等效，但更明确的表达<strong>数据流向</strong>）</li>
+<li>“| grep “hello””:  管道符将cat的输出作为grep（后续将有讲解）命令的输入，grep “hello”起到字符串筛选的作用，从输入中筛选包含字符串“hello”的行。</li>
+<li>“&gt;filtered.txt”:    将grep的输出重定向到文件filetered.txt(覆盖写入)</li>
+</ul>
+<p>让我们来实例演示以下</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; &gt;hello.txt</span><br><span class="line">echo &quot;goodbye world&quot; &gt;&gt; hello .txt</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">hello.txt内容</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">hello world</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">goodbye world</span></span><br><span class="line">cat &lt; hello.txt | grep &quot;hello&quot; &gt;filtered.txt</span><br><span class="line">cat filtered.txt</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">输出hello world</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">只有包含 <span class="string">&quot;hello&quot;</span> 的行被保留</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="cd-pwd-ls"   >
+          <a href="#cd-pwd-ls" class="heading-link"><i class="fas fa-link"></i></a><a href="#cd-pwd-ls" class="headerlink" title="cd &amp;&amp; pwd &amp;&amp;ls"></a>cd &amp;&amp; pwd &amp;&amp;ls</h2>
+      <p><strong>1.<code>cd</code>（Change Directory）</strong></p>
+<p>是 Linux&#x2F;Unix 和 Windows 命令行中最基础且最常用的命令之一，用于切换当前工作目录。在路径中，<code>.</code> 表示的是当前目录</p>
+<ul>
+<li><p>切换到绝对路径（以&#x2F;开头）</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/bin # 从根目录开始的完整路径</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>切换到相对路径</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd document/project #相对于当前目录</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>返回上一级目录</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>返回home目录</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>切换到上次所在目录</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd -</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>搭配*号使用</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/*/bin  # 匹配local文件夹中第一个子文件夹有bin的目录</span><br></pre></td></tr></table></div></figure></li>
+</ul>
+<p>2.<strong><code>pwd</code>（Print Working Directory），用于显示当前工作目录</strong></p>
+<p>它可以打印当前所在的绝对路径（也许你cd到一个文件夹里但是不确定是不是你要找的那个，这时候pwd可以派上用场）</p>
+<p>当我在Home环境时</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ pwd</span><br><span class="line">/home/wjy06</span><br></pre></td></tr></table></div></figure>
+
+<p>注意，pwd其实默认的是pwd -L，我们还可以选择pwd -P</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th><code>-L</code>（默认）</th>
+<th>显示逻辑路径（包含符号链接的路径）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-P</code></td>
+<td>显示物理路径（解析所有符号链接的真实路径）</td>
+</tr>
+</tbody></table></div>
+<p>插一嘴，那么你怎么知道它有哪些可选择的参数呢？<strong>(help的使用)</strong></p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:~$ pwd --help</span><br><span class="line">pwd: pwd [-LP]</span><br><span class="line">    Print the name of the current working directory.</span><br><span class="line"></span><br><span class="line">    Options:</span><br><span class="line">      -L        print the value of $PWD if it names the current working</span><br><span class="line">                directory</span><br><span class="line">      -P        print the physical directory, without any symbolic links</span><br><span class="line"></span><br><span class="line">    By default, `pwd&#x27; behaves as if `-L&#x27; were specified.</span><br><span class="line"></span><br><span class="line">    Exit Status:</span><br><span class="line">    Returns 0 unless an invalid option is given or the current directory</span><br><span class="line">    cannot be read.</span><br></pre></td></tr></table></div></figure>
+
+<p>3.<strong><code>ls</code>（List Directory Contents）：列出当前目录下的文件和子目录</strong></p>
+<p>当我在根目录时</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wjy06@wjy:/$ ls</span><br><span class="line">bin                boot  etc   init  lib.usr-is-merged  lost+found  mnt  proc  run   sbin.usr-is-merged  srv  tmp  var</span><br><span class="line">bin.usr-is-merged  dev   home  lib   lib64              media       opt  root  sbin  snap                sys  usr</span><br></pre></td></tr></table></div></figure>
+
+<p>可以看到是对应的</p>
+<img src="../images/image-20250928104213117.png" alt="image-20250928104213117" style="zoom: 33%;" />
+
+<p>当然，ls也有着许多参数供你选择。</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-l</code></td>
+<td align="left">以长格式（详细信息）显示</td>
+</tr>
+<tr>
+<td align="left"><code>-a</code></td>
+<td align="left">显示所有文件（包括隐藏文件 <code>.file</code>）</td>
+</tr>
+<tr>
+<td align="left"><code>-h</code></td>
+<td align="left">以人类可读的格式显示文件大小（如 KB、MB）</td>
+</tr>
+<tr>
+<td align="left"><code>-t</code></td>
+<td align="left">按修改时间排序（最新修改的在前）</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">反向排序</td>
+</tr>
+<tr>
+<td align="left"><code>-R</code></td>
+<td align="left">递归列出子目录内容</td>
+</tr>
+<tr>
+<td align="left"><code>--color</code></td>
+<td align="left">彩色显示（默认启用）</td>
+</tr>
+</tbody></table></div>
+<p> 🛑注意！ 不要轻易尝试 ls -r。如果停不下来了请按ctrl+c（当然挺炫酷的）</p>
+<p>这些参数同样可以通过 <code>ls --help</code>获得。当然还有一个更全面的文档。那就是<strong>man</strong>，比如：</p>
+<p><strong>man ls</strong></p>
+<p>它会接受一个程序名作为参数，然后将它的文档（用户手册）展现给您。注意，<strong>使用 <code>q</code> 可以退出该程序</strong>。</p>
+
+        <h2 id="mkdir-touch"   >
+          <a href="#mkdir-touch" class="heading-link"><i class="fas fa-link"></i></a><a href="#mkdir-touch" class="headerlink" title="mkdir &amp;&amp; touch"></a>mkdir &amp;&amp; touch</h2>
+      <p>1.<strong><code>mkdir</code>是 Linux 和类 Unix 系统中用于创建目录（文件夹）的基础命令，其名称源于 “make directory”。</strong></p>
+<p>它的操作很简单，如果你想在当前目录创建文件夹</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir my_folder</span><br></pre></td></tr></table></div></figure>
+
+<p>如果你想在某个特定路径创建目录，可以使用</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tmp/missing</span><br></pre></td></tr></table></div></figure>
+
+<p>当然它还有许多扩展应用来满足更复杂的需求</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code></td>
+<td align="left"><strong>递归创建目录</strong>：如果路径中的父目录不存在，系统会自动创建它们。这在需要创建多层嵌套目录时特别有用。</td>
+<td align="left"><code>mkdir -p project/docs/images</code>会一次性创建 <code>project</code>、<code>project/docs</code>和 <code>project/docs/images</code>多级目录。</td>
+</tr>
+<tr>
+<td align="left"><code>-m</code></td>
+<td align="left"><strong>设置目录权限</strong>：在创建目录时直接指定其访问权限，而无需事后使用 <code>chmod</code>命令修改。</td>
+<td align="left"><code>mkdir -m 755 secure_dir</code>会创建一个所有者拥有读、写、执行权限，其他用户拥有读和执行权限的目录。权限模式通常用八进制数表示（如 <code>755</code>, <code>644</code>）。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left"><strong>显示操作详情</strong>：让命令输出它正在执行的操作信息，对于脚本调试或确认操作结果很有帮助。</td>
+<td align="left"><code>mkdir -v new_dir</code>可能会输出 <code>mkdir: created directory &#39;new_dir&#39;</code>。</td>
+</tr>
+</tbody></table></div>
+<p><strong>2.<code>touch</code>是 Linux 和类 Unix 系统中一个非常实用的命令行工具，主要功能是创建空文件和更新文件的时间戳</strong></p>
+<p>touch命令最直接的用途是快速创建一个或多个文件，</p>
+<p>创建单个文件</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch filename.txt</span><br></pre></td></tr></table></div></figure>
+
+<p>创建多个文件(允许不同类型)</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch file1.txt file2.txt file3.md</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="⏰-核心功能：管理文件时间戳"   >
+          <a href="#⏰-核心功能：管理文件时间戳" class="heading-link"><i class="fas fa-link"></i></a><a href="#⏰-核心功能：管理文件时间戳" class="headerlink" title="⏰ 核心功能：管理文件时间戳"></a>⏰ 核心功能：管理文件时间戳</h5>
+      <p>文件在 Linux 系统中通常包含三种时间属性（可使用 <code>stat</code>命令查看）</p>
+<ul>
+<li><strong>访问时间 (Access Time, atime)</strong>：文件最后一次被读取的时间。</li>
+<li><strong>修改时间 (Modification Time, mtime)</strong>：文件内容最后一次被修改的时间。</li>
+<li><strong>变更时间 (Change Time, ctime)</strong>：文件元数据（如权限、所有者）最后一次被改变的时间。<code>touch</code>命令默认影响的是 <strong>atime</strong> 和 <strong>mtime</strong></li>
+</ul>
+<p>通过不同的选项，可以精确控制要更新的时间：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-a</code></td>
+<td align="left">只更新文件的<strong>访问时间</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>-m</code></td>
+<td align="left">只更新文件的<strong>修改时间</strong>。</td>
+</tr>
+<tr>
+<td align="left">（无选项）</td>
+<td align="left">同时更新文件的<strong>访问和修改时间</strong>（此为默认行为）。</td>
+</tr>
+</tbody></table></div>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/09/28/shell%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C/">https://1artemise.github.io/2025/09/28/shell%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/shell/">shell</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B7%A5%E5%85%B7/">计算机工具</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/csdiy/">csdiy</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2025/09/29/numpy/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">numpy入门</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2025/09/25/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"><span class="paginator-prev__text">碎碎念</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFShell"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是Shell?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEshell"><span class="toc-number">2.</span> <span class="toc-text">
+          如何配置shell?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E5%89%8D%E6%8F%90%E9%86%92%EF%BC%81"><span class="toc-number">3.</span> <span class="toc-text">
+          课前提醒！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#echo-cat"><span class="toc-number">4.</span> <span class="toc-text">
+          echo &amp;&amp; cat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cd-pwd-ls"><span class="toc-number">5.</span> <span class="toc-text">
+          cd &amp;&amp; pwd &amp;&amp;ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mkdir-touch"><span class="toc-number">6.</span> <span class="toc-text">
+          mkdir &amp;&amp; touch</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%8F%B0-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%EF%BC%9A%E7%AE%A1%E7%90%86%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number">6.0.0.1.</span> <span class="toc-text">
+          ⏰ 核心功能：管理文件时间戳</span></a></li></ol></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
