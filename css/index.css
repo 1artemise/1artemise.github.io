@@ -3954,11 +3954,11 @@ body::before {
   -webkit-align-items: flex-start;
   align-items: flex-start;
   background: #fff;
-  padding: 24px;
+  padding: 40px 24px 24px;
   border-radius: 12px;
   -webkit-box-shadow: 0 8px 30px rgba(15,23,42,0.06);
   box-shadow: 0 8px 30px rgba(15,23,42,0.06);
-  max-width: 980px;
+  max-width: 760px;
   margin: 18px auto;
   overflow: hidden;
 }
@@ -3970,7 +3970,7 @@ body::before {
   width: 160px;
   height: 160px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 50%;
   -webkit-box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   display: block;
@@ -4049,15 +4049,15 @@ body::before {
 }
 .custompage .about-page .about-card {
   position: relative;
-  padding-left: 80px;
+  padding-left: 24px;
+  padding-top: 28px;
 }
 .custompage .about-page .about-float-avatar {
-  position: absolute;
-  left: -50px;
-  top: 24px;
-  width: 120px;
-  height: 120px;
-  border-radius: 14px;
+  position: relative;
+  margin: 0 auto 16px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
   overflow: hidden;
   -webkit-box-shadow: 0 10px 30px rgba(15,23,42,0.12);
   box-shadow: 0 10px 30px rgba(15,23,42,0.12);
@@ -4071,6 +4071,7 @@ body::before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
 .custompage .about-page .about-aside {
   padding-left: 12px;
@@ -4146,6 +4147,7 @@ body::before {
 @media (max-width: 780px) {
   .custompage .about-page .about-card {
     padding-left: 16px;
+    padding-top: 24px;
   }
   .custompage .about-page .about-card .about-float-avatar {
     position: static;
@@ -4154,6 +4156,11 @@ body::before {
     height: 120px;
     left: auto;
     top: auto;
+    -webkit-transform: none;
+    -moz-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
   }
 }
 @media (max-width: 780px) {
