@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="本文收录模拟题                     你的牌太多了       B3767语言月赛202305 你的牌太多了2                     题意简介        双方：扶苏(FS) 和 小F(FR)，每人初始n张牌 牌属性：每张牌有花色(f)和点数(p) 目标：谁先打完所有牌谁获胜（s为1则扶苏先手，2为小F先手）                      一轮游戏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模拟">
+<meta property="og:url" content="https://1artemise.github.io/2025/11/11/%E6%A8%A1%E6%8B%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文收录模拟题                     你的牌太多了       B3767语言月赛202305 你的牌太多了2                     题意简介        双方：扶苏(FS) 和 小F(FR)，每人初始n张牌 牌属性：每张牌有花色(f)和点数(p) 目标：谁先打完所有牌谁获胜（s为1则扶苏先手，2为小F先手）                      一轮游戏">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-12T08:57:04.313Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="acm">
+<meta property="article:tag" content="模拟">
+<meta name="twitter:card" content="summary"><title>模拟 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/11/11/%E6%A8%A1%E6%8B%9F/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">模拟</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2025-11-10T16:00:00.000Z">2025-11-11</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div></header><div class="post-body"><p>本文收录模拟题</p>
+
+        <h1 id="你的牌太多了"   >
+          <a href="#你的牌太多了" class="heading-link"><i class="fas fa-link"></i></a><a href="#你的牌太多了" class="headerlink" title="你的牌太多了"></a>你的牌太多了</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/B3767" >B3767语言月赛202305 你的牌太多了2</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="题意简介"   >
+          <a href="#题意简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#题意简介" class="headerlink" title="题意简介"></a>题意简介</h2>
+      <ul>
+<li><strong>双方</strong>：扶苏(FS) 和 小F(FR)，每人初始n张牌</li>
+<li><strong>牌属性</strong>：每张牌有花色(f)和点数(p)</li>
+<li><strong>目标</strong>：谁先打完所有牌谁获胜（s为1则扶苏先手，2为小F先手）</li>
+</ul>
+
+        <h3 id="一轮游戏的流程"   >
+          <a href="#一轮游戏的流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#一轮游戏的流程" class="headerlink" title="一轮游戏的流程"></a>一轮游戏的流程</h3>
+      
+        <h4 id="1-首牌规则"   >
+          <a href="#1-首牌规则" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-首牌规则" class="headerlink" title="1. 首牌规则"></a>1. <strong>首牌规则</strong></h4>
+      <ul>
+<li>当前轮先手玩家出<strong>点数最小</strong>的牌</li>
+<li>如有多张点数最小，出<strong>花色最小</strong>的那张</li>
+</ul>
+
+        <h4 id="2-压制规则"   >
+          <a href="#2-压制规则" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-压制规则" class="headerlink" title="2. 压制规则"></a>2. <strong>压制规则</strong></h4>
+      <ul>
+<li>对方必须出<strong>同花色</strong>且<strong>点数更大</strong>的牌来压制</li>
+<li>压制成功则交换出牌权，继续压制</li>
+<li>压制失败则本轮结束</li>
+</ul>
+
+        <h4 id="3-轮次交接"   >
+          <a href="#3-轮次交接" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-轮次交接" class="headerlink" title="3. 轮次交接"></a>3. <strong>轮次交接</strong></h4>
+      <ul>
+<li>压制失败后，<strong>最后成功出牌者</strong>获得下轮先手权</li>
+<li>游戏持续直到一方牌打完</li>
+</ul>
+
+        <h2 id="读题"   >
+          <a href="#读题" class="heading-link"><i class="fas fa-link"></i></a><a href="#读题" class="headerlink" title="读题"></a>读题</h2>
+      <p>注意（题意已经有一轮的定义，下文提到的一回合是指一个人出牌另一个选牌（不一定能选到出出去）。所以一轮可能有很多回合。）</p>
+<p>如果你有充足的模拟经验，你就知道<strong>首先确定什么时候结束是一个好习惯</strong>。就像写dfs也会先写好什么时候退出搜索。那么很显然，只要一个人牌数为0就提出。我用num1和num2分别记录牌数。每次出一张牌就num–。我们把模拟过程写到函数里面，用返回值1代表扶苏先出完，2代表f先出完。框架如下</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">play</span><span class="params">(card a[],card b[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> num1=n,num2=n;</span><br><span class="line">    <span class="keyword">while</span>(num1&gt;<span class="number">0</span> &amp;&amp; num2&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//待补充内容</span></span><br><span class="line">    <span class="keyword">if</span>(num1==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(num2==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+<p>每张牌有花色和点数之分，又因为点数和花色还有优先性，自然想到结构体以及结构体排序</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">card</span>&#123;</span><br><span class="line">    <span class="type">int</span> num;<span class="comment">//点数</span></span><br><span class="line">    <span class="type">int</span> flo;<span class="comment">//花色</span></span><br><span class="line">&#125;a[<span class="number">105</span>],b[<span class="number">105</span>];<span class="comment">//两个人的手牌</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(card a,card b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.num != b.num) <span class="keyword">return</span> a.num &lt; b.num;<span class="comment">//优先点数最小</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> a.flo &lt; b.flo;<span class="comment">//如有多张点数最小，出花色最小的那张</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//sort(a, a + n, cmp);，排序是必要的，但是放在main里面</span></span><br><span class="line"> <span class="comment">//sort(b, b + n, cmp);</span></span><br></pre></td></tr></table></div></figure>
+
+<p>由于s不同有先后手之分，但是不难想象到这是对称的，也就是说，只要你把一个人先手的情况写好，就可以用cv大法（复制粘贴），然后略微改动就好。框架如下</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(s==<span class="number">1</span>)&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>这里我们只分析s&#x3D;&#x3D;1的情况。当扶苏先手，该怎样完成这个模拟。</p>
+<p>因为扶苏先手，所以我需要在a数组中先选一张牌，选点数最小的那张。当然这时候有一个问题，既然我已经排序好了，是不是意味着我直接每次粗暴的选下一个就行，第一次选a[1],第二次a[2]……显然不对，因为有的牌不一定符合规则，如果到后面牌权交换，你要压制对方的话，可能你现下的牌不满足需求，就会跳。所以我们用一个vis[]数组标记双方的牌有没有出过。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> vis1[<span class="number">105</span>],vis2[<span class="number">105</span>];</span><br></pre></td></tr></table></div></figure>
+
+<p>所以后面选牌时我们加上一个vis判断即可。</p>
+<p>当扶苏选出了自己的第一张牌，那么小F就要压制他了。压制的规则是，花色相同且点数大于对方。很好实现。那么我只要比较扶苏和f出的牌就好了。但是问题来了，我该怎么记录扶苏出的牌。这么写是对的吗？</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">     <span class="keyword">if</span>(vis1[i]==<span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(vis2[i]==<span class="number">1</span>)<span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(a[i].flo==b[j].flo &amp;&amp; a[i].num&lt;b[j].num)&#123;</span><br><span class="line">              a[i].num = <span class="number">0</span>;</span><br><span class="line">              b[j].num = <span class="number">0</span>;         </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>这样写是不满足题意的回合制的。你要知道，牌权并不是你出完到我。而是，一轮游戏（除第一轮先手确定）的先手是上一轮出牌的最后一个人。也就是说要是小F无法压制，那本轮结束，下一轮还是扶苏先手。如果可以压制，那扶苏需要看能不能有牌压制小F用来压制的牌，然后一直进行，直到有一方无法出牌。<strong>这里你要敏锐的感知到</strong>，<strong>每轮游戏的回合是不固定的</strong>，而且每一回合的出牌人也不固定。所以需要一个while(1)循环，直到不满足条件退出循环。</p>
+<p>回到刚刚的问题，如何记录扶苏出的牌，来确保回合制可以进行。其实我只要把选牌这个阶段单独拎出来，**然后再用一个结构体数组tmp记录当下选的是什么牌，**把对方的压制写到后面就好。同时确保这个牌没被用过。（不要忘记每次出牌num都–）</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(vis1[i] == <span class="number">0</span>)&#123;</span><br><span class="line">           tmp = a[i];</span><br><span class="line">           num1--;</span><br><span class="line">            vis1[i] = <span class="number">1</span>;</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>现在扶苏选出来他先手要出的牌，要轮到f来选牌压制了。那么我们用循环来找，<strong>如果找到了符合条件的，就说明压制成功了。没用找到的话，压制失败本轮结束，由扶苏继续出牌</strong>。</p>
+<p>也就是说，轮到小f出牌的回合会有两个结果，（压制成功和压制失败）。**那么我们用一个变量bool found&#x3D;false来判断。**如果找到了，found&#x3D;true,否则就本轮结束。</p>
+<p>代码写到这步，你就要意识到这是你改写while(1)的时候了。因为你的轮数开始不确定了。</p>
+<p>而因为一轮的各个回合中，不一定谁能最终压制成功，所以有两个点是不确定的。</p>
+<ul>
+<li>谁是下一轮的先手 用next表示</li>
+<li>当前轮次谁下一个出牌（谁要进行压制） 用now表示</li>
+</ul>
+<p>每一次出牌，我设置变量next，表示本轮结束后下一轮先手。仍然next&#x3D;&#x3D;1表示扶苏，2表示f。</p>
+<p>用now变量表示下一个是谁出牌。now&#x3D;&#x3D;1是表示扶苏，2表示f。</p>
+<p>这个now好说，假设轮到f进行压制时，如果压制成功，本轮继续，就轮到扶苏出牌。now从2变1。如果压制失败，found&#x3D;false，进入下一轮。这时now不变，还是2。因为上一轮最后出牌的是f。综上来说，只要轮到谁时谁成功压制，now就轮到对方，否则保持。</p>
+<p>而next呢，谁是下一回合的先手，是不是由这一轮是谁最后出牌来表示。谁压制成功，谁就可能是这一轮最后的最后一个。也就是说，如果now&#x3D;&#x3D;2，就说明现在f要进行压制，如果压制成功，next也应该等于2。</p>
+<p>好的，不知道多少回合后，假设一轮已经结束，扶苏没能压制成功对方，那新的一轮中，是不是小f就要选牌了。那现在就是相当于小f先手。如何模拟这个控制呢？</p>
+<p>我们前面已经提到用next表示谁是下一轮的先手。所以只要每次一轮过后，压制成功时，让first等于next。first为1时选扶苏的牌，否则f。</p>
+<p>现在我们来汇总前面代码框架。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(num1&gt;<span class="number">0</span> &amp;&amp; num2&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(first==<span class="number">1</span>)&#123;<span class="comment">//本轮从扶苏开始</span></span><br><span class="line">        <span class="comment">//扶苏开始选牌</span></span><br><span class="line">        <span class="comment">//开始本轮循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;<span class="comment">//本轮从f开始</span></span><br><span class="line">        <span class="comment">//f开始选牌</span></span><br><span class="line">        <span class="comment">//开始本轮循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(num1==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(num2==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>现在我们补充好first&#x3D;&#x3D;1时的代码</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(first==<span class="number">1</span>)&#123;</span><br><span class="line">    card tmp;<span class="comment">//记录当前出的牌</span></span><br><span class="line">    <span class="type">int</span> next=<span class="number">1</span>;<span class="comment">//next初始化，下一轮出牌人</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//扶苏选牌</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(vis[i]==<span class="number">0</span>)&#123;</span><br><span class="line">            tmp==a[i];</span><br><span class="line">            num1--;</span><br><span class="line">            vis1[i]=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> now=<span class="number">2</span>;<span class="comment">//当前轮下一个出牌的人，初始化</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//开始互相压制的多个回合</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">      <span class="type">bool</span> found=<span class="literal">false</span>;<span class="comment">//标记是否成功压制</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//轮到f压制</span></span><br><span class="line">      <span class="keyword">if</span>(now==<span class="number">2</span>)&#123;</span><br><span class="line">          <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">              <span class="keyword">if</span>(vis[i]==<span class="number">0</span> &amp;&amp; b[i].flo==tmp.flo &amp;&amp; b[i].num &gt;tmp.num)&#123;</span><br><span class="line">                  found=<span class="literal">true</span>;<span class="comment">//已经找到符合要求的牌，压制成功</span></span><br><span class="line">                  tmp=b[i];<span class="comment">//当前牌变为f用来压制的牌</span></span><br><span class="line">                  num2--;<span class="comment">//打出一张</span></span><br><span class="line">                  vis2[i]=<span class="number">1</span>;<span class="comment">//这张牌已经用过了</span></span><br><span class="line">                  now=<span class="number">1</span>;<span class="comment">//压制成功后轮到扶苏出牌了</span></span><br><span class="line">                  next=<span class="number">2</span>;<span class="comment">//如果扶苏没能压制成功更改next变量，下一轮就是f出牌</span></span><br><span class="line">                  <span class="keyword">break</span>;<span class="comment">//找到牌打出，结束f这次出牌</span></span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">        </span><br><span class="line">       <span class="comment">//轮到扶苏压制</span></span><br><span class="line">      <span class="keyword">else</span>&#123;</span><br><span class="line">          <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">     		<span class="keyword">if</span>(vis1[i] == <span class="number">0</span> &amp;&amp; a[i].flo == tmp.flo &amp;&amp; a[i].num &gt; tmp.num)&#123;</span><br><span class="line">                found=<span class="literal">true</span>;</span><br><span class="line">                tmp=a[i];</span><br><span class="line">                num1--;</span><br><span class="line">                vis1[i]=<span class="number">1</span>;</span><br><span class="line">                now=<span class="number">2</span>;</span><br><span class="line">                next=<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">        <span class="keyword">if</span>(!found) <span class="keyword">break</span>;<span class="comment">//没压制成功的话，本轮直接结束进入下一回合</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    first=next;<span class="comment">//压制成功了，这一轮出牌的最后一个人，变成下一轮的先手，要先选牌</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>终于吃完了这坨史，附上ac代码美美下班。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">card</span>&#123;</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="type">int</span> flo;</span><br><span class="line">&#125;a[<span class="number">105</span>],b[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis1[<span class="number">105</span>],vis2[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(card a,card b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.num != b.num) <span class="keyword">return</span> a.num &lt; b.num;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> a.flo &lt; b.flo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">play</span><span class="params">(card a[],card b[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(vis1, <span class="number">0</span>, <span class="built_in">sizeof</span>(vis1));</span><br><span class="line">    <span class="built_in">memset</span>(vis2, <span class="number">0</span>, <span class="built_in">sizeof</span>(vis2));</span><br><span class="line">    <span class="type">int</span> num1 = n, num2 = n;</span><br><span class="line">    <span class="type">int</span> first = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(num1 &gt; <span class="number">0</span> &amp;&amp; num2 &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(first == <span class="number">1</span>)&#123;</span><br><span class="line">            card tmp;</span><br><span class="line">            <span class="type">int</span> next = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(vis1[i] == <span class="number">0</span>)&#123;</span><br><span class="line">                    tmp = a[i];</span><br><span class="line">                    num1--;</span><br><span class="line">                    vis1[i] = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> now = <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">                <span class="type">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">if</span>(now == <span class="number">2</span>)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(vis2[i] == <span class="number">0</span> &amp;&amp; b[i].flo == tmp.flo &amp;&amp; b[i].num &gt; tmp.num)&#123;</span><br><span class="line">                            found = <span class="literal">true</span>;</span><br><span class="line">                            tmp = b[i];</span><br><span class="line">                            num2--;</span><br><span class="line">                            vis2[i] = <span class="number">1</span>;</span><br><span class="line">                            now = <span class="number">1</span>;</span><br><span class="line">                            next = <span class="number">2</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(vis1[i] == <span class="number">0</span> &amp;&amp; a[i].flo == tmp.flo &amp;&amp; a[i].num &gt; tmp.num)&#123;</span><br><span class="line">                            found = <span class="literal">true</span>;</span><br><span class="line">                            tmp = a[i];</span><br><span class="line">                            num1--;</span><br><span class="line">                            vis1[i] = <span class="number">1</span>;</span><br><span class="line">                            now = <span class="number">2</span>;</span><br><span class="line">                            next = <span class="number">1</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(!found) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            first = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            card tmp;</span><br><span class="line">            <span class="type">int</span> next = <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(vis2[i] == <span class="number">0</span>)&#123;</span><br><span class="line">                    tmp = b[i];</span><br><span class="line">                    num2--;</span><br><span class="line">                    vis2[i] = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> now = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">                <span class="type">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">if</span>(now == <span class="number">1</span>)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(vis1[i] == <span class="number">0</span> &amp;&amp; a[i].flo == tmp.flo &amp;&amp; a[i].num &gt; tmp.num)&#123;</span><br><span class="line">                            found = <span class="literal">true</span>;</span><br><span class="line">                            tmp = a[i];</span><br><span class="line">                            num1--;</span><br><span class="line">                            vis1[i] = <span class="number">1</span>;</span><br><span class="line">                            now = <span class="number">2</span>;</span><br><span class="line">                            next = <span class="number">1</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(vis2[i] == <span class="number">0</span> &amp;&amp; b[i].flo == tmp.flo &amp;&amp; b[i].num &gt; tmp.num)&#123;</span><br><span class="line">                            found = <span class="literal">true</span>;</span><br><span class="line">                            tmp = b[i];</span><br><span class="line">                            num2--;</span><br><span class="line">                            vis2[i] = <span class="number">1</span>;</span><br><span class="line">                            now = <span class="number">1</span>;</span><br><span class="line">                            next = <span class="number">2</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(!found) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            first = next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(num1 == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="type">int</span> n, m, r, s;</span><br><span class="line">        cin &gt;&gt; n &gt;&gt; m &gt;&gt; r &gt;&gt; s;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) cin &gt;&gt; a[i].flo;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) cin &gt;&gt; a[i].num;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) cin &gt;&gt; b[i].flo;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) cin &gt;&gt; b[i].num;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">sort</span>(a, a + n, cmp);</span><br><span class="line">        <span class="built_in">sort</span>(b, b + n, cmp);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(s == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="type">int</span> result = <span class="built_in">play</span>(a, b, n);</span><br><span class="line">            <span class="keyword">if</span>(result == <span class="number">1</span>)&#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;FS wins!&quot;</span> &lt;&lt; endl;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;FR wins!&quot;</span> &lt;&lt; endl;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">int</span> result = <span class="built_in">play</span>(b, a, n);</span><br><span class="line">            <span class="keyword">if</span>(result == <span class="number">1</span>)&#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;FR wins!&quot;</span> &lt;&lt; endl;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cout &lt;&lt; <span class="string">&quot;FS wins!&quot;</span> &lt;&lt; endl;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/11/11/%E6%A8%A1%E6%8B%9F/">https://1artemise.github.io/2025/11/11/%E6%A8%A1%E6%8B%9F/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E7%AE%97%E6%B3%95/">算法</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/acm/">acm</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%A8%A1%E6%8B%9F/">模拟</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2025/11/10/%E9%93%BE%E8%A1%A8/"><span class="paginator-prev__text">链表</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%A0%E7%9A%84%E7%89%8C%E5%A4%AA%E5%A4%9A%E4%BA%86"><span class="toc-number">1.</span> <span class="toc-text">
+          你的牌太多了</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">
+          题意简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%BD%AE%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          一轮游戏的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E9%A6%96%E7%89%8C%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">
+          1. 首牌规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8E%8B%E5%88%B6%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">
+          2. 压制规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BD%AE%E6%AC%A1%E4%BA%A4%E6%8E%A5"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">
+          3. 轮次交接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">
+          读题</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
