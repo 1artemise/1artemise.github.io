@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="L.Palm Island       2023哈尔滨ccpc 有一个字符串，可以把第一个字符移动到最后一个，也可以把最后一个字符移动到最后一个。前者为1操作，后者为2操作。假设字符串长度为n，你需要输出一个由12组成的序列（长度不超过n方）， 带有模拟思想的构造。 这种题目往往你需要想出一种易于模拟的想法，然后用代码实现。如果你面对一个序列，要变成目标序列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="喵喵思维题">
+<meta property="og:url" content="https://1artemise.github.io/2025/11/21/%E6%80%9D%E7%BB%B4%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="L.Palm Island       2023哈尔滨ccpc 有一个字符串，可以把第一个字符移动到最后一个，也可以把最后一个字符移动到最后一个。前者为1操作，后者为2操作。假设字符串长度为n，你需要输出一个由12组成的序列（长度不超过n方）， 带有模拟思想的构造。 这种题目往往你需要想出一种易于模拟的想法，然后用代码实现。如果你面对一个序列，要变成目标序列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20251121102336069.png">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20251121103040791.png">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20251121130940238.png">
+<meta property="article:published_time" content="2025-11-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-21T06:35:33.068Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="acm">
+<meta property="article:tag" content="思维题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1artemise.github.io/images/image-20251121102336069.png"><title>喵喵思维题 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/11/21/%E6%80%9D%E7%BB%B4%E9%A2%98/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">喵喵思维题</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2025-11-20T16:00:00.000Z">2025-11-21</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div></header><div class="post-body">
+        <h1 id="L-Palm-Island"   >
+          <a href="#L-Palm-Island" class="heading-link"><i class="fas fa-link"></i></a><a href="#L-Palm-Island" class="headerlink" title="L.Palm Island"></a>L.Palm Island</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/gym/104813/problem/L" >2023哈尔滨ccpc</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>有一个字符串，可以把第一个字符移动到最后一个，也可以把最后一个字符移动到最后一个。前者为1操作，后者为2操作。假设字符串长度为n，你需要输出一个由12组成的序列（长度不超过n方），</p>
+<p>带有模拟思想的构造。</p>
+<p>这种题目往往你需要想出一种易于模拟的想法，然后用代码实现。如果你面对一个序列，要变成目标序列，只能这两个操作，你会怎么办？</p>
+<p>**注意到你有n方的操作机会。**也就意味着，你可以双重循环暴力。所以你根本不用考虑最优解法，非常暴力的模拟即可。</p>
+<p>我们现在重新来看这两个操作，表面上只能操作序号1，2的字符，但是我们可以通过不断循环，让3，4也变成1，2。<strong>那么就有了一个初步的思路</strong>。</p>
+<blockquote>
+<p>把你的目标牌通过1操作移到牌顶，然后不断进行2操作就可以修改目标牌后对应的数字，直到目标牌的后一位对应自己应该对应的数字。执行完之后，再直接两个操作一，进行下一对数字的匹配。</p>
+</blockquote>
+<p>对于目标牌，由于我们不需要考虑时间复杂度，所以不需要想先选择哪个作为目标牌。直接按照目标牌的遍历。如果顶部的牌不是目标牌，进行操作一，当成为目标牌后，然后不断操作二，把操控第二位数字。然后1，2就正确了。</p>
+<p>但是聪明的你有没有发现一个问题。<strong>如果目标牌固定好后，我把应该在他后面的数字放到第二位然后继续循环会发生什么</strong></p>
+<ol>
+<li><strong>逻辑混乱</strong>：我们试图同时控制”当前目标牌”和”它的后继”，但操作2实际上影响的是底部牌</li>
+<li><strong>破坏已固定的关系</strong>：当我们调整第二位时，实际上在改变整个序列的后面部分，破坏了之前建立的关系</li>
+<li><strong>缺乏稳定性</strong>：没有固定的”锚点”来保持已匹配部分的位置。</li>
+</ol>
+<p>这样说也许有点抽象。</p>
+<p>假设：</p>
+<ul>
+<li>初始序列：[1, 2, 3, 4]</li>
+<li>目标序列：[3, 1, 4, 2]</li>
+<li><img src="/../images/image-20251121102336069.png" alt="image-20251121102336069"></li>
+</ul>
+<p>可以看到这样会打乱我们已经匹配好的。所以我们需要避免这个问题。</p>
+<p>我们每次把目标牌移到顶部，然后不断操作二，其实可以看作是在调整底部牌，为什么要调整底部牌呢？</p>
+<p><strong>因为我们要固定已经匹配好的牌</strong></p>
+<p>想象一下，我们每次匹配好一对牌后，希望这对牌的位置关系不再改变。通过把已经匹配好的牌放到底部，它们就不会被后续的操作影响到底部以上的部分。</p>
+<p><strong>再深入思考一下</strong>：操作1是整体旋转，操作2是跳过第一张牌调整后面的顺序。这两个操作结合起来，就能让我们像**“冒泡排序**”（划重点）一样，逐步把正确的牌放到正确的位置。</p>
+<p><strong>具体执行过程</strong>：</p>
+<ol>
+<li>我们按顺序处理目标序列的第2到第n张牌</li>
+<li>对于每个目标位置i，我们先把b[i]牌转到顶部（操作1）</li>
+<li>然后调整底部，让b[i-1]牌到底部（操作2）（这样相对位置就对了，只需要后期1操作循环即可）</li>
+<li>这样b[i-1]和b[i]的相对位置就固定了</li>
+</ol>
+<p><strong>直观理解一下。</strong></p>
+<p><img src="/../images/image-20251121103040791.png" alt="image-20251121103040791"></p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="comment">// 步骤1：旋转直到顶部是目标第i张牌</span></span><br><span class="line">    <span class="keyword">while</span>(顶部牌 != b[i]) 执行操作<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 步骤2：调整直到底部是目标第i-1张牌  </span></span><br><span class="line">    <span class="keyword">while</span>(底部牌 != b[i<span class="number">-1</span>]) 执行操作<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后调整：旋转直到顶部是目标第一张牌</span></span><br><span class="line"><span class="keyword">while</span>(顶部牌 != b[<span class="number">1</span>]) 执行操作<span class="number">1</span>;</span><br></pre></td></tr></table></div></figure>
+
+<p>附上AC代码</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1005</span>;</span><br><span class="line"><span class="type">int</span> a[N], b[N], n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">op1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> t = a[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++) a[i<span class="number">-1</span>] = a[i];</span><br><span class="line">    a[n] = t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">op2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> t = a[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt; n; i++) a[i] = a[i<span class="number">+1</span>];</span><br><span class="line">    a[n] = t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--) &#123;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) cin &gt;&gt; b[i];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span>(a[<span class="number">1</span>] != b[i]) &#123;</span><br><span class="line">                <span class="built_in">op1</span>();</span><br><span class="line">                ans.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(a[n] != b[i<span class="number">-1</span>]) &#123;</span><br><span class="line">                <span class="built_in">op2</span>();</span><br><span class="line">                ans.<span class="built_in">push_back</span>(<span class="number">2</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(a[<span class="number">1</span>] != b[<span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="built_in">op1</span>();</span><br><span class="line">            ans.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x : ans) cout &lt;&lt; x;</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="B-Memory"   >
+          <a href="#B-Memory" class="heading-link"><i class="fas fa-link"></i></a><a href="#B-Memory" class="headerlink" title="B.Memory"></a>B.Memory</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/gym/104813/problem/L" >2023哈尔滨ccpc</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><img src="/../images/image-20251121130940238.png" alt="image-20251121130940238"></p>
+<p>给一串数字，求Mood。</p>
+<p>一眼暴力的话，其实很简单写。你可能会注意到小数的精度问题。（心存侥幸的话你会这么写）</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = n;i &gt;= <span class="number">1</span>;i--)&#123;</span><br><span class="line">    result = a[i] * <span class="built_in">pow</span>(<span class="number">2</span>,zz);</span><br><span class="line">    zz--;</span><br><span class="line">    sum += result;</span><br><span class="line">&#125;</span><br><span class="line">b[n] = sum;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = n;i &gt;= <span class="number">1</span>;i--)&#123;</span><br><span class="line">    b[i<span class="number">-1</span>]=(b[i]-a[i])*<span class="number">2.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>（注意到其实是有递归关系的，mood[i]-a[i]再×2就可以得到mood[i-1]<strong>。这是一个递归关系</strong>。虽然你喜提wa3，但是你得到了一个很重要的递归关系。</p>
+<p>又注意到mood×上一个正整数不改变符号，那我×2的n方不就没小数了。而且这样还很便捷的可以×上幂部分。但是你大概估算就知道显然也会整数溢出。恭喜wa3。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">string result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">   <span class="type">long</span> <span class="type">long</span> sum = <span class="number">0</span>;</span><br><span class="line">   <span class="type">long</span> <span class="type">long</span> power = <span class="number">2</span>; <span class="comment">// 2^1</span></span><br><span class="line">   </span><br><span class="line">   <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">       sum += a[i] * power;</span><br><span class="line">       </span><br><span class="line">       <span class="keyword">if</span> (sum &lt; <span class="number">0</span>) &#123;</span><br><span class="line">           result += <span class="string">&#x27;-&#x27;</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sum &gt; <span class="number">0</span>) &#123;</span><br><span class="line">           result += <span class="string">&#x27;+&#x27;</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           result += <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       <span class="keyword">if</span> (i &lt; n) power *= <span class="number">2</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>从这两次失败我们可以看出，算出每个mood再判断符号肯定不行，我们需要有一个巧妙的办法。</p>
+<p>整数数字太大会移除，浮点数的精度不够，小数点可能有很多位。</p>
+<p><strong>那么两者结合一下，如果浮点数是整数，不就不用考虑精度，而且不用担心数字太大了？</strong></p>
+<p>简单来说就是把1.00000001变成1，这样并不会改变符号。</p>
+<p><strong>也就是整数截断</strong>，然后用</p>
+<p>但是你可能有问题，忽略小数点后的数字最后累积起来不会影响最后正负吗？</p>
+<p>我想告诉你的是，如果采用递归，每次加上新的整数，误差都会被重置。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> val = <span class="number">0</span>;    <span class="comment">// 当前 Mood 的整数部分</span></span><br><span class="line">    <span class="type">int</span> sig = <span class="number">0</span>;    <span class="comment">// 小数部分的符号趋势</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> x;</span><br><span class="line">        cin &gt;&gt; x;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果是奇数，记录小数部分符号</span></span><br><span class="line">        <span class="keyword">if</span> (val % <span class="number">2</span> != <span class="number">0</span>) &#123;</span><br><span class="line">            sig = (val &gt; <span class="number">0</span>) ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 递推计算</span></span><br><span class="line">        val = val / <span class="number">2</span> + x;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断符号</span></span><br><span class="line">        <span class="keyword">if</span> (val == <span class="number">0</span> &amp;&amp; sig == <span class="number">0</span>) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&#x27;0&#x27;</span>;        <span class="comment">// 精确为0</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val &gt;= <span class="number">1</span> || (val == <span class="number">0</span> &amp;&amp; sig == <span class="number">1</span>)) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&#x27;+&#x27;</span>;        <span class="comment">// 正数</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&#x27;-&#x27;</span>;        <span class="comment">// 负数</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/11/21/%E6%80%9D%E7%BB%B4%E9%A2%98/">https://1artemise.github.io/2025/11/21/%E6%80%9D%E7%BB%B4%E9%A2%98/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E7%AE%97%E6%B3%95/">算法</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/acm/">acm</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%80%9D%E7%BB%B4%E9%A2%98/">思维题</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2025/11/18/%E5%89%8D%E7%AB%AF/"><span class="paginator-prev__text">前端基础</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#L-Palm-Island"><span class="toc-number">1.</span> <span class="toc-text">
+          L.Palm Island</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#B-Memory"><span class="toc-number">2.</span> <span class="toc-text">
+          B.Memory</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
