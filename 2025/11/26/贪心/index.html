@@ -1,0 +1,368 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="概念简介                           贪心原理       贪心算法的核心就是一个字：贪。总是做出当前看来最优的选择，因此可知，贪心算法不从整体去考虑，它做出的选择也是局部最优选择，从而达到全局优化选择。我们只关注目前的利益，从而达到利益最大化，尽管贪心算法不一定能得到最优解，面对相当数量的一部分问题，我们是可以得到正确的答案的。 从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贪心">
+<meta property="og:url" content="https://1artemise.github.io/2025/11/26/%E8%B4%AA%E5%BF%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概念简介                           贪心原理       贪心算法的核心就是一个字：贪。总是做出当前看来最优的选择，因此可知，贪心算法不从整体去考虑，它做出的选择也是局部最优选择，从而达到全局优化选择。我们只关注目前的利益，从而达到利益最大化，尽管贪心算法不一定能得到最优解，面对相当数量的一部分问题，我们是可以得到正确的答案的。 从">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-26T07:01:16.894Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="acm">
+<meta property="article:tag" content="贪心">
+<meta name="twitter:card" content="summary"><title>贪心 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2025/11/26/%E8%B4%AA%E5%BF%83/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">贪心</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2025-11-25T16:00:00.000Z">2025-11-26</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div></header><div class="post-body">
+        <h1 id="概念简介"   >
+          <a href="#概念简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#概念简介" class="headerlink" title="概念简介"></a>概念简介</h1>
+      
+        <h2 id="贪心原理"   >
+          <a href="#贪心原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#贪心原理" class="headerlink" title="贪心原理"></a>贪心原理</h2>
+      <p>贪心算法的核心就是一个字：贪。总是<strong>做出当前看来最优的选择</strong>，因此可知，贪心算法不从整体去考虑，<strong>它做出的选择也是局部最优选择</strong>，<strong>从而达到全局优化选择</strong>。我们只关注目前的利益，从而达到利益最大化，尽管贪心算法不一定能得到最优解，面对相当数量的一部分问题，我们是可以得到正确的答案的。</p>
+<p>从问题的某一个初始解，一步步推论，保证每一步都是最为优化的，出发逐步逼近给定的目标，以尽可能快的地求得更好的解。</p>
+<p>当接下来的任意一步都无法达到最优时，贪心算法结束。</p>
+
+        <h2 id="贪心算法的弊病"   >
+          <a href="#贪心算法的弊病" class="heading-link"><i class="fas fa-link"></i></a><a href="#贪心算法的弊病" class="headerlink" title="贪心算法的弊病"></a>贪心算法的弊病</h2>
+      <ol>
+<li><strong>不能保证求得的最后解是最佳的；</strong></li>
+<li>不能用来求最大或最小解问题；</li>
+<li>只能求满足某些约束条件的可行解的范围。</li>
+</ol>
+
+        <h1 id="部分背包问题"   >
+          <a href="#部分背包问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#部分背包问题" class="headerlink" title="部分背包问题"></a>部分背包问题</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2240" >P2240 【深基12.例1】部分背包问题 - 洛谷</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="题意"   >
+          <a href="#题意" class="heading-link"><i class="fas fa-link"></i></a><a href="#题意" class="headerlink" title="题意"></a>题意</h2>
+      <ul>
+<li>有 N 堆金币，每堆金币有总重量 <em>mi</em>和总价值 <em>vi</em>。</li>
+<li>背包最大承重为 T。</li>
+<li>金币可以按任意比例分割，分割后单位价值（价值&#x2F;重量）不变。</li>
+<li>目标：在不超过背包容量的情况下，拿走<strong>最大总价值</strong>的金币。</li>
+</ul>
+
+        <h2 id="思路"   >
+          <a href="#思路" class="heading-link"><i class="fas fa-link"></i></a><a href="#思路" class="headerlink" title="思路"></a>思路</h2>
+      <p>一道简单的不能再简单的入门贪心题目，为了收益最大化，肯定要选择单价最高的金币优先拿。v&#x2F;m即可然后排序即可。要注意的是要用<strong>double</strong>。从贵的往便宜的拿，如果拿得下全拿，拿不下的话，填满剩余背包容量</p>
+
+        <h2 id="代码"   >
+          <a href="#代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#代码" class="headerlink" title="代码"></a>代码</h2>
+      <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">10005</span>,inf=<span class="number">2e18</span>,mod=<span class="number">998244353</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">coins</span>&#123;</span><br><span class="line">    <span class="type">double</span> m, v;</span><br><span class="line">    <span class="type">double</span> price;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(coins a, coins b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.price &gt; b.price;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">vector&lt;coins&gt; <span class="title">coin</span><span class="params">(N)</span></span>;</span><br><span class="line">    <span class="type">double</span> n, t;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        cin&gt;&gt;coin[i].m&gt;&gt;coin[i].v;</span><br><span class="line">        coin[i].price = coin[i].v / coin[i].m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(coin.<span class="built_in">begin</span>()<span class="number">+1</span>, coin.<span class="built_in">begin</span>()+n<span class="number">+1</span>, cmp);</span><br><span class="line">    <span class="type">double</span> sum_m= <span class="number">0</span>, sum_v = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(sum_m+coin[i].m &lt;= t)&#123;</span><br><span class="line">            sum_m += coin[i].m;</span><br><span class="line">            sum_v += coin[i].v;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="type">double</span> cha=t-sum_m;</span><br><span class="line">            sum_v += cha*(coin[i].v/coin[i].m);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">2</span>) &lt;&lt; sum_v &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="number">0</span>),cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//cin&gt;&gt;t;</span></span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="均分纸牌"   >
+          <a href="#均分纸牌" class="heading-link"><i class="fas fa-link"></i></a><a href="#均分纸牌" class="headerlink" title="均分纸牌"></a>均分纸牌</h1>
+      <p>[P1031 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1031" >NOIP 2002 提高组] 均分纸牌 - 洛谷</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="题意-1"   >
+          <a href="#题意-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2>
+      <ul>
+<li>有 N 堆纸牌，每堆有若干张，纸牌总数是 N 的倍数（保证可以均分）。</li>
+<li>移动规则：第 1 堆：只能向右移动（移到第 2 堆）第 N 堆：只能向左移动（移到第 N-1 堆）其他堆：可以向左右两边移动</li>
+<li>一次移动：从一堆取若干张牌移到相邻堆</li>
+<li>目标：让每堆牌数相同，求<strong>最少移动次数</strong></li>
+</ul>
+
+        <h2 id="思路-1"   >
+          <a href="#思路-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2>
+      <p>这其实是一个<strong>线性传输问题</strong>，在运筹学中可以证明，单向调整（从左到右）得到的流量方案 <em>xi</em>是使得非零流量次数最少的方法。</p>
+<p>不说严谨的证明了，自己脑补一下。</p>
+<p><strong>贪心思路如下：</strong></p>
+<ol>
+<li>计算平均值 <code>avg = 总牌数 / N</code></li>
+<li>从左到右遍历：如果当前堆牌数 ≠ avg，则计算差值，需要从当前堆向下一堆移动（正数表示多出的要移走，负数表示缺少的要拿来）只要差值不为 0，就计为一次移动</li>
+</ol>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">2e5</span><span class="number">+7</span>,inf=<span class="number">2e18</span>,mod=<span class="number">998244353</span>;</span><br><span class="line"><span class="type">int</span> a[N];</span><br><span class="line"><span class="type">int</span> sum = <span class="number">0</span>,max1=<span class="number">0</span>,pos=<span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;a[i];</span><br><span class="line">        sum+=a[i];</span><br><span class="line">        <span class="keyword">if</span>(a[i]&gt;max1)&#123;</span><br><span class="line">            max1=a[i];</span><br><span class="line">            pos=i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> aver=sum/n;</span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]==aver)&#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        a[i + <span class="number">1</span>] += (a[i] - aver);</span><br><span class="line">        a[i] = aver;</span><br><span class="line">        cnt++;</span><br><span class="line">&#125;</span><br><span class="line">    cout&lt;&lt;cnt&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="number">0</span>),cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//cin&gt;&gt;t;</span></span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="守序者的尊严"   >
+          <a href="#守序者的尊严" class="heading-link"><i class="fas fa-link"></i></a><a href="#守序者的尊严" class="headerlink" title="守序者的尊严"></a>守序者的尊严</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5639" >P5639 【CSGRound2】守序者的尊严 - 洛谷</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="题意-2"   >
+          <a href="#题意-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2>
+      <ul>
+<li>一条直线上有 n 个监控，小 Z 要从第 1 个监控位置走到第 n 个监控之后（外卖点）。</li>
+<li>监控开关规律：第 0 秒为初始状态，之后<strong>每秒交替</strong>（开 1 秒 → 关 1 秒 → 开 1 秒 …）。</li>
+<li>小 Z 移动规则：在监控关闭的秒数内，可以一次行动通过<strong>任意多个连续关闭的监控</strong>，耗时 1 秒。如果监控开启，则不能通过（必须等待它关闭）。</li>
+<li>保证第 1 个监控在第 0 秒是关闭的（起步没问题）。</li>
+<li>目标：求<strong>最少需要的总时间（秒数）</strong>。</li>
+</ul>
+
+        <h2 id="思路-2"   >
+          <a href="#思路-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2>
+      <p>可以无脑暴力模拟锻炼一下码力，然后喜提70分</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">       <span class="keyword">for</span> (<span class="type">int</span> i = pos; i &lt;= n;i++)&#123;</span><br><span class="line">           <span class="keyword">if</span>(a[i]==<span class="number">0</span>)&#123;</span><br><span class="line">               pos = i;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span>&#123;</span><br><span class="line">               cnt++;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> i=pos<span class="number">+1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">           a[i]=<span class="number">1</span>-a[i];</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span>(pos==n)&#123;</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>显然是不能暴力的，但是其实也不需要暴力，因为每一次其实小Z都会疾速移动到10交界处，你算一下有几个交界处就好。最后的答案是交界处个数加一。注意，如果开头是1，那么第一秒是不可以动的，要原地等一秒。</p>
+
+        <h2 id="代码-1"   >
+          <a href="#代码-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2>
+      <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">1000005</span>,inf=<span class="number">2e18</span>,mod=<span class="number">998244353</span>;</span><br><span class="line"><span class="type">int</span> a[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]!=a[i<span class="number">+1</span>])&#123;</span><br><span class="line">            cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(a[<span class="number">1</span>]==<span class="number">1</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;(cnt<span class="number">+1</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="number">0</span>),cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//cin&gt;&gt;t;</span></span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="骑士的工作"   >
+          <a href="#骑士的工作" class="heading-link"><i class="fas fa-link"></i></a><a href="#骑士的工作" class="headerlink" title="骑士的工作"></a>骑士的工作</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2695" >P2695 骑士的工作 - 洛谷</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="题意-3"   >
+          <a href="#题意-3" class="heading-link"><i class="fas fa-link"></i></a><a href="#题意-3" class="headerlink" title="题意"></a>题意</h2>
+      <p>村庄里来了一只恶龙，他有 <em>n</em> 个头，每个头大小不同。恶龙到处杀人放火。骑士团里面有 <em>m</em> 位成员</p>
+<p>每个人都可以砍掉<strong>至多</strong>一个大小不超过 <em>zi</em> 的头，需要 <em>zi</em> 个金币，求最小花费。</p>
+
+        <h2 id="思路-3"   >
+          <a href="#思路-3" class="heading-link"><i class="fas fa-link"></i></a><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2>
+      <p>有道是杀鸡焉用牛刀，所以我们肯定不能用很厉害的骑士去砍瓜切菜。而是用最菜的但是能赢的骑士去砍头。</p>
+<p>也就是说，用能力值<strong>刚好大于等于</strong>头的大小的最便宜骑士去砍。只需要递增排列逐个遍历，从最弱到最强，看能不能砍下来。能砍下来就标记一下当前骑士已经出战过了（ 出战过的不能再战），然后把金币加到sum里面，break掉，到下一个头。当然砍过的头我们令其为0，如果最后有头不是0就说明头每砍完。</p>
+
+        <h2 id="代码-2"   >
+          <a href="#代码-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2>
+      <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">100005</span>,inf=<span class="number">2e18</span>,mod=<span class="number">998244353</span>;</span><br><span class="line"><span class="type">int</span> head[N], kill1[N];</span><br><span class="line"><span class="type">bool</span> vis[N];</span><br><span class="line"><span class="type">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n, m;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        cin &gt;&gt;head[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)&#123;</span><br><span class="line">        cin &gt;&gt; kill1[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(kill1 + <span class="number">1</span>, kill1 + m + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">sort</span>(head + <span class="number">1</span>, head + n + <span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j])&#123;</span><br><span class="line">            <span class="keyword">if</span>(head[i]&lt;=kill1[j])&#123;</span><br><span class="line">                sum+=kill1[j];</span><br><span class="line">                head[i] = <span class="number">0</span>;</span><br><span class="line">                vis[j] = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">       <span class="keyword">if</span>(head[i]!=<span class="number">0</span>)&#123;</span><br><span class="line">           flag = <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">        cout &lt;&lt; sum &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;you died!&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="number">0</span>),cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//cin&gt;&gt;t;</span></span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2025/11/26/%E8%B4%AA%E5%BF%83/">https://1artemise.github.io/2025/11/26/%E8%B4%AA%E5%BF%83/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E7%AE%97%E6%B3%95/">算法</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/acm/">acm</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E8%B4%AA%E5%BF%83/">贪心</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2025/11/24/%E6%98%8E%E6%98%8E%E6%98%8E%E6%9C%88%E6%98%AF%E5%89%8D%E8%BA%AB/"><span class="paginator-prev__text">明明明月是前身</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          概念简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">
+          贪心原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E7%9A%84%E5%BC%8A%E7%97%85"><span class="toc-number">1.2.</span> <span class="toc-text">
+          贪心算法的弊病</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E5%88%86%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">
+          部分背包问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F"><span class="toc-number">2.1.</span> <span class="toc-text">
+          题意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.2.</span> <span class="toc-text">
+          思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.3.</span> <span class="toc-text">
+          代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9D%87%E5%88%86%E7%BA%B8%E7%89%8C"><span class="toc-number">3.</span> <span class="toc-text">
+          均分纸牌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F-1"><span class="toc-number">3.1.</span> <span class="toc-text">
+          题意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">3.2.</span> <span class="toc-text">
+          思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%88%E5%BA%8F%E8%80%85%E7%9A%84%E5%B0%8A%E4%B8%A5"><span class="toc-number">4.</span> <span class="toc-text">
+          守序者的尊严</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F-2"><span class="toc-number">4.1.</span> <span class="toc-text">
+          题意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-number">4.2.</span> <span class="toc-text">
+          思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="toc-number">4.3.</span> <span class="toc-text">
+          代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AA%91%E5%A3%AB%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">
+          骑士的工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F-3"><span class="toc-number">5.1.</span> <span class="toc-text">
+          题意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="toc-number">5.2.</span> <span class="toc-text">
+          思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="toc-number">5.3.</span> <span class="toc-text">
+          代码</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
