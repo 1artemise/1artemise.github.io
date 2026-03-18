@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="实现一个基于TCP的最小服务器程序        在本机8080端口启动一个tcp服务器 等待客户端连接 接受一个客户端后向其发送一条字符串消息，然后关闭连接并退出程序  为了实现这套流程，我们需要以下步骤  创建socket，申请网络通信资源（这里的是监听socket_fd） 准备服务器地质结构（IP＋端口） bind绑定socket和地址（占用端口） 进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp">
+<meta property="og:url" content="https://1artemise.github.io/2026/01/26/cpp/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="实现一个基于TCP的最小服务器程序        在本机8080端口启动一个tcp服务器 等待客户端连接 接受一个客户端后向其发送一条字符串消息，然后关闭连接并退出程序  为了实现这套流程，我们需要以下步骤  创建socket，申请网络通信资源（这里的是监听socket_fd） 准备服务器地质结构（IP＋端口） bind绑定socket和地址（占用端口） 进">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-31T06:24:16.384Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary"><title>cpp | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/01/26/cpp/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">cpp</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-01-25T16:00:00.000Z">2026-01-26</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div></header><div class="post-body">
+        <h1 id="实现一个基于TCP的最小服务器程序"   >
+          <a href="#实现一个基于TCP的最小服务器程序" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现一个基于TCP的最小服务器程序" class="headerlink" title="实现一个基于TCP的最小服务器程序"></a>实现一个基于TCP的最小服务器程序</h1>
+      <ul>
+<li>在本机8080端口启动一个tcp服务器</li>
+<li>等待客户端连接</li>
+<li>接受一个客户端后向其发送一条字符串消息，然后关闭连接并退出程序</li>
+</ul>
+<p>为了实现这套流程，我们需要以下步骤</p>
+<ol>
+<li>创建socket，申请网络通信资源（这里的是监听socket_fd）</li>
+<li>准备服务器地质结构（IP＋端口）</li>
+<li>bind绑定socket和地址（占用端口）</li>
+<li>进入监听状态等待客户端，为这个客户端创建一个专属socket</li>
+<li>向客户端发送数据</li>
+</ol>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;arpa/inet.h&gt;</span>   </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//server_fd不是socket对象，是socket的文件描述符</span></span><br><span class="line">    <span class="type">int</span> server_fd=<span class="built_in">socket</span>(AF_INET,SOCK_STREAM,<span class="number">0</span>);<span class="comment">//AF_INET表示IPV4，SOCK_STREAM表示TCP协议</span></span><br><span class="line">    <span class="keyword">if</span>(server_fd==<span class="number">-1</span>)&#123;</span><br><span class="line">        cerr&lt;&lt;<span class="string">&quot;Socket create failed&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;      </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//以下三行告诉你。我要创建一个IPV4服务器，监听本机所有ip，端口号是8080</span></span><br><span class="line">    sockaddr_in address;<span class="comment">//sockaddr_in是IPV4专用地址结构体</span></span><br><span class="line">    address.sin_family=AF_INET;<span class="comment">//告诉系统这是一个IPV4地址</span></span><br><span class="line">    address.sin_addr.s_addr=INADDR_ANY;<span class="comment">//sin_addr是一个结构体，s_addr里面存真正的ip字段、</span></span><br><span class="line">    <span class="comment">//INADDR_ANY表示监听本机所有网卡的ip地址，机器可能有127.0，0.1本地回环，192.168.1.100局域网，公网ip。</span></span><br><span class="line">    <span class="comment">//这个表示不管从哪个ip连接过来，只要端口对就接</span></span><br><span class="line">    <span class="comment">//也可以指定ip写，比如inet_addr(&quot;127.0.0.1&quot;)</span></span><br><span class="line">    address.sin_port=<span class="built_in">htons</span>(<span class="number">8080</span>);</span><br><span class="line">    <span class="comment">//计算机存整数时有两种方式,小端序如x86，大端序如网络传输,网络规定统一使用大端序</span></span><br><span class="line">    <span class="comment">//htons把主机字节序转到网络字节序，htons=Host TO Network Short</span></span><br><span class="line">    <span class="comment">//端口 htons ,ip htonl</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">bind</span>(server_fd,(<span class="keyword">struct</span> sockaddr*)&amp;address,<span class="built_in">sizeof</span>(address))&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//bind作用是把一个socket和一个ip地址和端口号绑定在一起，如果不Bind，服务器是没有地址的</span></span><br><span class="line">    <span class="comment">//这里的socket_fd是之前socket得到的文件描述符，告诉系统是哪个手机要绑定</span></span><br><span class="line">    <span class="comment">//需要把IPV4地址当成通用地址用，是c时代遗留下来的</span></span><br><span class="line">    <span class="comment">//小于0表示失败，可能端口已经被占用或者权限不够或者地址非法</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">listen</span>(server_fd,<span class="number">3</span>)&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//把普通socket变成监听socket，没有listen()，服务器不能连接</span></span><br><span class="line">    <span class="comment">//3表示监听队列的长度，最多允许多少个客户端</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Listening on port 8080...(Press Ctrl+C to stop)&quot;</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等待一个客户端连接，并为这个客户创建一个专属通信socket</span></span><br><span class="line">    <span class="type">int</span> new_socket;<span class="comment">//这是一个通信socket,专门用来服务一个客户端，可以用来send,recv,close</span></span><br><span class="line">    <span class="type">int</span> addrlen=<span class="built_in">sizeof</span>(address);</span><br><span class="line">    new_socket=<span class="built_in">accept</span>(server_fd,(<span class="keyword">struct</span> sockaddr*)&amp;address,(<span class="type">socklen_t</span>*)&amp;addrlen);</span><br><span class="line">    <span class="comment">//第一个参数表示从哪个监听socket上接人，第二个参数是一个输出参数，会把客户端的ip和端口写进去，第三个参数是告诉系统address有多大，输出实际写了多少字节</span></span><br><span class="line">    <span class="keyword">if</span>(new_socket&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        cerr&lt;&lt;<span class="string">&quot;Accept failed&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Connection accepted&quot;</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* hello=<span class="string">&quot;Hello from server&quot;</span>;<span class="comment">//我准备要发送的数据</span></span><br><span class="line">    <span class="built_in">send</span>(new_socket,hello,<span class="built_in">strlen</span>(hello),<span class="number">0</span>);</span><br><span class="line">    <span class="comment">//第一个参数表示和哪个客户端通信，第二个参数是发送的数据地址，第三个是发送多少字节，第四个是默认行为</span></span><br><span class="line">    <span class="comment">//send并不保证一次把所有数据都发完，返回值小于len是可能的</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Response sent.&quot;</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(new_socket);<span class="comment">//关闭和这个客户端的tcp连接。此时客户端再recv()会受到0.tcp会进行四次挥手，但是服务器仍然存在</span></span><br><span class="line">    <span class="built_in">close</span>(server_fd);<span class="comment">//服务器彻底下线</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>该代码展示了 TCP 服务器从创建、监听、接受连接到通信和关闭的完整流程，是理解 C++ 网络编程和操作系统网络接口的最小可运行示例。</p>
+
+        <h1 id="多线程并发服务器"   >
+          <a href="#多线程并发服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#多线程并发服务器" class="headerlink" title="多线程并发服务器"></a>多线程并发服务器</h1>
+      <p>在刚刚的代码中我们可以发现一个显著问题，</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/01/26/cpp/">https://1artemise.github.io/2026/01/26/cpp/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/cpp/">cpp</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2026/03/13/%E5%A4%A9%E6%A2%AF%E8%B5%9B/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">天梯赛合集</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2025/11/26/%E8%B4%AA%E5%BF%83/"><span class="paginator-prev__text">贪心</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8ETCP%E7%9A%84%E6%9C%80%E5%B0%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">
+          实现一个基于TCP的最小服务器程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">
+          多线程并发服务器</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。 这里推荐两个资源 【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili UCB CS162 操作系统笔记（一）-CSD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS162笔记（操作系统）">
+<meta property="og:url" content="https://1artemise.github.io/2026/03/18/CS162/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。 这里推荐两个资源 【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili UCB CS162 操作系统笔记（一）-CSD">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20260318194604326.png">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20260318201226924.png">
+<meta property="article:published_time" content="2026-03-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-18T13:29:29.161Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="cs162">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="csdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1artemise.github.io/images/image-20260318194604326.png"><title>CS162笔记（操作系统） | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/03/18/CS162/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">CS162笔记（操作系统）</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-03-17T16:00:00.000Z">2026-03-18</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><p>由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。</p>
+<p>这里推荐两个资源</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MwDSYWEKy/?spm_id_from=333.337.search-card.all.click&vd_source=6f3b9bab813c14ca00fbb56363a43d7e" >【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/wizardforcel/article/details/143933530" >UCB CS162 操作系统笔记（一）-CSDN博客</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>这个CSDN上的笔记是所有字幕整理成了文字，我习惯先阅读我要学习的部分，然后再去看一遍视频，接着做笔记的时候再次阅读（仅供参考）</p>
+<p>总课程有二十五章，每章约90min左右，当然我想想要吃透是需要3h的。我会在一月内尽量完成这门课的学习。（立flag）</p>
+
+        <h1 id="一、什么是操作系统"   >
+          <a href="#一、什么是操作系统" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、什么是操作系统" class="headerlink" title="一、什么是操作系统"></a>一、什么是操作系统</h1>
+      
+        <h2 id="1-时间-引入"   >
+          <a href="#1-时间-引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-时间-引入" class="headerlink" title="1.时间-引入"></a>1.时间-引入</h2>
+      <p><img src="/../images/image-20260318194604326.png" alt="image-20260318194604326"></p>
+<p>“不知何故，系统会在这些规定的时间内运行，其中有一些神奇的事”</p>
+<p>经典计算机时延对照表</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>英文原文</th>
+<th>时延（纳秒 ns）</th>
+<th>直观量级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1 缓存访问</td>
+<td>L1 cache reference</td>
+<td>0.5 ns</td>
+<td>纳秒级（CPU 内部最快）</td>
+</tr>
+<tr>
+<td>分支预测错误</td>
+<td>Branch mispredict</td>
+<td>5 ns</td>
+<td>纳秒级</td>
+</tr>
+<tr>
+<td>L2 缓存访问</td>
+<td>L2 cache reference</td>
+<td>7 ns</td>
+<td>纳秒级</td>
+</tr>
+<tr>
+<td>互斥锁加锁 &#x2F; 解锁</td>
+<td>Mutex lock&#x2F;unlock</td>
+<td>25 ns</td>
+<td>纳秒级</td>
+</tr>
+<tr>
+<td>主存访问</td>
+<td>Main memory reference</td>
+<td>100 ns</td>
+<td>百纳秒级</td>
+</tr>
+<tr>
+<td>用 Zippy 压缩 1KB 数据</td>
+<td>Compress 1K bytes with Zippy</td>
+<td>3,000 ns</td>
+<td>微秒级（3µs）</td>
+</tr>
+<tr>
+<td>在 1Gbps 网络发送 2KB 数据</td>
+<td>Send 2K bytes over 1 Gbps network</td>
+<td>20,000 ns</td>
+<td>微秒级（20µs）</td>
+</tr>
+<tr>
+<td>从内存顺序读取 1MB</td>
+<td>Read 1 MB sequentially from memory</td>
+<td>250,000 ns</td>
+<td>百微秒级（0.25ms）</td>
+</tr>
+<tr>
+<td>同数据中心内往返</td>
+<td>Round trip within same datacenter</td>
+<td>500,000 ns</td>
+<td>半毫秒级（0.5ms）</td>
+</tr>
+<tr>
+<td>磁盘寻道</td>
+<td>Disk seek</td>
+<td>10,000,000 ns</td>
+<td>10 毫秒级</td>
+</tr>
+<tr>
+<td>从磁盘顺序读取 1MB</td>
+<td>Read 1 MB sequentially from disk</td>
+<td>20,000,000 ns</td>
+<td>20 毫秒级</td>
+</tr>
+<tr>
+<td>数据包往返加州→荷兰→加州</td>
+<td>Send packet CA→Netherlands→CA</td>
+<td>150,000,000 ns</td>
+<td>150 毫秒级</td>
+</tr>
+</tbody></table></div>
+<p>从半纳秒或皮秒级别的CAF引用，到跨越全球传输所需的毫秒，甚至在某些情况下是秒级时间。**而操作系统是实现这一切的关键。**因为如果没有它，你实际上是无法使用这些东西的。<strong>操作系统，它几乎为应用程序和程序员提供了统一的抽象，尽管硬件各不相同。</strong>（这是我的理解：我们知道随着底层技术的进步，现在有各种各样的设备，电脑就有各种品牌。而对于不同的设备安装软件时，我们需要不管什么设备都可以正确的运行软件，在其中起到作用的就是操作系统）后文kubi提到“<strong>底层实际上是硬件，操作系统是介于应用程序（这些是你想要完成的任务）和复杂杂乱的底层硬件之间的一个层</strong>。”</p>
+<p>从作用上来说，“它使你能够<strong>管理在多个应用程序之间共享的资源</strong>，同时还能够处理安全问题。而一些关键的<strong>构建模块</strong>，我们将在本学期深入讨论的内容，<strong>诸如进程、线程、并发、调度、协调、所有这些内容、地址空间、保护和安全等</strong>。”</p>
+
+        <h1 id="二、搜索-举例"   >
+          <a href="#二、搜索-举例" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、搜索-举例" class="headerlink" title="二、搜索-举例"></a>二、搜索-举例</h1>
+      <p><img src="/../images/image-20260318201226924.png" alt="image-20260318201226924"></p>
+<p>“在这节课上，你可以近距离观察到这些<strong>构建模块</strong>如何实际被实现，如何将它们整合在一起。举个例子，你拿出手机，搜索一些内容。其实，发生的是：</p>
+<p><strong>手机会连接到DNS服务，DNS是层级化的</strong>，因此可能有多个服务器连接以获取响应。它的作用是将你可读的人类服务名称转化为IP地址，之后可以用来通过互联网不断跳转到某个地方。</p>
+<p>可能是一个数据中心，你将在入口点遇到负载均衡器。你完全没有意识到，负载均衡器会选择下一个跳点来转发这个信息。然后，也许有一些定制的服务器在忙于执行你的搜索或寻找信息。</p>
+<p>找到你感兴趣的信息。可能会生成一些广告，并且其他的合成也会发生在最终网页上，生成一个包含你结果的页面，也许还有一些广告，然后这些结果会通过同样的路径回传，通常是通过互联网返回到手机。这件你每天都会利用的简单事情，实际上有很多非常有趣的环节。”</p>
+
+        <h3 id="什么是DNS？"   >
+          <a href="#什么是DNS？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是DNS？" class="headerlink" title="什么是DNS？"></a>什么是DNS？</h3>
+      <p><strong>DNS(domain name system)</strong>，也就是域名系统，把你能看懂的网址（比如 <code>baidu.com</code>）<strong>翻译成</strong>电脑能看懂的 IP 地址（比如 <code>180.101.49.11</code>）。是一个全球分布式、层级化的数据库，实现域名 ↔ IP 地址 相互转换</p>
+<ul>
+<li>层级（树状）：根域名服务器，顶级域服务器，权威域名服务器（每一层只负责自己的部分）</li>
+<li>分布式：没有一台机器存全世界所有域名，每台服务器只负责一小部分，查询时一层层问过去</li>
+<li>缓存（cache）:查过一次就记住，下次直接返回（极大提高速度，DNS高性能的关键）</li>
+<li>网络协议实现：DNS用UDP53端口实现，快，无连接，适合小查询，大型请求会切TCP</li>
+</ul>
+
+        <h3 id="什么是负载均衡器"   >
+          <a href="#什么是负载均衡器" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是负载均衡器" class="headerlink" title="什么是负载均衡器"></a>什么是负载均衡器</h3>
+      <p>**LB(Load Balancer)**它站在用户和一堆服务器中间，<strong>把请求均匀分给多台服务器</strong>，不让任何一台忙死、其他闲死。</p>
+<p>当搜索东西的请求到达数据中心，第一个遇到的就是负载均衡器，它要看后面哪台服务器最闲然后把你的搜索请求转发给它，等服务器算完结果再传回给你。</p>
+<p>理解了这两个概念，你是否已然窥见这个系统的精妙并且惊叹呢。</p>
+<p>kubi说：“<strong>我也从中感到惊奇。我喜欢系统，并且我认为像这样的一个大系统能够正常运作，实在是太神奇了</strong>。”</p>
+<p>这份热爱和求知欲感染到了不同时空的我，为之感同身受。</p>
+<p>惊叹的同时，他抛出了两个问题。如果你理解了DNS的结构，我想你能回答出。</p>
+
+        <h5 id="那么多DNS服务器是如何保持数据一致的"   >
+          <a href="#那么多DNS服务器是如何保持数据一致的" class="heading-link"><i class="fas fa-link"></i></a><a href="#那么多DNS服务器是如何保持数据一致的" class="headerlink" title="那么多DNS服务器是如何保持数据一致的"></a>那么多DNS服务器是如何保持数据一致的</h5>
+      <ul>
+<li>结构稳定：它永远是树形结构，每一层只管自己的，保证了全局一致</li>
+<li>动态一致：如果管理员修改DNS记录，首先更新权威服务器，然后通知上级刷新，再逐级穿鼻哦</li>
+<li>TTL同步：每台服务器其实不是实时同步的，全网一卡DNS就费了。事实上每条 DNS 记录都有一个<strong>过期时间</strong>。，每条 DNS 记录都有一个<strong>过期时间</strong>。</li>
+</ul>
+
+        <h5 id="为什么不可能入侵DNS"   >
+          <a href="#为什么不可能入侵DNS" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么不可能入侵DNS" class="headerlink" title="为什么不可能入侵DNS"></a>为什么不可能入侵DNS</h5>
+      <ul>
+<li>物理上：服务器分布在全球，你需要同时攻破全球不同国家、不同运营商的机器，这在物理上几乎不可能</li>
+<li>逻辑上：DNS是分层隔离的</li>
+<li>技术上：DNS本身有防火墙，DNS 主要用 53 端口，外部攻击很难绕过。</li>
+</ul>
+<p>回到之前的问题，什么是操作系统，kubi提到现在还没有一个被普遍解释的定义，但给出了一种理论</p>
+<p>**“操作系统有一个叫做内核的部分，通常是计算机上始终运行的唯一程序，它像是操作系统的核心，可能其他的东西要么是随操作系统一起发布的系统程序，要么就是应用程序。”**在后文他会继续讲</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/03/18/CS162/">https://1artemise.github.io/2026/03/18/CS162/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/cs162/">cs162</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/csdiy/">csdiy</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2026/03/13/%E5%A4%A9%E6%A2%AF%E8%B5%9B/"><span class="paginator-prev__text">天梯赛合集</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">
+          一、什么是操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%97%B6%E9%97%B4-%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">
+          1.时间-引入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%90%9C%E7%B4%A2-%E4%B8%BE%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">
+          二、搜索-举例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDNS%EF%BC%9F"><span class="toc-number">2.0.1.</span> <span class="toc-text">
+          什么是DNS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8"><span class="toc-number">2.0.2.</span> <span class="toc-text">
+          什么是负载均衡器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E5%A4%9ADNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E6%8C%81%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E7%9A%84"><span class="toc-number">2.0.2.0.1.</span> <span class="toc-text">
+          那么多DNS服务器是如何保持数据一致的</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%85%A5%E4%BE%B5DNS"><span class="toc-number">2.0.2.0.2.</span> <span class="toc-text">
+          为什么不可能入侵DNS</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
