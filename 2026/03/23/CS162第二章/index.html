@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="一、课程开篇：回顾上一讲核心       上一讲我们讲了操作系统的三大角色：  裁判（Referee） 管理资源、保护、隔离、权限，不让进程互相干扰。  幻术师（Illusionist） 把丑陋硬件变成干净、易用的虚拟资源（线程、地址空间、文件等）。  粘合剂（Glue） 提供统一服务（窗口、文件系统、网络），让写程序更简单。   老师强调： 同一个物理硬件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS162笔记第二章（操作系统）">
+<meta property="og:url" content="https://1artemise.github.io/2026/03/23/CS162%E7%AC%AC%E4%BA%8C%E7%AB%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、课程开篇：回顾上一讲核心       上一讲我们讲了操作系统的三大角色：  裁判（Referee） 管理资源、保护、隔离、权限，不让进程互相干扰。  幻术师（Illusionist） 把丑陋硬件变成干净、易用的虚拟资源（线程、地址空间、文件等）。  粘合剂（Glue） 提供统一服务（窗口、文件系统、网络），让写程序更简单。   老师强调： 同一个物理硬件">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-23T23:33:50.351Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="cs162">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="csdiy">
+<meta name="twitter:card" content="summary"><title>CS162笔记第二章（操作系统） | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/03/23/CS162%E7%AC%AC%E4%BA%8C%E7%AB%A0/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">CS162笔记第二章（操作系统）</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-03-22T16:00:00.000Z">2026-03-23</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body">
+        <h2 id="一、课程开篇：回顾上一讲核心"   >
+          <a href="#一、课程开篇：回顾上一讲核心" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、课程开篇：回顾上一讲核心" class="headerlink" title="一、课程开篇：回顾上一讲核心"></a>一、课程开篇：回顾上一讲核心</h2>
+      <p>上一讲我们讲了操作系统的<strong>三大角色</strong>：</p>
+<ol>
+<li><p>裁判（Referee）</p>
+<p>管理资源、保护、隔离、权限，不让进程互相干扰。</p>
+</li>
+<li><p>幻术师（Illusionist）</p>
+<p>把丑陋硬件变成干净、易用的虚拟资源（线程、地址空间、文件等）。</p>
+</li>
+<li><p>粘合剂（Glue）</p>
+<p>提供统一服务（窗口、文件系统、网络），让写程序更简单。</p>
+</li>
+</ol>
+<p>老师强调：</p>
+<p>同一个物理硬件上，可以<strong>同时运行多个进程</strong>，每个进程都以为自己独占整台机器。</p>
+<p>进程之间<strong>禁止互相访问 &#x2F; 修改</strong>对方状态，也不能非法修改操作系统或存储。</p>
+<p>一旦违规 → 操作系统直接终止进程 → <strong>段错误（segmentation fault）</strong>。</p>
+<hr>
+
+        <h2 id="二、硬件为什么极度复杂？"   >
+          <a href="#二、硬件为什么极度复杂？" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、硬件为什么极度复杂？" class="headerlink" title="二、硬件为什么极度复杂？"></a>二、硬件为什么极度复杂？</h2>
+      <p>老师用 <strong>Skylake 处理器架构</strong> 举例：</p>
+<ul>
+<li>CPU 直连高带宽 DRAM、高速显卡</li>
+<li>通过 DMI 接口连接 <strong>PCH 芯片组（原南桥）</strong></li>
+<li>下面挂着：PCIe 高速设备、磁盘、USB、网口、音频、raid 等</li>
+<li>再下层还有更低速的设备</li>
+</ul>
+<p><strong>结论：</strong></p>
+<p>硬件极其杂乱、多样、复杂 → <strong>必须由操作系统来管理与抽象</strong>。</p>
+<hr>
+
+        <h2 id="三、系统复杂度的直观体现：代码行数"   >
+          <a href="#三、系统复杂度的直观体现：代码行数" class="heading-link"><i class="fas fa-link"></i></a><a href="#三、系统复杂度的直观体现：代码行数" class="headerlink" title="三、系统复杂度的直观体现：代码行数"></a>三、系统复杂度的直观体现：代码行数</h2>
+      <ul>
+<li><p>Linux 从 2.2 到 3.1，代码量增长 <strong>6 倍以上</strong></p>
+</li>
+<li><p>现代汽车：<strong>约 1 亿行代码</strong></p>
+</li>
+<li><p>设备驱动（第三方开发）是 </p>
+<p>BUG 重灾区</p>
+<p>统计：超过 </p>
+<p>50%~60% 的系统崩溃来自驱动程序</p>
+</li>
+<li><p>安全漏洞：Spectre、Meltdown（投机执行导致内核数据泄露）</p>
+</li>
+</ul>
+<p><strong>老师核心观点：</strong></p>
+<p>操作系统的根本意义：<strong>抽象硬件、驯服复杂度</strong>。</p>
+<hr>
+
+        <h2 id="四、操作系统如何-“化繁为简”？（核心抽象）"   >
+          <a href="#四、操作系统如何-“化繁为简”？（核心抽象）" class="heading-link"><i class="fas fa-link"></i></a><a href="#四、操作系统如何-“化繁为简”？（核心抽象）" class="headerlink" title="四、操作系统如何 “化繁为简”？（核心抽象）"></a>四、操作系统如何 “化繁为简”？（核心抽象）</h2>
+      <p>硬件太烂 → OS 换成更好用的虚拟概念：</p>
+<ul>
+<li>物理 CPU → <strong>线程（Thread）</strong></li>
+<li>物理内存（零散 DRAM）→ <strong>地址空间（Address Space）</strong></li>
+<li>磁盘 &#x2F; SSD 裸数据块 → <strong>文件系统（File System）</strong></li>
+<li>原始网络包 → <strong>Socket 接口</strong></li>
+<li>裸机 → <strong>进程（Process）</strong></li>
+</ul>
+<hr>
+
+        <h1 id="五、本节课正式内容：操作系统-四大基本概念（必考）"   >
+          <a href="#五、本节课正式内容：操作系统-四大基本概念（必考）" class="heading-link"><i class="fas fa-link"></i></a><a href="#五、本节课正式内容：操作系统-四大基本概念（必考）" class="headerlink" title="五、本节课正式内容：操作系统 四大基本概念（必考）"></a>五、本节课正式内容：操作系统 <strong>四大基本概念</strong>（必考）</h1>
+      <p>老师明确：今天讲 <strong>4 个 OS 最基础概念</strong>，全程围绕它们展开。</p>
+<hr>
+
+        <h2 id="概念一：线程（Thread）—-执行流"   >
+          <a href="#概念一：线程（Thread）—-执行流" class="heading-link"><i class="fas fa-link"></i></a><a href="#概念一：线程（Thread）—-执行流" class="headerlink" title="概念一：线程（Thread）— 执行流"></a>概念一：线程（Thread）— 执行流</h2>
+      
+        <h3 id="1-线程是什么？"   >
+          <a href="#1-线程是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-线程是什么？" class="headerlink" title="1. 线程是什么？"></a>1. 线程是什么？</h3>
+      <p><strong>线程 &#x3D; 一个独立的执行上下文（execution context）</strong></p>
+<p>包含：</p>
+<ul>
+<li>程序计数器（PC）</li>
+<li>寄存器集合</li>
+<li>执行标志（flags）</li>
+<li>栈（stack）</li>
+<li>相关内存状态</li>
+</ul>
+
+        <h3 id="2-线程-虚拟化的-CPU（核心）"   >
+          <a href="#2-线程-虚拟化的-CPU（核心）" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-线程-虚拟化的-CPU（核心）" class="headerlink" title="2. 线程 &#x3D; 虚拟化的 CPU（核心）"></a>2. 线程 &#x3D; 虚拟化的 CPU（核心）</h3>
+      <p>你在 61C 学的是物理 CPU 的取指执行。</p>
+<p>OS 把它虚拟化 → 变成<strong>线程</strong>。</p>
+
+        <h3 id="3-常驻（resident）是什么意思？"   >
+          <a href="#3-常驻（resident）是什么意思？" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-常驻（resident）是什么意思？" class="headerlink" title="3. 常驻（resident）是什么意思？"></a>3. 常驻（resident）是什么意思？</h3>
+      <p>当线程的 <strong>上下文在 CPU 寄存器里</strong>，它就是正在运行、常驻的。</p>
+<p>一个核（core）<strong>同一时刻只能有一个线程常驻</strong>。</p>
+
+        <h3 id="4-线程挂起（suspended）"   >
+          <a href="#4-线程挂起（suspended）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-线程挂起（suspended）" class="headerlink" title="4. 线程挂起（suspended）"></a>4. 线程挂起（suspended）</h3>
+      <ul>
+<li>上下文不在寄存器里</li>
+<li>被保存到内存中的 <strong>TCB（Thread Control Block，线程控制块）</strong></li>
+<li>程序计数器不再指向它</li>
+</ul>
+
+        <h3 id="5-多线程-“并发”-幻觉怎么实现？"   >
+          <a href="#5-多线程-“并发”-幻觉怎么实现？" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-多线程-“并发”-幻觉怎么实现？" class="headerlink" title="5. 多线程 “并发” 幻觉怎么实现？"></a>5. 多线程 “并发” 幻觉怎么实现？</h3>
+      <p><strong>单 CPU &#x3D; 时分多路复用（time multiplexing）</strong></p>
+<ul>
+<li>运行线程 A 一小会儿</li>
+<li>切换</li>
+<li>运行线程 B 一小会儿</li>
+<li>切换</li>
+<li>运行线程 C…</li>
+</ul>
+<p>因为切换极快 → 人感觉 “同时运行”。</p>
+
+        <h3 id="6-上下文切换（context-switch）做什么？"   >
+          <a href="#6-上下文切换（context-switch）做什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-上下文切换（context-switch）做什么？" class="headerlink" title="6. 上下文切换（context switch）做什么？"></a>6. 上下文切换（context switch）做什么？</h3>
+      <ol>
+<li>把当前线程所有寄存器、PC、栈指针保存到内存 <strong>TCB</strong></li>
+<li>加载下一个线程的上下文到 CPU</li>
+<li>开始执行新线程</li>
+</ol>
+<p>切换耗时：<strong>几微秒</strong></p>
+<p>不能切换太快，否则大部分时间都在切换（颠簸 &#x2F;thrashing）。</p>
+<hr>
+
+        <h2 id="概念二：地址空间（Address-Space）"   >
+          <a href="#概念二：地址空间（Address-Space）" class="heading-link"><i class="fas fa-link"></i></a><a href="#概念二：地址空间（Address-Space）" class="headerlink" title="概念二：地址空间（Address Space）"></a>概念二：地址空间（Address Space）</h2>
+      
+        <h3 id="1-定义"   >
+          <a href="#1-定义" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h3>
+      <p><strong>地址空间 &#x3D; 程序可访问的所有地址集合 + 对应状态</strong></p>
+<p>例：32 位地址空间</p>
+<p><code>0 ~ 0xFFFFFFFF</code>（约 4GB）</p>
+
+        <h3 id="2-地址空间内部布局"   >
+          <a href="#2-地址空间内部布局" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-地址空间内部布局" class="headerlink" title="2. 地址空间内部布局"></a>2. 地址空间内部布局</h3>
+      <ul>
+<li><strong>代码段（text&#x2F;code）</strong>：指令</li>
+<li><strong>静态数据段（data）</strong>：全局变量、静态变量、字符串常量</li>
+<li><strong>栈（stack）</strong>：局部变量、函数调用</li>
+<li><strong>堆（heap）</strong>：malloc 分配的内存</li>
+</ul>
+
+        <h3 id="3-早期简单保护：基址-界限（Base-Bound）"   >
+          <a href="#3-早期简单保护：基址-界限（Base-Bound）" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-早期简单保护：基址-界限（Base-Bound）" class="headerlink" title="3. 早期简单保护：基址 + 界限（Base + Bound）"></a>3. 早期简单保护：基址 + 界限（Base + Bound）</h3>
+      <p>最早的硬件保护方案：</p>
+<ul>
+<li>两个寄存器：<strong>基址、界限</strong></li>
+<li>程序只能访问 <code>[base, bound]</code> 之间的内存</li>
+<li>访问越界 → 直接报错</li>
+</ul>
+<p>优点：简单、硬件成本低</p>
+<p>缺点：扩展麻烦、会产生内存碎片</p>
+
+        <h3 id="4-进阶：地址翻译（虚拟内存）"   >
+          <a href="#4-进阶：地址翻译（虚拟内存）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-进阶：地址翻译（虚拟内存）" class="headerlink" title="4. 进阶：地址翻译（虚拟内存）"></a>4. 进阶：地址翻译（虚拟内存）</h3>
+      <p>后面课程重点：</p>
+<p>把程序使用的 <strong>虚拟地址 → 页表翻译 → 物理地址</strong></p>
+<ul>
+<li>无碎片</li>
+<li>可以离散存放</li>
+<li>可以置换到磁盘</li>
+<li>可以隔离保护</li>
+</ul>
+<hr>
+
+        <h2 id="概念三：进程（Process）—-本讲最重要"   >
+          <a href="#概念三：进程（Process）—-本讲最重要" class="heading-link"><i class="fas fa-link"></i></a><a href="#概念三：进程（Process）—-本讲最重要" class="headerlink" title="概念三：进程（Process）— 本讲最重要"></a>概念三：进程（Process）— 本讲最重要</h2>
+      
+        <h3 id="1-进程是什么？"   >
+          <a href="#1-进程是什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-进程是什么？" class="headerlink" title="1. 进程是什么？"></a>1. 进程是什么？</h3>
+      <p><strong>进程 &#x3D; 带权限限制的执行环境</strong></p>
+<p>&#x3D; <strong>保护后的地址空间 + 一个或多个线程 + 文件等资源</strong></p>
+
+        <h3 id="2-为什么需要进程？"   >
+          <a href="#2-为什么需要进程？" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-为什么需要进程？" class="headerlink" title="2. 为什么需要进程？"></a>2. 为什么需要进程？</h3>
+      <p>早期只有线程：</p>
+<ul>
+<li>所有线程共享<strong>同一份地址空间</strong></li>
+<li>一个线程崩溃 → 全盘崩溃</li>
+<li>线程可互相改写内存、窃取数据</li>
+<li>线程可以改写操作系统 → 系统直接挂掉</li>
+</ul>
+<p><strong>进程 &#x3D; 隔离 + 保护 + 权限</strong></p>
+
+        <h3 id="3-进程核心特性"   >
+          <a href="#3-进程核心特性" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-进程核心特性" class="headerlink" title="3. 进程核心特性"></a>3. 进程核心特性</h3>
+      <ul>
+<li>每个进程有<strong>独立地址空间</strong></li>
+<li>进程之间<strong>无法互相访问</strong></li>
+<li>一个进程崩了 → 不影响其他</li>
+<li>OS 受保护，不会被随意破坏</li>
+</ul>
+
+        <h3 id="4-进程-vs-线程（老师反复强调）"   >
+          <a href="#4-进程-vs-线程（老师反复强调）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-进程-vs-线程（老师反复强调）" class="headerlink" title="4. 进程 vs 线程（老师反复强调）"></a>4. 进程 vs 线程（老师反复强调）</h3>
+      <ul>
+<li><strong>进程：资源容器、保护单位</strong>（地址空间、文件、权限）</li>
+<li><strong>线程：执行单位、活跃单位</strong>（PC、寄存器、栈）</li>
+<li>一个进程至少有一个线程</li>
+<li>同一进程内的线程共享地址空间</li>
+<li>不同进程完全隔离</li>
+</ul>
+<hr>
+
+        <h2 id="概念四：双重模式（Dual-Mode）—-安全基石"   >
+          <a href="#概念四：双重模式（Dual-Mode）—-安全基石" class="heading-link"><i class="fas fa-link"></i></a><a href="#概念四：双重模式（Dual-Mode）—-安全基石" class="headerlink" title="概念四：双重模式（Dual Mode）— 安全基石"></a>概念四：双重模式（Dual Mode）— 安全基石</h2>
+      
+        <h3 id="1-处理器至少两种模式："   >
+          <a href="#1-处理器至少两种模式：" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-处理器至少两种模式：" class="headerlink" title="1. 处理器至少两种模式："></a>1. 处理器至少两种模式：</h3>
+      <ol>
+<li><p>内核模式（Kernel Mode &#x2F; Supervisor）</p>
+<ul>
+<li>全权访问所有资源</li>
+<li>可以修改页表、关中断、操作硬件</li>
+</ul>
+</li>
+<li><p>用户模式（User Mode）</p>
+<ul>
+<li>权限受限</li>
+<li><strong>不能</strong>修改页表</li>
+<li><strong>不能</strong>关中断</li>
+<li><strong>不能</strong>直接访问硬件</li>
+</ul>
+</li>
+</ol>
+
+        <h3 id="2-为什么需要双模式？"   >
+          <a href="#2-为什么需要双模式？" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-为什么需要双模式？" class="headerlink" title="2. 为什么需要双模式？"></a>2. 为什么需要双模式？</h3>
+      <p>防止用户程序：</p>
+<ul>
+<li>霸占 CPU（死循环不放手）</li>
+<li>破坏操作系统</li>
+<li>访问别的进程数据</li>
+<li>随意操控硬件</li>
+</ul>
+
+        <h3 id="3-如何进入内核模式？（仅三种合法入口）"   >
+          <a href="#3-如何进入内核模式？（仅三种合法入口）" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-如何进入内核模式？（仅三种合法入口）" class="headerlink" title="3. 如何进入内核模式？（仅三种合法入口）"></a>3. 如何进入内核模式？（仅三种合法入口）</h3>
+      <ol>
+<li><strong>系统调用（system call）</strong>：进程主动请求服务</li>
+<li><strong>中断（interrupt）</strong>：时钟、磁盘、网络等事件</li>
+<li><strong>异常 &#x2F; 陷阱（exception&#x2F;trap）</strong>：除零、缺页、非法访问</li>
+</ol>
+<p>→ 所有入口都<strong>由操作系统严格控制</strong>。</p>
+<hr>
+
+        <h1 id="六、完整运行模型（老师最终总结图）"   >
+          <a href="#六、完整运行模型（老师最终总结图）" class="heading-link"><i class="fas fa-link"></i></a><a href="#六、完整运行模型（老师最终总结图）" class="headerlink" title="六、完整运行模型（老师最终总结图）"></a>六、完整运行模型（老师最终总结图）</h1>
+      <ol>
+<li><p>程序从磁盘加载</p>
+</li>
+<li><p>操作系统创建</p>
+<p>进程</p>
+<ul>
+<li>分配独立地址空间</li>
+<li>建立页表</li>
+<li>分配栈、堆</li>
+</ul>
+</li>
+<li><p>从入口开始执行，运行在<strong>用户模式</strong></p>
+</li>
+<li><p>需要服务 → 系统调用 → 进入<strong>内核模式</strong></p>
+</li>
+<li><p>内核完成操作，返回用户态</p>
+</li>
+<li><p>时钟中断触发 → 操作系统切换进程</p>
+</li>
+</ol>
+<hr>
+
+        <h1 id="七、本节课所有管理与作业提醒（全覆盖）"   >
+          <a href="#七、本节课所有管理与作业提醒（全覆盖）" class="heading-link"><i class="fas fa-link"></i></a><a href="#七、本节课所有管理与作业提醒（全覆盖）" class="headerlink" title="七、本节课所有管理与作业提醒（全覆盖）"></a>七、本节课所有管理与作业提醒（全覆盖）</h1>
+      <ul>
+<li><strong>作业 0（Homework 0）</strong>：立刻开始，熟悉工具、GDB、编译、虚拟机</li>
+<li><strong>Project 0</strong>：明天发布，独立完成，不许合作</li>
+<li>项目缓交天数（slip days）：作业与项目共用 <strong>4 天</strong></li>
+<li>本周五是 <strong>退课截止日期（drop date）</strong></li>
+<li>可选 C&#x2F;C++ 复习课：明天举行</li>
+<li>课程全程使用 <strong>C 语言</strong>，项目在 Pintos 操作系统上开发</li>
+</ul>
+<hr>
+
+        <h1 id="八、老师强调的易错点（必看）"   >
+          <a href="#八、老师强调的易错点（必看）" class="heading-link"><i class="fas fa-link"></i></a><a href="#八、老师强调的易错点（必看）" class="headerlink" title="八、老师强调的易错点（必看）"></a>八、老师强调的易错点（必看）</h1>
+      <ol>
+<li><strong>线程不自带缓存</strong>，一个核的缓存被所有线程共享</li>
+<li>线程不在 CPU 运行时，状态存在 <strong>TCB（内存里）</strong></li>
+<li>进程 &#x3D; 保护单位；线程 &#x3D; 执行单位</li>
+<li>没有地址翻译 + 双模式 → 系统完全不安全</li>
+<li>早期系统（Win3.1、Mac 早期）无强保护 → 极易崩溃</li>
+<li>上下文切换需要保存与恢复 <strong>全部寄存器</strong></li>
+</ol>
+<hr>
+
+        <h1 id="九、本讲最终结论（老师原话总结）"   >
+          <a href="#九、本讲最终结论（老师原话总结）" class="heading-link"><i class="fas fa-link"></i></a><a href="#九、本讲最终结论（老师原话总结）" class="headerlink" title="九、本讲最终结论（老师原话总结）"></a>九、本讲最终结论（老师原话总结）</h1>
+      <p>现代操作系统建立在 <strong>四大基本概念</strong> 之上：</p>
+<ol>
+<li><strong>线程（Thread）</strong>：执行流、虚拟化 CPU</li>
+<li><strong>地址空间（Address Space）</strong>：内存视图</li>
+<li><strong>进程（Process）</strong>：受保护的执行环境</li>
+<li><strong>双重模式（Dual Mode）</strong>：内核态 &#x2F; 用户态，安全基础</li>
+</ol>
+<p>它们一起实现：<strong>虚拟化、隔离、保护、并发</strong>。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/03/23/CS162%E7%AC%AC%E4%BA%8C%E7%AB%A0/">https://1artemise.github.io/2026/03/23/CS162%E7%AC%AC%E4%BA%8C%E7%AB%A0/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/cs162/">cs162</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/csdiy/">csdiy</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2026/03/20/%E8%AE%A1%E7%BD%91/"><span class="paginator-prev__text">计网笔记（中科大郑郑烇、杨坚）</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AF%BE%E7%A8%8B%E5%BC%80%E7%AF%87%EF%BC%9A%E5%9B%9E%E9%A1%BE%E4%B8%8A%E4%B8%80%E8%AE%B2%E6%A0%B8%E5%BF%83"><span class="toc-number">1.</span> <span class="toc-text">
+          一、课程开篇：回顾上一讲核心</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%A1%AC%E4%BB%B6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9E%81%E5%BA%A6%E5%A4%8D%E6%9D%82%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          二、硬件为什么极度复杂？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84%E7%9B%B4%E8%A7%82%E4%BD%93%E7%8E%B0%EF%BC%9A%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">
+          三、系统复杂度的直观体现：代码行数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95-%E2%80%9C%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80%E2%80%9D%EF%BC%9F%EF%BC%88%E6%A0%B8%E5%BF%83%E6%8A%BD%E8%B1%A1%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">
+          四、操作系统如何 “化繁为简”？（核心抽象）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%AC%E8%8A%82%E8%AF%BE%E6%AD%A3%E5%BC%8F%E5%86%85%E5%AE%B9%EF%BC%9A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9B%9B%E5%A4%A7%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%88%E5%BF%85%E8%80%83%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">
+          五、本节课正式内容：操作系统 四大基本概念（必考）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E4%B8%80%EF%BC%9A%E7%BA%BF%E7%A8%8B%EF%BC%88Thread%EF%BC%89%E2%80%94-%E6%89%A7%E8%A1%8C%E6%B5%81"><span class="toc-number">1.</span> <span class="toc-text">
+          概念一：线程（Thread）— 执行流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">
+          1. 线程是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B-%E8%99%9A%E6%8B%9F%E5%8C%96%E7%9A%84-CPU%EF%BC%88%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">
+          2. 线程 &#x3D; 虚拟化的 CPU（核心）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B8%B8%E9%A9%BB%EF%BC%88resident%EF%BC%89%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">
+          3. 常驻（resident）是什么意思？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%8C%82%E8%B5%B7%EF%BC%88suspended%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">
+          4. 线程挂起（suspended）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E2%80%9C%E5%B9%B6%E5%8F%91%E2%80%9D-%E5%B9%BB%E8%A7%89%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%EF%BC%9F"><span class="toc-number">1.5.</span> <span class="toc-text">
+          5. 多线程 “并发” 幻觉怎么实现？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%88context-switch%EF%BC%89%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.6.</span> <span class="toc-text">
+          6. 上下文切换（context switch）做什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E4%BA%8C%EF%BC%9A%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%EF%BC%88Address-Space%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">
+          概念二：地址空间（Address Space）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">
+          1. 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E5%86%85%E9%83%A8%E5%B8%83%E5%B1%80"><span class="toc-number">2.2.</span> <span class="toc-text">
+          2. 地址空间内部布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%97%A9%E6%9C%9F%E7%AE%80%E5%8D%95%E4%BF%9D%E6%8A%A4%EF%BC%9A%E5%9F%BA%E5%9D%80-%E7%95%8C%E9%99%90%EF%BC%88Base-Bound%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">
+          3. 早期简单保护：基址 + 界限（Base + Bound）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BF%9B%E9%98%B6%EF%BC%9A%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91%EF%BC%88%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">
+          4. 进阶：地址翻译（虚拟内存）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E4%B8%89%EF%BC%9A%E8%BF%9B%E7%A8%8B%EF%BC%88Process%EF%BC%89%E2%80%94-%E6%9C%AC%E8%AE%B2%E6%9C%80%E9%87%8D%E8%A6%81"><span class="toc-number">3.</span> <span class="toc-text">
+          概念三：进程（Process）— 本讲最重要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">
+          1. 进程是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%BF%9B%E7%A8%8B%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">
+          2. 为什么需要进程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7"><span class="toc-number">3.3.</span> <span class="toc-text">
+          3. 进程核心特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BF%9B%E7%A8%8B-vs-%E7%BA%BF%E7%A8%8B%EF%BC%88%E8%80%81%E5%B8%88%E5%8F%8D%E5%A4%8D%E5%BC%BA%E8%B0%83%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">
+          4. 进程 vs 线程（老师反复强调）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E5%9B%9B%EF%BC%9A%E5%8F%8C%E9%87%8D%E6%A8%A1%E5%BC%8F%EF%BC%88Dual-Mode%EF%BC%89%E2%80%94-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%9F%B3"><span class="toc-number">4.</span> <span class="toc-text">
+          概念四：双重模式（Dual Mode）— 安全基石</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A4%84%E7%90%86%E5%99%A8%E8%87%B3%E5%B0%91%E4%B8%A4%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">
+          1. 处理器至少两种模式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%8F%8C%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">
+          2. 为什么需要双模式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E8%BF%9B%E5%85%A5%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F%EF%BC%9F%EF%BC%88%E4%BB%85%E4%B8%89%E7%A7%8D%E5%90%88%E6%B3%95%E5%85%A5%E5%8F%A3%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">
+          3. 如何进入内核模式？（仅三种合法入口）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%8C%E6%95%B4%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%9E%8B%EF%BC%88%E8%80%81%E5%B8%88%E6%9C%80%E7%BB%88%E6%80%BB%E7%BB%93%E5%9B%BE%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">
+          六、完整运行模型（老师最终总结图）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%9C%AC%E8%8A%82%E8%AF%BE%E6%89%80%E6%9C%89%E7%AE%A1%E7%90%86%E4%B8%8E%E4%BD%9C%E4%B8%9A%E6%8F%90%E9%86%92%EF%BC%88%E5%85%A8%E8%A6%86%E7%9B%96%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">
+          七、本节课所有管理与作业提醒（全覆盖）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E8%80%81%E5%B8%88%E5%BC%BA%E8%B0%83%E7%9A%84%E6%98%93%E9%94%99%E7%82%B9%EF%BC%88%E5%BF%85%E7%9C%8B%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">
+          八、老师强调的易错点（必看）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E6%9C%AC%E8%AE%B2%E6%9C%80%E7%BB%88%E7%BB%93%E8%AE%BA%EF%BC%88%E8%80%81%E5%B8%88%E5%8E%9F%E8%AF%9D%E6%80%BB%E7%BB%93%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">
+          九、本讲最终结论（老师原话总结）</span></a></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

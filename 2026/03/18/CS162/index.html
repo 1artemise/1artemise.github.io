@@ -1,21 +1,18 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。 这里推荐两个资源 【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili UCB CS162 操作系统笔记（一）-CSD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS162笔记（操作系统）">
+<meta property="og:title" content="CS162笔记第一章（操作系统）">
 <meta property="og:url" content="https://1artemise.github.io/2026/03/18/CS162/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。 这里推荐两个资源 【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili UCB CS162 操作系统笔记（一）-CSD">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://1artemise.github.io/images/image-20260318194604326.png">
-<meta property="og:image" content="https://1artemise.github.io/images/image-20260318201226924.png">
 <meta property="article:published_time" content="2026-03-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-18T13:29:29.161Z">
+<meta property="article:modified_time" content="2026-03-23T11:52:43.540Z">
 <meta property="article:author" content="artemis">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="cs162">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="csdiy">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://1artemise.github.io/images/image-20260318194604326.png"><title>CS162笔记（操作系统） | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/03/18/CS162/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+<meta name="twitter:card" content="summary"><title>CS162笔记第一章（操作系统） | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/03/18/CS162/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -40,158 +37,258 @@ var CONFIG = {
 };
 
 window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
-也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">CS162笔记（操作系统）</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-03-17T16:00:00.000Z">2026-03-18</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><p>由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。</p>
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">CS162笔记第一章（操作系统）</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-03-17T16:00:00.000Z">2026-03-18</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><p>由于我最近在学习学校开设的操作系统课程，想对此有更深入的了解，所以选择了cs162。一来是学习国内外对于学习的两种思维模式，二来是鞭策自己尽早习惯英文环境。鉴于英文授课对很多新手来说并不友好，我在此做出关键内容的整理和课件的搬运与翻译。</p>
 <p>这里推荐两个资源</p>
 <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MwDSYWEKy/?spm_id_from=333.337.search-card.all.click&vd_source=6f3b9bab813c14ca00fbb56363a43d7e" >【CS162精翻·英文原声】伯克利大学《计算机操作系统》(2020)_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/wizardforcel/article/details/143933530" >UCB CS162 操作系统笔记（一）-CSDN博客</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p>这个CSDN上的笔记是所有字幕整理成了文字，我习惯先阅读我要学习的部分，然后再去看一遍视频，接着做笔记的时候再次阅读（仅供参考）</p>
 <p>总课程有二十五章，每章约90min左右，当然我想想要吃透是需要3h的。我会在一月内尽量完成这门课的学习。（立flag）</p>
 
-        <h1 id="一、什么是操作系统"   >
-          <a href="#一、什么是操作系统" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、什么是操作系统" class="headerlink" title="一、什么是操作系统"></a>一、什么是操作系统</h1>
-      
-        <h2 id="1-时间-引入"   >
-          <a href="#1-时间-引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-时间-引入" class="headerlink" title="1.时间-引入"></a>1.时间-引入</h2>
-      <p><img src="/../images/image-20260318194604326.png" alt="image-20260318194604326"></p>
-<p>“不知何故，系统会在这些规定的时间内运行，其中有一些神奇的事”</p>
-<p>经典计算机时延对照表</p>
-<div class="table-container"><table>
+        <h2 id="一、时延引入：操作系统是系统运行的核心"   >
+          <a href="#一、时延引入：操作系统是系统运行的核心" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、时延引入：操作系统是系统运行的核心" class="headerlink" title="一、时延引入：操作系统是系统运行的核心"></a>一、时延引入：操作系统是系统运行的核心</h2>
+      <p>课程开篇通过经典的<strong>Jeff Dean计算机时延对照表</strong>，直观展现不同硬件操作的时间量级差异，从纳秒级的缓存访问到毫秒级的跨洋网络传输，时间跨度极大。而能让这些差异巨大的硬件协同工作、支撑上层应用稳定运行的关键，就是<strong>操作系统</strong>。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>核心结论</strong>：没有操作系统，无法高效、安全地使用硬件资源；操作系统为应用和程序员屏蔽硬件差异，提供<strong>统一抽象接口</strong>，是连接应用与硬件的关键中间层。</p>
+</blockquote>
+
+        <h3 id="经典计算机时延对照表"   >
+          <a href="#经典计算机时延对照表" class="heading-link"><i class="fas fa-link"></i></a><a href="#经典计算机时延对照表" class="headerlink" title="经典计算机时延对照表"></a>经典计算机时延对照表</h3>
+      <div class="table-container"><table>
 <thead>
 <tr>
-<th>操作</th>
-<th>英文原文</th>
-<th>时延（纳秒 ns）</th>
-<th>直观量级</th>
+<th align="left">操作</th>
+<th align="left">英文原文</th>
+<th align="left">时延（纳秒 ns）</th>
+<th align="left">直观量级</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>L1 缓存访问</td>
-<td>L1 cache reference</td>
-<td>0.5 ns</td>
-<td>纳秒级（CPU 内部最快）</td>
+<td align="left">L1 缓存访问</td>
+<td align="left">L1 cache reference</td>
+<td align="left">0.5 ns</td>
+<td align="left">纳秒级（CPU 内部最快）</td>
 </tr>
 <tr>
-<td>分支预测错误</td>
-<td>Branch mispredict</td>
-<td>5 ns</td>
-<td>纳秒级</td>
+<td align="left">分支预测错误</td>
+<td align="left">Branch mispredict</td>
+<td align="left">5 ns</td>
+<td align="left">纳秒级</td>
 </tr>
 <tr>
-<td>L2 缓存访问</td>
-<td>L2 cache reference</td>
-<td>7 ns</td>
-<td>纳秒级</td>
+<td align="left">L2 缓存访问</td>
+<td align="left">L2 cache reference</td>
+<td align="left">7 ns</td>
+<td align="left">纳秒级</td>
 </tr>
 <tr>
-<td>互斥锁加锁 &#x2F; 解锁</td>
-<td>Mutex lock&#x2F;unlock</td>
-<td>25 ns</td>
-<td>纳秒级</td>
+<td align="left">互斥锁加锁 &#x2F; 解锁</td>
+<td align="left">Mutex lock&#x2F;unlock</td>
+<td align="left">25 ns</td>
+<td align="left">纳秒级</td>
 </tr>
 <tr>
-<td>主存访问</td>
-<td>Main memory reference</td>
-<td>100 ns</td>
-<td>百纳秒级</td>
+<td align="left">主存访问</td>
+<td align="left">Main memory reference</td>
+<td align="left">100 ns</td>
+<td align="left">百纳秒级</td>
 </tr>
 <tr>
-<td>用 Zippy 压缩 1KB 数据</td>
-<td>Compress 1K bytes with Zippy</td>
-<td>3,000 ns</td>
-<td>微秒级（3µs）</td>
+<td align="left">用 Zippy 压缩 1KB 数据</td>
+<td align="left">Compress 1K bytes with Zippy</td>
+<td align="left">3,000 ns</td>
+<td align="left">微秒级（3µs）</td>
 </tr>
 <tr>
-<td>在 1Gbps 网络发送 2KB 数据</td>
-<td>Send 2K bytes over 1 Gbps network</td>
-<td>20,000 ns</td>
-<td>微秒级（20µs）</td>
+<td align="left">在 1Gbps 网络发送 2KB 数据</td>
+<td align="left">Send 2K bytes over 1 Gbps network</td>
+<td align="left">20,000 ns</td>
+<td align="left">微秒级（20µs）</td>
 </tr>
 <tr>
-<td>从内存顺序读取 1MB</td>
-<td>Read 1 MB sequentially from memory</td>
-<td>250,000 ns</td>
-<td>百微秒级（0.25ms）</td>
+<td align="left">从内存顺序读取 1MB</td>
+<td align="left">Read 1 MB sequentially from memory</td>
+<td align="left">250,000 ns</td>
+<td align="left">百微秒级（0.25ms）</td>
 </tr>
 <tr>
-<td>同数据中心内往返</td>
-<td>Round trip within same datacenter</td>
-<td>500,000 ns</td>
-<td>半毫秒级（0.5ms）</td>
+<td align="left">同数据中心内往返</td>
+<td align="left">Round trip within same datacenter</td>
+<td align="left">500,000 ns</td>
+<td align="left">半毫秒级（0.5ms）</td>
 </tr>
 <tr>
-<td>磁盘寻道</td>
-<td>Disk seek</td>
-<td>10,000,000 ns</td>
-<td>10 毫秒级</td>
+<td align="left">磁盘寻道</td>
+<td align="left">Disk seek</td>
+<td align="left">10,000,000 ns</td>
+<td align="left">10 毫秒级</td>
 </tr>
 <tr>
-<td>从磁盘顺序读取 1MB</td>
-<td>Read 1 MB sequentially from disk</td>
-<td>20,000,000 ns</td>
-<td>20 毫秒级</td>
+<td align="left">从磁盘顺序读取 1MB</td>
+<td align="left">Read 1 MB sequentially from disk</td>
+<td align="left">20,000,000 ns</td>
+<td align="left">20 毫秒级</td>
 </tr>
 <tr>
-<td>数据包往返加州→荷兰→加州</td>
-<td>Send packet CA→Netherlands→CA</td>
-<td>150,000,000 ns</td>
-<td>150 毫秒级</td>
+<td align="left">数据包往返加州→荷兰→加州</td>
+<td align="left">Send packet CA→Netherlands→CA</td>
+<td align="left">150,000,000 ns</td>
+<td align="left">150 毫秒级</td>
 </tr>
 </tbody></table></div>
-<p>从半纳秒或皮秒级别的CAF引用，到跨越全球传输所需的毫秒，甚至在某些情况下是秒级时间。**而操作系统是实现这一切的关键。**因为如果没有它，你实际上是无法使用这些东西的。<strong>操作系统，它几乎为应用程序和程序员提供了统一的抽象，尽管硬件各不相同。</strong>（这是我的理解：我们知道随着底层技术的进步，现在有各种各样的设备，电脑就有各种品牌。而对于不同的设备安装软件时，我们需要不管什么设备都可以正确的运行软件，在其中起到作用的就是操作系统）后文kubi提到“<strong>底层实际上是硬件，操作系统是介于应用程序（这些是你想要完成的任务）和复杂杂乱的底层硬件之间的一个层</strong>。”</p>
-<p>从作用上来说，“它使你能够<strong>管理在多个应用程序之间共享的资源</strong>，同时还能够处理安全问题。而一些关键的<strong>构建模块</strong>，我们将在本学期深入讨论的内容，<strong>诸如进程、线程、并发、调度、协调、所有这些内容、地址空间、保护和安全等</strong>。”</p>
+<p>操作系统的核心作用：<strong>管理多应用间的资源共享，处理系统安全问题</strong>，本学期核心学习的构建模块包括进程、线程、并发、调度、协调、地址空间、保护与安全等。</p>
 
-        <h1 id="二、搜索-举例"   >
-          <a href="#二、搜索-举例" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、搜索-举例" class="headerlink" title="二、搜索-举例"></a>二、搜索-举例</h1>
-      <p><img src="/../images/image-20260318201226924.png" alt="image-20260318201226924"></p>
-<p>“在这节课上，你可以近距离观察到这些<strong>构建模块</strong>如何实际被实现，如何将它们整合在一起。举个例子，你拿出手机，搜索一些内容。其实，发生的是：</p>
-<p><strong>手机会连接到DNS服务，DNS是层级化的</strong>，因此可能有多个服务器连接以获取响应。它的作用是将你可读的人类服务名称转化为IP地址，之后可以用来通过互联网不断跳转到某个地方。</p>
-<p>可能是一个数据中心，你将在入口点遇到负载均衡器。你完全没有意识到，负载均衡器会选择下一个跳点来转发这个信息。然后，也许有一些定制的服务器在忙于执行你的搜索或寻找信息。</p>
-<p>找到你感兴趣的信息。可能会生成一些广告，并且其他的合成也会发生在最终网页上，生成一个包含你结果的页面，也许还有一些广告，然后这些结果会通过同样的路径回传，通常是通过互联网返回到手机。这件你每天都会利用的简单事情，实际上有很多非常有趣的环节。”</p>
+        <h2 id="二、日常案例：手机搜索背后的系统逻辑"   >
+          <a href="#二、日常案例：手机搜索背后的系统逻辑" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、日常案例：手机搜索背后的系统逻辑" class="headerlink" title="二、日常案例：手机搜索背后的系统逻辑"></a>二、日常案例：手机搜索背后的系统逻辑</h2>
+      <p>通过日常手机搜索场景，直观展现操作系统核心模块的实际落地与协同，理解系统底层组件的整合逻辑：</p>
+<p><strong>完整流程</strong>：手机发起搜索 → 连接DNS服务 → 解析域名获取IP → 访问对应数据中心 → 负载均衡器分配后端服务器 → 服务器执行搜索、生成结果与广告 → 结果原路返回手机</p>
 
-        <h3 id="什么是DNS？"   >
-          <a href="#什么是DNS？" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是DNS？" class="headerlink" title="什么是DNS？"></a>什么是DNS？</h3>
-      <p><strong>DNS(domain name system)</strong>，也就是域名系统，把你能看懂的网址（比如 <code>baidu.com</code>）<strong>翻译成</strong>电脑能看懂的 IP 地址（比如 <code>180.101.49.11</code>）。是一个全球分布式、层级化的数据库，实现域名 ↔ IP 地址 相互转换</p>
+        <h3 id="1-DNS（域名系统）详解"   >
+          <a href="#1-DNS（域名系统）详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-DNS（域名系统）详解" class="headerlink" title="1. DNS（域名系统）详解"></a>1. DNS（域名系统）详解</h3>
+      <p><strong>定义</strong>：Domain Name System，全球分布式、层级化的域名解析系统，核心功能是将人类可读的域名（如baidu.com），翻译为计算机可识别的IP地址，实现域名与IP地址的相互转换。</p>
 <ul>
-<li>层级（树状）：根域名服务器，顶级域服务器，权威域名服务器（每一层只负责自己的部分）</li>
-<li>分布式：没有一台机器存全世界所有域名，每台服务器只负责一小部分，查询时一层层问过去</li>
-<li>缓存（cache）:查过一次就记住，下次直接返回（极大提高速度，DNS高性能的关键）</li>
-<li>网络协议实现：DNS用UDP53端口实现，快，无连接，适合小查询，大型请求会切TCP</li>
+<li><strong>层级架构</strong>：树状结构，分为根域名服务器、顶级域服务器（com&#x2F;cn&#x2F;org）、权威域名服务器，每层仅负责自身管辖范围，不存储全量数据</li>
+<li><strong>分布式特性</strong>：无单台服务器存储全球所有域名，每台服务器仅负责局部数据，查询时逐级请求</li>
+<li><strong>缓存机制</strong>：解析结果会缓存，TTL（过期时间）控制缓存时效，大幅提升解析速度，是DNS高性能的关键</li>
+<li><strong>网络协议</strong>：默认使用UDP 53端口，速度快、无连接，适合小型查询；大型请求切换为TCP协议</li>
 </ul>
 
-        <h3 id="什么是负载均衡器"   >
-          <a href="#什么是负载均衡器" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是负载均衡器" class="headerlink" title="什么是负载均衡器"></a>什么是负载均衡器</h3>
-      <p>**LB(Load Balancer)**它站在用户和一堆服务器中间，<strong>把请求均匀分给多台服务器</strong>，不让任何一台忙死、其他闲死。</p>
-<p>当搜索东西的请求到达数据中心，第一个遇到的就是负载均衡器，它要看后面哪台服务器最闲然后把你的搜索请求转发给它，等服务器算完结果再传回给你。</p>
-<p>理解了这两个概念，你是否已然窥见这个系统的精妙并且惊叹呢。</p>
-<p>kubi说：“<strong>我也从中感到惊奇。我喜欢系统，并且我认为像这样的一个大系统能够正常运作，实在是太神奇了</strong>。”</p>
-<p>这份热爱和求知欲感染到了不同时空的我，为之感同身受。</p>
-<p>惊叹的同时，他抛出了两个问题。如果你理解了DNS的结构，我想你能回答出。</p>
+        <h3 id="2-负载均衡器（LB）详解"   >
+          <a href="#2-负载均衡器（LB）详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-负载均衡器（LB）详解" class="headerlink" title="2. 负载均衡器（LB）详解"></a>2. 负载均衡器（LB）详解</h3>
+      <p><strong>定义</strong>：Load Balancer，数据中心入口的流量调度组件，相当于网络流量的交通警察。</p>
+<ul>
+<li><strong>核心作用</strong>：将用户请求均匀分发至多台后端服务器，避免单台服务器过载，实现高并发承载与高可用</li>
+<li><strong>工作逻辑</strong>：检测后端服务器负载状态，选择空闲服务器转发请求，服务器处理完成后，将结果回传给用户</li>
+</ul>
 
-        <h5 id="那么多DNS服务器是如何保持数据一致的"   >
-          <a href="#那么多DNS服务器是如何保持数据一致的" class="heading-link"><i class="fas fa-link"></i></a><a href="#那么多DNS服务器是如何保持数据一致的" class="headerlink" title="那么多DNS服务器是如何保持数据一致的"></a>那么多DNS服务器是如何保持数据一致的</h5>
+        <h3 id="延伸问题：DNS服务器的一致性与安全性"   >
+          <a href="#延伸问题：DNS服务器的一致性与安全性" class="heading-link"><i class="fas fa-link"></i></a><a href="#延伸问题：DNS服务器的一致性与安全性" class="headerlink" title="延伸问题：DNS服务器的一致性与安全性"></a>延伸问题：DNS服务器的一致性与安全性</h3>
+      <ol>
+<li><strong>多DNS服务器如何保持数据一致？</strong> 采用树形层级架构，每层仅管理自身权限范围内的数据；域名更新时，先修改权威服务器，再逐级向上通知刷新；依靠TTL缓存过期机制，实现<strong>最终一致性</strong>，无需实时强同步，兼顾效率与稳定性。</li>
+<li><strong>为什么难以入侵DNS系统？</strong> 物理层面：服务器全球分散部署，跨国家、跨运营商，无法同时攻破；逻辑层面：层级隔离，单台服务器被入侵仅影响局部数据；技术层面：默认53端口严格管控，配合TSIG事务签名、DNSSEC数字签名，防止数据伪造与劫持。</li>
+</ol>
+
+        <h2 id="三、操作系统的定义"   >
+          <a href="#三、操作系统的定义" class="heading-link"><i class="fas fa-link"></i></a><a href="#三、操作系统的定义" class="headerlink" title="三、操作系统的定义"></a>三、操作系统的定义</h2>
+      <p>目前操作系统<strong>无统一公认的定义</strong>，课程中给出核心界定：</p>
+<p>操作系统包含<strong>内核（Kernel）<strong>与配套程序，其中</strong>内核是计算机中始终运行的核心程序</strong>，其余内容要么是随系统发布的系统程序，要么是用户使用的应用程序。</p>
+
+        <h2 id="四、拆解“操作”与“系统”"   >
+          <a href="#四、拆解“操作”与“系统”" class="heading-link"><i class="fas fa-link"></i></a><a href="#四、拆解“操作”与“系统”" class="headerlink" title="四、拆解“操作”与“系统”"></a>四、拆解“操作”与“系统”</h2>
+      
+        <h3 id="1-什么是系统（System）"   >
+          <a href="#1-什么是系统（System）" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-什么是系统（System）" class="headerlink" title="1. 什么是系统（System）"></a>1. 什么是系统（System）</h3>
+      <p>系统由<strong>多个相互关联的硬件部件</strong>组成，部件之间相互交互、相互依赖；系统追求<strong>鲁棒性（Robustness）</strong>，需要具备完善的错误处理机制，防范恶意操作与误操作，正视硬件的局限性与故障风险，并非简单的硬件拼接。</p>
+
+        <h3 id="2-什么是操作（Operating）"   >
+          <a href="#2-什么是操作（Operating）" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-什么是操作（Operating）" class="headerlink" title="2. 什么是操作（Operating）"></a>2. 什么是操作（Operating）</h3>
+      <p>“操作”核心是对系统资源的管控，包含三大核心：</p>
+<ul>
+<li><strong>资源共享</strong>：协调多应用竞争CPU、内存、磁盘、网络等硬件资源</li>
+<li><strong>隔离与保护</strong>：实现进程间的权限隔离，单个程序崩溃不影响整个系统，防止非法访问</li>
+<li><strong>多路复用&#x2F;并发</strong>：单CPU硬件基础上，通过快速切换任务，实现多任务同时运行的效果</li>
+</ul>
+
+        <h3 id="3-硬件与软件的接口：虚拟化核心"   >
+          <a href="#3-硬件与软件的接口：虚拟化核心" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-硬件与软件的接口：虚拟化核心" class="headerlink" title="3. 硬件与软件的接口：虚拟化核心"></a>3. 硬件与软件的接口：虚拟化核心</h3>
+      <p>硬件与软件的接口问题，本质就是<strong>虚拟化问题</strong>。上层应用直接运行在复杂杂乱的硬件上，无法实现受控、安全、统一的访问，课程默认学习者已完成CS61C学习，掌握计算机硬件基础组成：</p>
+<ul>
+<li><strong>处理器（CPU）</strong>：包含寄存器，可存储数据、内存地址，支持进程切换时的状态保存与恢复</li>
+<li><strong>内存</strong>：存储各类数据，部分内存专属操作系统使用，不同区域对应不同进程，实现进程隔离</li>
+<li><strong>缓存</strong>：位于CPU与内存之间，加速数据访问，提升系统处理速度</li>
+<li><strong>页表</strong>：实现虚拟地址到物理地址的转换，支撑虚拟内存功能</li>
+<li><strong>外部设备</strong>：存储设备、网络设备、显示器、GPU等，通过总线与控制器连接，实现硬件协同</li>
+</ul>
+<p>硬件本身复杂度极高，指令集架构（ISA）仅提供基础标准化，仍无法满足便捷编程的需求，<strong>操作系统的核心价值，就是将底层硬件细节全部抽象，提供干净的边界与虚拟化视图，大幅降低应用编程难度</strong>。</p>
+
+        <h2 id="五、操作系统的核心：抽象与虚拟化（幻觉性质）"   >
+          <a href="#五、操作系统的核心：抽象与虚拟化（幻觉性质）" class="heading-link"><i class="fas fa-link"></i></a><a href="#五、操作系统的核心：抽象与虚拟化（幻觉性质）" class="headerlink" title="五、操作系统的核心：抽象与虚拟化（幻觉性质）"></a>五、操作系统的核心：抽象与虚拟化（幻觉性质）</h2>
+      <p>操作系统最核心的特性是<strong>幻觉性质（Illusion）</strong>，即通过虚拟化技术，为上层应用提供硬件本身不存在、却简洁易用的<strong>抽象接口</strong>，让应用误以为独占硬件资源，无需关注底层硬件的复杂性。</p>
+
+        <h3 id="1-核心抽象内容（硬件中不存在，由操作系统创造）"   >
+          <a href="#1-核心抽象内容（硬件中不存在，由操作系统创造）" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-核心抽象内容（硬件中不存在，由操作系统创造）" class="headerlink" title="1. 核心抽象内容（硬件中不存在，由操作系统创造）"></a>1. 核心抽象内容（硬件中不存在，由操作系统创造）</h3>
       <ul>
-<li>结构稳定：它永远是树形结构，每一层只管自己的，保证了全局一致</li>
-<li>动态一致：如果管理员修改DNS记录，首先更新权威服务器，然后通知上级刷新，再逐级穿鼻哦</li>
-<li>TTL同步：每台服务器其实不是实时同步的，全网一卡DNS就费了。事实上每条 DNS 记录都有一个<strong>过期时间</strong>。，每条 DNS 记录都有一个<strong>过期时间</strong>。</li>
+<li><strong>线程</strong>：虚拟化CPU，将单个物理CPU转化为多个可独立运行的执行单元，实现并发</li>
+<li><strong>地址空间（虚拟内存）</strong>：虚拟化物理内存，为每个进程提供独立、连续、受保护的内存视图，营造“无限内存”的幻觉</li>
+<li><strong>文件</strong>：虚拟化磁盘块，将硬件层面零散的存储块，封装为易用的文件与目录，实现持久化存储</li>
+<li><strong>用户与权限</strong>：创造用户概念，实现系统权限管控，保障系统安全</li>
+<li><strong>套接字&#x2F;消息队列</strong>：虚拟化网络传输，将不可靠的网络数据包，转化为可靠、有序的通信接口</li>
 </ul>
 
-        <h5 id="为什么不可能入侵DNS"   >
-          <a href="#为什么不可能入侵DNS" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么不可能入侵DNS" class="headerlink" title="为什么不可能入侵DNS"></a>为什么不可能入侵DNS</h5>
+        <h3 id="2-虚拟化模型"   >
+          <a href="#2-虚拟化模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-虚拟化模型" class="headerlink" title="2. 虚拟化模型"></a>2. 虚拟化模型</h3>
+      <p>操作系统运行在硬件之上，作为核心中间层，将底层杂乱的硬件资源，转化为标准化、易用的运行环境，应用程序不直接接触硬件，仅与操作系统提供的抽象交互。</p>
+
+        <h2 id="六、关键概念：程序与进程"   >
+          <a href="#六、关键概念：程序与进程" class="heading-link"><i class="fas fa-link"></i></a><a href="#六、关键概念：程序与进程" class="headerlink" title="六、关键概念：程序与进程"></a>六、关键概念：程序与进程</h2>
+      
+        <h3 id="1-进程的定义"   >
+          <a href="#1-进程的定义" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-进程的定义" class="headerlink" title="1. 进程的定义"></a>1. 进程的定义</h3>
+      <p><strong>进程</strong>是操作系统提供的、具备<strong>受限权限的执行环境</strong>，相当于一个干净的运行容器，是应用程序实际运行的载体，也是操作系统虚拟化的核心产物。</p>
+
+        <h3 id="2-进程包含的核心内容"   >
+          <a href="#2-进程包含的核心内容" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-进程包含的核心内容" class="headerlink" title="2. 进程包含的核心内容"></a>2. 进程包含的核心内容</h3>
       <ul>
-<li>物理上：服务器分布在全球，你需要同时攻破全球不同国家、不同运营商的机器，这在物理上几乎不可能</li>
-<li>逻辑上：DNS是分层隔离的</li>
-<li>技术上：DNS本身有防火墙，DNS 主要用 53 端口，外部攻击很难绕过。</li>
+<li>独立的地址空间（受保护的内存块）</li>
+<li>一个或多个线程（执行单元）</li>
+<li>打开的文件、网络套接字</li>
 </ul>
-<p>回到之前的问题，什么是操作系统，kubi提到现在还没有一个被普遍解释的定义，但给出了一种理论</p>
-<p>**“操作系统有一个叫做内核的部分，通常是计算机上始终运行的唯一程序，它像是操作系统的核心，可能其他的东西要么是随操作系统一起发布的系统程序，要么就是应用程序。”**在后文他会继续讲</p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/03/18/CS162/">https://1artemise.github.io/2026/03/18/CS162/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/cs162/">cs162</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/csdiy/">csdiy</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2026/03/13/%E5%A4%A9%E6%A2%AF%E8%B5%9B/"><span class="paginator-prev__text">天梯赛合集</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">
-          一、什么是操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%97%B6%E9%97%B4-%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">
-          1.时间-引入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%90%9C%E7%B4%A2-%E4%B8%BE%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">
-          二、搜索-举例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDNS%EF%BC%9F"><span class="toc-number">2.0.1.</span> <span class="toc-text">
-          什么是DNS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8"><span class="toc-number">2.0.2.</span> <span class="toc-text">
-          什么是负载均衡器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E5%A4%9ADNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E6%8C%81%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E7%9A%84"><span class="toc-number">2.0.2.0.1.</span> <span class="toc-text">
-          那么多DNS服务器是如何保持数据一致的</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%85%A5%E4%BE%B5DNS"><span class="toc-number">2.0.2.0.2.</span> <span class="toc-text">
-          为什么不可能入侵DNS</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+
+        <h3 id="3-程序与进程的区别"   >
+          <a href="#3-程序与进程的区别" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-程序与进程的区别" class="headerlink" title="3. 程序与进程的区别"></a>3. 程序与进程的区别</h3>
+      <ul>
+<li><strong>程序</strong>：磁盘上存储的二进制代码文件，是静态、未运行的状态</li>
+<li><strong>进程</strong>：程序被实例化、加载运行后的动态状态，是操作系统分配资源的基本单位</li>
+</ul>
+<p><strong>核心结论</strong>：应用程序感知到的“机器”，并非真实物理硬件，而是操作系统提供的<strong>进程抽象</strong>；每个运行的程序对应独立进程，进程提供的接口远比原始硬件简洁易用。</p>
+
+        <h2 id="七、操作系统的三大核心角色（必考）"   >
+          <a href="#七、操作系统的三大核心角色（必考）" class="heading-link"><i class="fas fa-link"></i></a><a href="#七、操作系统的三大核心角色（必考）" class="headerlink" title="七、操作系统的三大核心角色（必考）"></a>七、操作系统的三大核心角色（必考）</h2>
+      
+        <h3 id="1-裁判（Referee）"   >
+          <a href="#1-裁判（Referee）" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-裁判（Referee）" class="headerlink" title="1. 裁判（Referee）"></a>1. 裁判（Referee）</h3>
+      <p>作为系统资源的管理者，负责CPU、内存、设备等资源的分配与调度，实现进程间的隔离、保护与公平竞争，处理权限与安全问题，避免资源争抢与系统崩溃。</p>
+
+        <h3 id="2-幻术师-抽象大师（Illusionist）"   >
+          <a href="#2-幻术师-抽象大师（Illusionist）" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-幻术师-抽象大师（Illusionist）" class="headerlink" title="2. 幻术师&#x2F;抽象大师（Illusionist）"></a>2. 幻术师&#x2F;抽象大师（Illusionist）</h3>
+      <p>通过虚拟化技术，为应用制造独占硬件、资源无限的幻觉，屏蔽硬件差异与底层细节，提供进程、线程、地址空间、文件等高层抽象，让编程更简单。</p>
+
+        <h3 id="3-粘合剂（Glue）"   >
+          <a href="#3-粘合剂（Glue）" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-粘合剂（Glue）" class="headerlink" title="3. 粘合剂（Glue）"></a>3. 粘合剂（Glue）</h3>
+      <p>作为软硬件生态的连接层，提供统一的存储、网络、设备访问接口，将零散的硬件、驱动、应用粘合在一起，实现跨硬件、跨平台的兼容运行。</p>
+
+        <h2 id="第一讲核心总结"   >
+          <a href="#第一讲核心总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一讲核心总结" class="headerlink" title="第一讲核心总结"></a>第一讲核心总结</h2>
+      <ol>
+<li>操作系统是硬件与应用之间的中间层，核心是<strong>虚拟化+抽象</strong>，解决硬件复杂性问题</li>
+<li>内核是操作系统始终运行的核心，负责资源管理与抽象提供</li>
+<li>进程是应用运行的核心载体，程序是静态代码，进程是动态运行实例</li>
+<li>操作系统兼具裁判、幻术师、粘合剂三大角色，实现资源共享、隔离保护、便捷编程三大目标</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/03/18/CS162/">https://1artemise.github.io/2026/03/18/CS162/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/cs162/">cs162</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/csdiy/">csdiy</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2026/03/20/%E8%AE%A1%E7%BD%91/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">计网笔记（中科大郑郑烇、杨坚）</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2026/03/13/%E5%A4%A9%E6%A2%AF%E8%B5%9B/"><span class="paginator-prev__text">天梯赛合集</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%97%B6%E5%BB%B6%E5%BC%95%E5%85%A5%EF%BC%9A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E7%B3%BB%E7%BB%9F%E8%BF%90%E8%A1%8C%E7%9A%84%E6%A0%B8%E5%BF%83"><span class="toc-number">1.</span> <span class="toc-text">
+          一、时延引入：操作系统是系统运行的核心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%97%B6%E5%BB%B6%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">
+          经典计算机时延对照表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%97%A5%E5%B8%B8%E6%A1%88%E4%BE%8B%EF%BC%9A%E6%89%8B%E6%9C%BA%E6%90%9C%E7%B4%A2%E8%83%8C%E5%90%8E%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%80%BB%E8%BE%91"><span class="toc-number">2.</span> <span class="toc-text">
+          二、日常案例：手机搜索背后的系统逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-DNS%EF%BC%88%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%EF%BC%89%E8%AF%A6%E8%A7%A3"><span class="toc-number">2.1.</span> <span class="toc-text">
+          1. DNS（域名系统）详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8%EF%BC%88LB%EF%BC%89%E8%AF%A6%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">
+          2. 负载均衡器（LB）详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%97%AE%E9%A2%98%EF%BC%9ADNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">2.3.</span> <span class="toc-text">
+          延伸问题：DNS服务器的一致性与安全性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.</span> <span class="toc-text">
+          三、操作系统的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%8B%86%E8%A7%A3%E2%80%9C%E6%93%8D%E4%BD%9C%E2%80%9D%E4%B8%8E%E2%80%9C%E7%B3%BB%E7%BB%9F%E2%80%9D"><span class="toc-number">4.</span> <span class="toc-text">
+          四、拆解“操作”与“系统”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B3%BB%E7%BB%9F%EF%BC%88System%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">
+          1. 什么是系统（System）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%EF%BC%88Operating%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">
+          2. 什么是操作（Operating）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A1%AC%E4%BB%B6%E4%B8%8E%E8%BD%AF%E4%BB%B6%E7%9A%84%E6%8E%A5%E5%8F%A3%EF%BC%9A%E8%99%9A%E6%8B%9F%E5%8C%96%E6%A0%B8%E5%BF%83"><span class="toc-number">4.3.</span> <span class="toc-text">
+          3. 硬件与软件的接口：虚拟化核心</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A0%B8%E5%BF%83%EF%BC%9A%E6%8A%BD%E8%B1%A1%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%8C%96%EF%BC%88%E5%B9%BB%E8%A7%89%E6%80%A7%E8%B4%A8%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">
+          五、操作系统的核心：抽象与虚拟化（幻觉性质）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E6%8A%BD%E8%B1%A1%E5%86%85%E5%AE%B9%EF%BC%88%E7%A1%AC%E4%BB%B6%E4%B8%AD%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%8C%E7%94%B1%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%88%9B%E9%80%A0%EF%BC%89"><span class="toc-number">5.1.</span> <span class="toc-text">
+          1. 核心抽象内容（硬件中不存在，由操作系统创造）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%99%9A%E6%8B%9F%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">
+          2. 虚拟化模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%EF%BC%9A%E7%A8%8B%E5%BA%8F%E4%B8%8E%E8%BF%9B%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">
+          六、关键概念：程序与进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">6.1.</span> <span class="toc-text">
+          1. 进程的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E5%8C%85%E5%90%AB%E7%9A%84%E6%A0%B8%E5%BF%83%E5%86%85%E5%AE%B9"><span class="toc-number">6.2.</span> <span class="toc-text">
+          2. 进程包含的核心内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A8%8B%E5%BA%8F%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.3.</span> <span class="toc-text">
+          3. 程序与进程的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%89%E5%A4%A7%E6%A0%B8%E5%BF%83%E8%A7%92%E8%89%B2%EF%BC%88%E5%BF%85%E8%80%83%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">
+          七、操作系统的三大核心角色（必考）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%A3%81%E5%88%A4%EF%BC%88Referee%EF%BC%89"><span class="toc-number">7.1.</span> <span class="toc-text">
+          1. 裁判（Referee）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B9%BB%E6%9C%AF%E5%B8%88-%E6%8A%BD%E8%B1%A1%E5%A4%A7%E5%B8%88%EF%BC%88Illusionist%EF%BC%89"><span class="toc-number">7.2.</span> <span class="toc-text">
+          2. 幻术师&#x2F;抽象大师（Illusionist）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%B2%98%E5%90%88%E5%89%82%EF%BC%88Glue%EF%BC%89"><span class="toc-number">7.3.</span> <span class="toc-text">
+          3. 粘合剂（Glue）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%AE%B2%E6%A0%B8%E5%BF%83%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">
+          第一讲核心总结</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">jade</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="wjywq12345" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
 (function() {
     // 创建爱心特效
     function createHeartEffect(x, y) {
