@@ -1,0 +1,617 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="一、一句话定义       梯度消失：反向传播时，梯度随着网络层数加深而指数级衰减，逐渐趋近于 0，导致浅层（靠近输入层）的参数几乎不更新，模型学不到底层的特征。                      二、具体是怎样发生的？                           2.1 核心原因：也是连乘效应       和梯度爆炸一样，梯度消失也是链式法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="梯度消失">
+<meta property="og:url" content="https://1artemise.github.io/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、一句话定义       梯度消失：反向传播时，梯度随着网络层数加深而指数级衰减，逐渐趋近于 0，导致浅层（靠近输入层）的参数几乎不更新，模型学不到底层的特征。                      二、具体是怎样发生的？                           2.1 核心原因：也是连乘效应       和梯度爆炸一样，梯度消失也是链式法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-07T15:57:01.422Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary"><title>梯度消失 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">梯度消失</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body">
+        <h2 id="一、一句话定义"   >
+          <a href="#一、一句话定义" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、一句话定义" class="headerlink" title="一、一句话定义"></a>一、一句话定义</h2>
+      <p><strong>梯度消失</strong>：反向传播时，梯度随着网络层数加深而<strong>指数级衰减</strong>，逐渐趋近于 0，导致浅层（靠近输入层）的参数几乎不更新，模型学不到底层的特征。</p>
+<hr>
+
+        <h2 id="二、具体是怎样发生的？"   >
+          <a href="#二、具体是怎样发生的？" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、具体是怎样发生的？" class="headerlink" title="二、具体是怎样发生的？"></a>二、具体是怎样发生的？</h2>
+      
+        <h3 id="2-1-核心原因：也是连乘效应"   >
+          <a href="#2-1-核心原因：也是连乘效应" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-核心原因：也是连乘效应" class="headerlink" title="2.1 核心原因：也是连乘效应"></a>2.1 核心原因：也是连乘效应</h3>
+      <p>和梯度爆炸一样，梯度消失也是链式法则连乘的结果。区别在于：</p>
+<ul>
+<li><strong>梯度爆炸</strong>：乘数都 &gt; 1 → 越乘越大</li>
+<li><strong>梯度消失</strong>：乘数都 &lt; 1 → 越乘越小</li>
+</ul>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 一个3层网络的梯度传播（和前一讲相同的形式）</span><br><span class="line">∂loss/∂W₁ = ∂loss/∂h₃ · W₃ · ∂h₃/∂h₂ · W₂ · ∂h₂/∂h₁ · W₁ · ∂h₁/∂W₁</span><br><span class="line">              ↑                              ↑</span><br><span class="line">         从loss传来的初始梯度          每过一层就多乘一个数</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><strong>如果每个乘数都小于 1，梯度就会指数级衰减到 0。</strong></p>
+
+        <h3 id="2-2-触发条件"   >
+          <a href="#2-2-触发条件" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-触发条件" class="headerlink" title="2.2 触发条件"></a>2.2 触发条件</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">条件</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>激活函数导数 &lt; 1</strong></td>
+<td align="left">sigmoid 导数 ≤ 0.25，tanh 导数 ≤ 1</td>
+<td align="left">sigmoid 饱和区导数接近 0</td>
+</tr>
+<tr>
+<td align="left"><strong>权重值 &lt; 1</strong></td>
+<td align="left">初始化太小或训练中权重变小</td>
+<td align="left"><code>W = [[0.1, 0.2], [0.1, -0.2]]</code></td>
+</tr>
+<tr>
+<td align="left"><strong>网络很深</strong></td>
+<td align="left">层数越多，连乘次数越多</td>
+<td align="left">10 层：0.25^10 ≈ 9.5e-7</td>
+</tr>
+<tr>
+<td align="left"><strong>激活函数进入饱和区</strong></td>
+<td align="left">输入太大或太小，sigmoid&#x2F;tanh 导数 ≈ 0</td>
+<td align="left"><code>sigmoid(10) ≈ 1，导数 ≈ 0</code></td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="2-3-数字演算（以-sigmoid-为例）"   >
+          <a href="#2-3-数字演算（以-sigmoid-为例）" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-数字演算（以-sigmoid-为例）" class="headerlink" title="2.3 数字演算（以 sigmoid 为例）"></a>2.3 数字演算（以 sigmoid 为例）</h3>
+      <p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">sigmoid 函数特性：</span><br><span class="line">- 输出范围：(0, 1)</span><br><span class="line">- 最大值处导数：σ&#x27;(0) = 0.25</span><br><span class="line">- 饱和区（|x|&gt;5）导数：≈ 0.00...</span><br><span class="line"></span><br><span class="line">假设：</span><br><span class="line">- 每层激活函数的导数 ≈ 0.25（乐观估计）</span><br><span class="line">- 初始梯度（从 loss 传下来）= 1</span><br><span class="line"></span><br><span class="line">经过第 1 层后：梯度 = 1 × 0.25 = 0.25</span><br><span class="line">经过第 2 层后：梯度 = 0.25 × 0.25 = 0.0625</span><br><span class="line">经过第 3 层后：梯度 = 0.0625 × 0.25 = 0.015625</span><br><span class="line">...</span><br><span class="line">经过第 10 层后：梯度 = 1 × 0.25^10 ≈ 9.5 × 10⁻⁷（不到百万分之一）</span><br><span class="line">经过第 20 层后：梯度 = 1 × 0.25^20 ≈ 9.1 × 10⁻¹³（几乎为 0）</span><br><span class="line"></span><br><span class="line"># 指数衰减，同样可怕</span><br></pre></td></tr></table></div></figure>
+
+
+
+<blockquote>
+<p>注意：sigmoid 的实际导数往往小于 0.25（因为大多数输入不在 0 附近），所以实际衰减比这个例子更快。</p>
+</blockquote>
+<hr>
+
+        <h2 id="三、梯度消失会导致什么后果？"   >
+          <a href="#三、梯度消失会导致什么后果？" class="heading-link"><i class="fas fa-link"></i></a><a href="#三、梯度消失会导致什么后果？" class="headerlink" title="三、梯度消失会导致什么后果？"></a>三、梯度消失会导致什么后果？</h2>
+      
+        <h3 id="3-1-浅层参数不更新"   >
+          <a href="#3-1-浅层参数不更新" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-浅层参数不更新" class="headerlink" title="3.1 浅层参数不更新"></a>3.1 浅层参数不更新</h3>
+      <p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 以 10 层网络为例</span><br><span class="line">第 10 层（靠近输出）：梯度 ≈ 1    → 参数正常更新 ✓</span><br><span class="line">第 9 层：梯度 ≈ 0.25              → 参数更新变慢 ⚠️</span><br><span class="line">第 8 层：梯度 ≈ 0.0625            → 几乎不动 ⚠️</span><br><span class="line">第 7 层：梯度 ≈ 0.0156            → 基本不动 ❌</span><br><span class="line">第 6 层及以下：梯度 ≈ 0.000...    → 完全不动 ❌</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="3-2-模型“学不动”了"   >
+          <a href="#3-2-模型“学不动”了" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-模型“学不动”了" class="headerlink" title="3.2 模型“学不动”了"></a>3.2 模型“学不动”了</h3>
+      <ul>
+<li><strong>深层（靠近输出）</strong>：勉强能学到一些东西，但因为没有浅层特征支撑，效果很差</li>
+<li><strong>浅层（靠近输入）</strong>：几乎没被训练，仍然是随机初始化的状态</li>
+<li><strong>整体效果</strong>：模型的 loss 下降极慢，或者卡在一个很高的值下不去</li>
+</ul>
+
+        <h3 id="3-3-深层网络反而比浅层网络差"   >
+          <a href="#3-3-深层网络反而比浅层网络差" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-3-深层网络反而比浅层网络差" class="headerlink" title="3.3 深层网络反而比浅层网络差"></a>3.3 深层网络反而比浅层网络差</h3>
+      <p>这是最反直觉的现象：</p>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 现象</span><br><span class="line">20 层网络  &lt;  10 层网络  &lt;  5 层网络  （效果对比）</span><br><span class="line"></span><br><span class="line"># 原因</span><br><span class="line">不是过拟合，而是：20 层网络的浅层梯度已经消失了，有效层数可能只有 5 层左右</span><br><span class="line">其余 15 层是“僵尸层”——既没学到东西，还增加了噪声</span><br></pre></td></tr></table></div></figure>
+
+
+
+<hr>
+
+        <h2 id="四、哪些场景特别容易发生梯度消失？"   >
+          <a href="#四、哪些场景特别容易发生梯度消失？" class="heading-link"><i class="fas fa-link"></i></a><a href="#四、哪些场景特别容易发生梯度消失？" class="headerlink" title="四、哪些场景特别容易发生梯度消失？"></a>四、哪些场景特别容易发生梯度消失？</h2>
+      
+        <h3 id="4-1-使用-sigmoid-或-tanh-激活函数"   >
+          <a href="#4-1-使用-sigmoid-或-tanh-激活函数" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-使用-sigmoid-或-tanh-激活函数" class="headerlink" title="4.1 使用 sigmoid 或 tanh 激活函数"></a>4.1 使用 sigmoid 或 tanh 激活函数</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">激活函数</th>
+<th align="left">导数范围</th>
+<th align="left">最大导数</th>
+<th align="left">风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>sigmoid</strong></td>
+<td align="left">(0, 0.25]</td>
+<td align="left">0.25</td>
+<td align="left">🔴 极高</td>
+</tr>
+<tr>
+<td align="left"><strong>tanh</strong></td>
+<td align="left">(0, 1]</td>
+<td align="left">1.0</td>
+<td align="left">🟡 中等</td>
+</tr>
+<tr>
+<td align="left"><strong>ReLU</strong></td>
+<td align="left">{0, 1}</td>
+<td align="left">1.0</td>
+<td align="left">🟢 低</td>
+</tr>
+<tr>
+<td align="left"><strong>LeakyReLU</strong></td>
+<td align="left">{0.01, 1}</td>
+<td align="left">1.0</td>
+<td align="left">🟢 低</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>sigmoid 的导数最大值只有 0.25，连乘几层就消失了。这也是为什么现代深度学习几乎不用 sigmoid 作为隐藏层激活函数。</p>
+</blockquote>
+
+        <h3 id="4-2-权重初始化太小"   >
+          <a href="#4-2-权重初始化太小" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-权重初始化太小" class="headerlink" title="4.2 权重初始化太小"></a>4.2 权重初始化太小</h3>
+      <p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 错误的初始化方式</span><br><span class="line">W = torch.randn(512, 512) * 0.01   # 权重太小了！</span><br><span class="line"># 每层输出方差 ≈ 0.0001，激活函数输入极小</span><br><span class="line"># sigmoid(0.01) ≈ 0.5025，导数 ≈ 0.25（还好）</span><br><span class="line"># 但 tanh(0.01) ≈ 0.01，导数 ≈ 0.9999（较安全）</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="4-3-网络层数过深"   >
+          <a href="#4-3-网络层数过深" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-网络层数过深" class="headerlink" title="4.3 网络层数过深"></a>4.3 网络层数过深</h3>
+      <p>即使是 ReLU，没有残差连接的话，深层网络梯度消失风险也很大。因为：</p>
+<ul>
+<li>如果某层激活函数输出为 0（ReLU 死亡），梯度就断了</li>
+<li>权重的随机性可能导致部分层有效梯度 &lt; 1</li>
+</ul>
+
+        <h3 id="4-4-RNN-处理长序列"   >
+          <a href="#4-4-RNN-处理长序列" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-RNN-处理长序列" class="headerlink" title="4.4 RNN 处理长序列"></a>4.4 RNN 处理长序列</h3>
+      <p>RNN 的时间步展开和深度网络类似。</p>
+<ul>
+<li><strong>梯度消失</strong>：RNN 记不住很久以前的信息（LSTM 部分解决）</li>
+<li><strong>梯度爆炸</strong>：RNN 在某个时间步突然崩溃（梯度裁剪解决）</li>
+</ul>
+<hr>
+
+        <h2 id="五、如何解决？（重点）"   >
+          <a href="#五、如何解决？（重点）" class="heading-link"><i class="fas fa-link"></i></a><a href="#五、如何解决？（重点）" class="headerlink" title="五、如何解决？（重点）"></a>五、如何解决？（重点）</h2>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">原理</th>
+<th align="left">一句话评价</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>ReLU &#x2F; 变体激活函数</strong></td>
+<td align="left">正区间导数为 1，不衰减梯度</td>
+<td align="left">🥇 最关键、最有效的改进</td>
+</tr>
+<tr>
+<td align="left"><strong>残差连接</strong></td>
+<td align="left">梯度有一条“高速公路”直通浅层</td>
+<td align="left">🥇 Transformer 等架构的基础</td>
+</tr>
+<tr>
+<td align="left"><strong>LayerNorm &#x2F; BatchNorm</strong></td>
+<td align="left">稳定输入分布，防止进入饱和区</td>
+<td align="left">🥈 间接但很重要</td>
+</tr>
+<tr>
+<td align="left"><strong>合理初始化</strong></td>
+<td align="left">让每层输出的方差保持为 1</td>
+<td align="left">🥈 治本，从源头防止</td>
+</tr>
+<tr>
+<td align="left"><strong>LSTM &#x2F; GRU</strong></td>
+<td align="left">门控机制让梯度可以长时间保持</td>
+<td align="left">🥇 RNN 场景的最佳方案</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="5-1-使用-ReLU-及其变体（最关键）"   >
+          <a href="#5-1-使用-ReLU-及其变体（最关键）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1-使用-ReLU-及其变体（最关键）" class="headerlink" title="5.1 使用 ReLU 及其变体（最关键）"></a>5.1 使用 ReLU 及其变体（最关键）</h3>
+      <p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># ReLU：最简单、最常用</span><br><span class="line">def relu(x):</span><br><span class="line">    return max(0, x)</span><br><span class="line"># 导数为 1（当 x &gt; 0）或 0（当 x &lt; 0）</span><br><span class="line"># 正区间梯度不衰减！</span><br><span class="line"></span><br><span class="line"># 变体：LeakyReLU（解决了 ReLU 死亡问题）</span><br><span class="line">def leaky_relu(x, alpha=0.01):</span><br><span class="line">    return max(alpha * x, x)</span><br><span class="line"># 负区间也有小梯度，神经元不会“死亡”</span><br><span class="line"></span><br><span class="line"># 变体：ELU / GELU / Swish（各有优缺点）</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><strong>ReLU 带来的问题</strong>：</p>
+<ul>
+<li><strong>ReLU 死亡</strong>：如果输入始终为负，神经元输出恒为 0，梯度为 0，永远无法复活</li>
+<li>解决方案：LeakyReLU、ELU、或更小的学习率 + 合理的初始化</li>
+</ul>
+
+        <h3 id="5-2-残差连接（Add）"   >
+          <a href="#5-2-残差连接（Add）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-残差连接（Add）" class="headerlink" title="5.2 残差连接（Add）"></a>5.2 残差连接（Add）</h3>
+      <p><strong>原理</strong>：让梯度有一条不经过任何权重乘法的直通路径。</p>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 残差块</span><br><span class="line">def residual_block(x):</span><br><span class="line">    output = layer(x)      # 对 x 做变换</span><br><span class="line">    return x + output      # 输出 = 输入 + 变换</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><strong>梯度传播时</strong>：</p>
+<p>text</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">∂loss/∂x = ∂loss/∂output × ∂output/∂x</span><br><span class="line">         = ∂loss/∂output × (1 + ∂layer/∂x)</span><br><span class="line">         = ∂loss/∂output + ∂loss/∂output × ∂layer/∂x</span><br><span class="line">                       ↑</span><br><span class="line">                这条路径不经过 layer 的权重！</span><br><span class="line">                梯度可以直接从 output 传到 x</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><strong>效果</strong>：即使 <code>∂layer/∂x</code> 的梯度消失为 0，<code>∂loss/∂x</code> 仍然有 <code>∂loss/∂output</code>，不会消失。</p>
+
+        <h3 id="5-3-使用-LayerNorm-BatchNorm"   >
+          <a href="#5-3-使用-LayerNorm-BatchNorm" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-3-使用-LayerNorm-BatchNorm" class="headerlink" title="5.3 使用 LayerNorm &#x2F; BatchNorm"></a>5.3 使用 LayerNorm &#x2F; BatchNorm</h3>
+      <p><strong>原理</strong>：把激活函数的输入稳定在非饱和区（比如均值 0、方差 1 附近），让导数保持在较大值。</p>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 以 sigmoid 为例</span><br><span class="line">没有归一化时：x 可能很大（比如 10）→ sigmoid(10)≈1 → 导数≈0</span><br><span class="line">有归一化后：x 被拉回 0 附近 → sigmoid(0)=0.5 → 导数≈0.25</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="5-4-合理的权重初始化（Xavier-Kaiming）"   >
+          <a href="#5-4-合理的权重初始化（Xavier-Kaiming）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-4-合理的权重初始化（Xavier-Kaiming）" class="headerlink" title="5.4 合理的权重初始化（Xavier &#x2F; Kaiming）"></a>5.4 合理的权重初始化（Xavier &#x2F; Kaiming）</h3>
+      <p><strong>原理</strong>：让每层的输出方差保持为 1，输入信号不衰减。</p>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Xavier 初始化（适合 tanh / sigmoid）</span><br><span class="line">nn.init.xavier_uniform_(W)</span><br><span class="line"># 让 Var(output) = Var(input)</span><br><span class="line"></span><br><span class="line"># Kaiming 初始化（适合 ReLU）</span><br><span class="line">nn.init.kaiming_uniform_(W, nonlinearity=&#x27;relu&#x27;)</span><br><span class="line"># 专门针对 ReLU 设计，考虑了 ReLU 会砍掉一半神经元</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="5-5-使用-LSTM-GRU（RNN-专用）"   >
+          <a href="#5-5-使用-LSTM-GRU（RNN-专用）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-5-使用-LSTM-GRU（RNN-专用）" class="headerlink" title="5.5 使用 LSTM &#x2F; GRU（RNN 专用）"></a>5.5 使用 LSTM &#x2F; GRU（RNN 专用）</h3>
+      <p><strong>原理</strong>：引入门控机制（遗忘门、输入门、输出门），让梯度可以选择性地通过，不会在每个时间步都衰减。</p>
+<p>python</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># LSTM 的核心思想</span><br><span class="line"># 有一条“细胞状态”高速公路，梯度可以在上面长时间保持</span><br><span class="line">c_t = f_t * c_&#123;t-1&#125; + i_t * g_t</span><br><span class="line"># f_t 是遗忘门（0~1），控制多少旧信息保留</span><br><span class="line"># 如果 f_t 接近 1，梯度几乎不衰减</span><br></pre></td></tr></table></div></figure>
+
+
+
+<hr>
+
+        <h2 id="六、如何判断发生了梯度消失？"   >
+          <a href="#六、如何判断发生了梯度消失？" class="heading-link"><i class="fas fa-link"></i></a><a href="#六、如何判断发生了梯度消失？" class="headerlink" title="六、如何判断发生了梯度消失？"></a>六、如何判断发生了梯度消失？</h2>
+      
+        <h3 id="6-1-明显的信号"   >
+          <a href="#6-1-明显的信号" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1-明显的信号" class="headerlink" title="6.1 明显的信号"></a>6.1 明显的信号</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">现象</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Loss 下降极慢</strong></td>
+<td align="left">训练了很久，loss 还是很高</td>
+</tr>
+<tr>
+<td align="left"><strong>浅层参数几乎不变</strong></td>
+<td align="left">打印浅层权重的变化，几乎为 0</td>
+</tr>
+<tr>
+<td align="left"><strong>梯度值极小</strong></td>
+<td align="left">浅层梯度在 1e-6 以下，甚至为 0</td>
+</tr>
+<tr>
+<td align="left"><strong>深层效果好，浅层效果差</strong></td>
+<td align="left">靠近输出的层学到了一些东西，但整体模型很差</td>
+</tr>
+<tr>
+<td align="left"><strong>模型不收敛</strong></td>
+<td align="left">loss 卡在一个值，怎么训练都不降</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="6-2-监控代码"   >
+          <a href="#6-2-监控代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-监控代码" class="headerlink" title="6.2 监控代码"></a>6.2 监控代码</h3>
+      <p>python</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练循环中监控各层梯度的分布</span></span><br><span class="line"><span class="keyword">for</span> name, param <span class="keyword">in</span> model.named_parameters():</span><br><span class="line">    <span class="keyword">if</span> param.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        grad_mean = param.grad.mean().item()</span><br><span class="line">        grad_std = param.grad.std().item()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span>: mean=<span class="subst">&#123;grad_mean:<span class="number">.2</span>e&#125;</span>, std=<span class="subst">&#123;grad_std:<span class="number">.2</span>e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 观察规律：</span></span><br><span class="line"><span class="comment"># 正常情况：浅层和深层的梯度量级相近</span></span><br><span class="line"><span class="comment"># 梯度消失：深层梯度 1e-3，浅层梯度 1e-8（差了 5 个数量级）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以可视化</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">gradients = [p.grad.norm().item() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters()]</span><br><span class="line">plt.plot(gradients)</span><br><span class="line">plt.yscale(<span class="string">&#x27;log&#x27;</span>)  <span class="comment"># 对数坐标，更容易看出衰减趋势</span></span><br><span class="line">plt.title(<span class="string">&#x27;梯度范数分布（左：浅层，右：深层）&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></div></figure>
+
+
+
+<hr>
+
+        <h2 id="七、梯度消失-vs-梯度爆炸：对比总结"   >
+          <a href="#七、梯度消失-vs-梯度爆炸：对比总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#七、梯度消失-vs-梯度爆炸：对比总结" class="headerlink" title="七、梯度消失 vs 梯度爆炸：对比总结"></a>七、梯度消失 vs 梯度爆炸：对比总结</h2>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">梯度消失</th>
+<th align="left">梯度爆炸</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>现象</strong></td>
+<td align="left">梯度 → 0</td>
+<td align="left">梯度 → ∞</td>
+</tr>
+<tr>
+<td align="left"><strong>原因</strong></td>
+<td align="left">乘数 &lt; 1 连乘</td>
+<td align="left">乘数 &gt; 1 连乘</td>
+</tr>
+<tr>
+<td align="left"><strong>后果</strong></td>
+<td align="left">浅层学不动，模型欠拟合</td>
+<td align="left">Loss 变 NaN，模型崩溃</td>
+</tr>
+<tr>
+<td align="left"><strong>发生概率</strong></td>
+<td align="left">更常见</td>
+<td align="left">相对少见</td>
+</tr>
+<tr>
+<td align="left"><strong>主要元凶</strong></td>
+<td align="left">sigmoid&#x2F;tanh 的导数 &lt; 1</td>
+<td align="left">权重初始化太大</td>
+</tr>
+<tr>
+<td align="left"><strong>高发场景</strong></td>
+<td align="left">深层网络、RNN</td>
+<td align="left">RNN、初始化不当</td>
+</tr>
+<tr>
+<td align="left"><strong>直接解法</strong></td>
+<td align="left">用 ReLU</td>
+<td align="left">梯度裁剪</td>
+</tr>
+<tr>
+<td align="left"><strong>治本解法</strong></td>
+<td align="left">残差连接 + 归一化</td>
+<td align="left">合理初始化 + 归一化</td>
+</tr>
+</tbody></table></div>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/">https://1artemise.github.io/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/Transformer/">Transformer</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/AI/">AI</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2026/05/07/LayerNorm/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">LayerNorm</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/"><span class="paginator-prev__text">梯度爆炸</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">
+          一、一句话定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B7%E4%BD%93%E6%98%AF%E6%80%8E%E6%A0%B7%E5%8F%91%E7%94%9F%E7%9A%84%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          二、具体是怎样发生的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%9B%A0%EF%BC%9A%E4%B9%9F%E6%98%AF%E8%BF%9E%E4%B9%98%E6%95%88%E5%BA%94"><span class="toc-number">2.1.</span> <span class="toc-text">
+          2.1 核心原因：也是连乘效应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">
+          2.2 触发条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%95%B0%E5%AD%97%E6%BC%94%E7%AE%97%EF%BC%88%E4%BB%A5-sigmoid-%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">
+          2.3 数字演算（以 sigmoid 为例）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%BC%9A%E5%AF%BC%E8%87%B4%E4%BB%80%E4%B9%88%E5%90%8E%E6%9E%9C%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">
+          三、梯度消失会导致什么后果？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%85%E5%B1%82%E5%8F%82%E6%95%B0%E4%B8%8D%E6%9B%B4%E6%96%B0"><span class="toc-number">3.1.</span> <span class="toc-text">
+          3.1 浅层参数不更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A8%A1%E5%9E%8B%E2%80%9C%E5%AD%A6%E4%B8%8D%E5%8A%A8%E2%80%9D%E4%BA%86"><span class="toc-number">3.2.</span> <span class="toc-text">
+          3.2 模型“学不动”了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%B7%B1%E5%B1%82%E7%BD%91%E7%BB%9C%E5%8F%8D%E8%80%8C%E6%AF%94%E6%B5%85%E5%B1%82%E7%BD%91%E7%BB%9C%E5%B7%AE"><span class="toc-number">3.3.</span> <span class="toc-text">
+          3.3 深层网络反而比浅层网络差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%93%AA%E4%BA%9B%E5%9C%BA%E6%99%AF%E7%89%B9%E5%88%AB%E5%AE%B9%E6%98%93%E5%8F%91%E7%94%9F%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">
+          四、哪些场景特别容易发生梯度消失？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BD%BF%E7%94%A8-sigmoid-%E6%88%96-tanh-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">4.1.</span> <span class="toc-text">
+          4.1 使用 sigmoid 或 tanh 激活函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%9D%83%E9%87%8D%E5%88%9D%E5%A7%8B%E5%8C%96%E5%A4%AA%E5%B0%8F"><span class="toc-number">4.2.</span> <span class="toc-text">
+          4.2 权重初始化太小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E8%BF%87%E6%B7%B1"><span class="toc-number">4.3.</span> <span class="toc-text">
+          4.3 网络层数过深</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-RNN-%E5%A4%84%E7%90%86%E9%95%BF%E5%BA%8F%E5%88%97"><span class="toc-number">4.4.</span> <span class="toc-text">
+          4.4 RNN 处理长序列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%EF%BC%9F%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">
+          五、如何解决？（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%BD%BF%E7%94%A8-ReLU-%E5%8F%8A%E5%85%B6%E5%8F%98%E4%BD%93%EF%BC%88%E6%9C%80%E5%85%B3%E9%94%AE%EF%BC%89"><span class="toc-number">5.1.</span> <span class="toc-text">
+          5.1 使用 ReLU 及其变体（最关键）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%AE%8B%E5%B7%AE%E8%BF%9E%E6%8E%A5%EF%BC%88Add%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">
+          5.2 残差连接（Add）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E4%BD%BF%E7%94%A8-LayerNorm-BatchNorm"><span class="toc-number">5.3.</span> <span class="toc-text">
+          5.3 使用 LayerNorm &#x2F; BatchNorm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%90%88%E7%90%86%E7%9A%84%E6%9D%83%E9%87%8D%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%88Xavier-Kaiming%EF%BC%89"><span class="toc-number">5.4.</span> <span class="toc-text">
+          5.4 合理的权重初始化（Xavier &#x2F; Kaiming）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E4%BD%BF%E7%94%A8-LSTM-GRU%EF%BC%88RNN-%E4%B8%93%E7%94%A8%EF%BC%89"><span class="toc-number">5.5.</span> <span class="toc-text">
+          5.5 使用 LSTM &#x2F; GRU（RNN 专用）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%8F%91%E7%94%9F%E4%BA%86%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">
+          六、如何判断发生了梯度消失？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%98%8E%E6%98%BE%E7%9A%84%E4%BF%A1%E5%8F%B7"><span class="toc-number">6.1.</span> <span class="toc-text">
+          6.1 明显的信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E7%9B%91%E6%8E%A7%E4%BB%A3%E7%A0%81"><span class="toc-number">6.2.</span> <span class="toc-text">
+          6.2 监控代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1-vs-%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%EF%BC%9A%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">
+          七、梯度消失 vs 梯度爆炸：对比总结</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">artemis</p><p class="sidebar-ov-author__quote">I am rooted,but i am flowing</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="javascript:void(0)" data-popover="需要保留一点神秘感" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

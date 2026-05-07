@@ -35,7 +35,44 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
       部署一个自己的网站实在不是一件简单的事，但也实在是一个很酷的事。
 互联网，千亿万亿的连接好像一张星系图。倘若有自己的一个网站，那么在万千星辰中，竟然有一颗是独独属于你的。
 
-有些旅人也许会因为一些机缘巧合落到这颗星球上，它的一切，或荒芜，或苍翠。或单调，或繁杂。都被放在你眼前，等待着探索。它会有哪些隐秘的角落，有哪些惊艳的景...</div><div class="post-readmore"><a class="post-readmore__link" href="/2025/09/08/%E7%BD%91%E7%AB%99%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/04/28/PV/">os之PV</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-04-27T16:00:00.000Z">2026-04-28</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><div class="post-excerpt">本文将从定义，如何实现互斥，同步，pv实操三个部分讲解。后补现代cpp的channal
+有些旅人也许会因为一些机缘巧合落到这颗星球上，它的一切，或荒芜，或苍翠。或单调，或繁杂。都被放在你眼前，等待着探索。它会有哪些隐秘的角落，有哪些惊艳的景...</div><div class="post-readmore"><a class="post-readmore__link" href="/2025/09/08/%E7%BD%91%E7%AB%99%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/Add/">Add(残差连接)</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">Add(残差连接)，把“这一层的输入”和“这一层的输出”加起来，作为最终输出。
+
+        
+          Add做了什么
+      12345#输出=输入＋F(输入)def residual_block(x):    # x: 这一层的输入    output = layer(x)  # 对x做点什么（注意力、前馈等）    return x + output  # 加回去
+为什么...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/Add/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/BatchNorm/">BatchNorm</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
+Batch Normalization（批量归一化） 是一种标准化技术，用于深度神经网络训练,尤其CV
+
+
+        
+          Batch Norm做了什么
+      对于一个批次里的多个样本，它们有相同的特征。但不同样本的同一个特征，数值范围可能差异很大。比如一个批次里有两个人，A年收入500万，B年收入5万。那么这两个样本传入网络时，年收入这个特征的数值范围波动剧烈，导致...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/BatchNorm/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/LayerNorm/">LayerNorm</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">LayerNorm（层归一化），多用于NLP![[Pasted image 20260507183851.png]]
+
+        
+          LayerNorm做了什么
+      对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。让模...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/LayerNorm/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/">梯度消失</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
+        
+          一、一句话定义
+      梯度消失：反向传播时，梯度随着网络层数加深而指数级衰减，逐渐趋近于 0，导致浅层（靠近输入层）的参数几乎不更新，模型学不到底层的特征。
+
+
+        
+          二、具体是怎样发生的？
+      
+        
+          2.1 核心原因：也是连乘效应
+      和梯度爆炸一样，梯度消失也是链式法...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">梯度爆炸</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
+        
+          一、一句话定义
+      梯度爆炸：反向传播时，梯度随着网络层数加深而指数级增长，变成天文数字（如 10^8 甚至 inf），导致参数更新步长巨大，模型直接崩溃。
+
+
+        
+          二、具体是怎样发生的？
+      
+        
+          2.1 核心原因：连乘效应
+      反向传播时，梯度从输出层往输入层传播...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/04/28/PV/">os之PV</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-04-27T16:00:00.000Z">2026-04-28</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><div class="post-excerpt">本文将从定义，如何实现互斥，同步，pv实操三个部分讲解。后补现代cpp的channal
 
         
           信号量

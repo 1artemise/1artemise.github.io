@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="LayerNorm（层归一化），多用于NLP![[Pasted image 20260507183851.png]]                     LayerNorm做了什么       对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。让模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LayerNorm">
+<meta property="og:url" content="https://1artemise.github.io/2026/05/07/LayerNorm/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="LayerNorm（层归一化），多用于NLP![[Pasted image 20260507183851.png]]                     LayerNorm做了什么       对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。让模">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-07T15:35:12.517Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary"><title>LayerNorm | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/05/07/LayerNorm/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">LayerNorm</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><p>LayerNorm（层归一化），多用于NLP<br>![[Pasted image 20260507183851.png]]</p>
+
+        <h2 id="LayerNorm做了什么"   >
+          <a href="#LayerNorm做了什么" class="heading-link"><i class="fas fa-link"></i></a><a href="#LayerNorm做了什么" class="headerlink" title="LayerNorm做了什么"></a>LayerNorm做了什么</h2>
+      <p>对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。<strong>让模型的训练只由某个特征主导。</strong><br><strong>所以我们需要让一个样本的特征值在数值范围上接近，对单个样本的所有特征进行归一化</strong>，<strong>也就是使其均值为0、方差为1。</strong></p>
+
+        <h2 id="LayNorm解决了什么"   >
+          <a href="#LayNorm解决了什么" class="heading-link"><i class="fas fa-link"></i></a><a href="#LayNorm解决了什么" class="headerlink" title="LayNorm解决了什么"></a>LayNorm解决了什么</h2>
+      <p>一般来说我们认为它解决了两个问题</p>
+<ol>
+<li><strong>-内部协变量偏移</strong><br> 名词听起来很抽象，首先你需要知道模型的训练过程。<br>  前向传播 → 计算损失 → 反向传播 → 计算梯度 → 更新所有层的参数(W1,W2,W3…）</li>
+</ol>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设一个3层网络</span></span><br><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  <span class="comment"># 输入</span></span><br><span class="line"><span class="comment"># 第1步训练</span></span><br><span class="line">W1 = [[<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>]]  <span class="comment"># 初始</span></span><br><span class="line">h1 = [<span class="number">0.1</span>*<span class="number">1</span>+<span class="number">0.2</span>*<span class="number">2</span>+<span class="number">0.3</span>*<span class="number">3</span>] = [<span class="number">1.4</span>]  <span class="comment"># 输出范围正常</span></span><br><span class="line"><span class="comment"># 计算损失，更新W1（假设梯度让W1变大）</span></span><br><span class="line">W1_new = [[<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.7</span>]]</span><br><span class="line">h1_new = [<span class="number">0.5</span>*<span class="number">1</span>+<span class="number">0.6</span>*<span class="number">2</span>+<span class="number">0.7</span>*<span class="number">3</span>] = [<span class="number">0.5</span>+<span class="number">1.2</span>+<span class="number">2.1</span>] = [<span class="number">3.8</span>]  <span class="comment"># 范围变大</span></span><br><span class="line"><span class="comment"># 第2层看到h1从1.4变成3.8（变化很大！）</span></span><br><span class="line"><span class="comment"># 这就是ICS：第2层的输入分布变了，而且范围变散了</span></span><br><span class="line"><span class="comment"># 这种范围变大会影响第2层的梯度计算</span></span><br><span class="line"><span class="comment"># 导致第2层的参数W2更新指向错误方向</span></span><br><span class="line"><span class="comment"># 然后W2又会让第3层看到更分散的数据...</span></span><br><span class="line"><span class="comment"># 恶性循环</span></span><br></pre></td></tr></table></div></figure>
+<pre><code>我们知道模型训练过程中是参数是会不断更新的，以此来变化下一层的输入。那么如果有一个数值过于大，大的纬度就会主导梯度，其他维度被忽略。并且更新时由于过大过小，模型需要猛踩刹车或者猛踩油门，也就是w的变化会忽大忽小而不能做出有效调整。
+</code></pre>
+<ol start="2">
+<li><strong>梯度消失与梯度爆炸</strong><br> 前面提到，数据范围分散会导致更新时输出值过大过小，分别会导致梯度爆炸与消失<ul>
+<li><strong>梯度爆炸</strong>：数值范围层层放大（例如每层放大10倍），传递到输出层时已达天文数字。反向传播时，这些巨大数值相乘，导致梯度超过 <code>float 32</code> 表示范围，变成 <code>inf</code>（无穷大）。模型瞬间崩坏，Loss 直接变成 <code>NaN</code>。这就是你说的“超范围”。</li>
+<li><strong>梯度消失</strong>：数值范围层层缩小（例如每层缩小到 0.1 倍），传递到输出层时已接近 0。反向传播时，多次乘以小于 1 的数，梯度变成 <code>0</code>。模型再也学不到任何东西，Loss 永远不降。</li>
+</ul>
+</li>
+</ol>
+
+        <h2 id="LayerNorm的具体实现"   >
+          <a href="#LayerNorm的具体实现" class="heading-link"><i class="fas fa-link"></i></a><a href="#LayerNorm的具体实现" class="headerlink" title="LayerNorm的具体实现"></a>LayerNorm的具体实现</h2>
+      <p>前文提到，我们需要对一个样本的每个特征进行归一化，也就是方差为1均值为0<br>公式：<br>![[Pasted image 20260507191827.png]]<br>例如一个样本如下：<strong>原始数据</strong>：<code>[25, 500000, 8000]</code><br>μ≈169341.67<br>σ≈233,760<br>归一化后的值&#x3D;x−μ&#x2F;σ<br><strong>经过 LayerNorm 处理后</strong>：<code>[-0.724, 1.415, -0.690]</code><br>（公式里的 γ 和 β 是两个可学习的参数。网络训练时可以调整它们。<br>比如，假设网络学习到 γ&#x3D;2,β&#x3D;0.5γ&#x3D;2,β&#x3D;0.5，那么最终输出就是：</p>
+<ul>
+<li>−0.724×2+0.5&#x3D;−0.948−0.724×2+0.5&#x3D;−0.948</li>
+<li>1.415×2+0.5&#x3D;3.331.415×2+0.5&#x3D;3.33</li>
+<li>−0.690×2+0.5&#x3D;−0.88−0.690×2+0.5&#x3D;−0.88<br>这样网络就有了灵活性：如果原始分布是最好的，它可以把 γ&#x3D;1,β&#x3D;0γ&#x3D;1,β&#x3D;0 学回来；如果另一种分布更好，它可以调整。）</li>
+</ul>
+<p>这样下来你得到了什么？</p>
+<ol>
+<li><strong>范围接近了</strong>：原来的 25 和 500000 相差 2 万倍，现在 -0.724 和 1.415 相差只有 2 倍左右。<strong>收入高的特征不再“欺负”其他特征了。</strong></li>
+<li><strong>以0为中心</strong>：数据现在有正有负，大致分布在 -1 到 +1 之间。</li>
+<li><strong>分布标准</strong>：这组新数据的均值是 0，标准差是 1。你可以快速验证一下：(−0.724+1.415−0.690)&#x2F;3≈0(−0.724+1.415−0.690)&#x2F;3≈0（均值0），离散程度也标准化了。</li>
+</ol>
+
+        <h2 id="LayerNorm在Transformer里的运用"   >
+          <a href="#LayerNorm在Transformer里的运用" class="heading-link"><i class="fas fa-link"></i></a><a href="#LayerNorm在Transformer里的运用" class="headerlink" title="LayerNorm在Transformer里的运用"></a>LayerNorm在Transformer里的运用</h2>
+      <p>![[Pasted image 20260507193403.png|345]]<br>这是Transformer的解码器架构</p>
+
+        <h4 id="Add-Norm层"   >
+          <a href="#Add-Norm层" class="heading-link"><i class="fas fa-link"></i></a><a href="#Add-Norm层" class="headerlink" title="[[Add]] &amp; Norm层"></a><strong>[[Add]] &amp; Norm层</strong></h4>
+      <p>它实际上由两个独立的操作组成：<strong>残差连接（Add）</strong> 和 <strong>层归一化（Layer Normalization, Norm）</strong>。这两个操作协同工作，极大地提升了 Transformer 的训练稳定性、收敛速度和最终性能。<br>Norm 操作接收来自 Add 的输出（原始输入 + 子层变换）。这个组合信号的分布可能会剧烈变化，尤其是在训练初期。LN 将其“拉回”到一个相对稳定（均值为0，方差为1）的分布，极大地减少了训练的不稳定性，显著加快了收敛速度。γ 和 β 让模型能自适应地调整这个分布。</p>
+
+        <h6 id="2-2-与-BatchNorm-的对比"   >
+          <a href="#2-2-与-BatchNorm-的对比" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-与-BatchNorm-的对比" class="headerlink" title="2.2 与[[BatchNorm]]的对比"></a>2.2 与[[BatchNorm]]的对比</h6>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>BatchNorm</strong></th>
+<th><strong>LayerNorm</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>统计量计算</strong></td>
+<td>沿批次维度（N）计算</td>
+<td>沿特征维度（C&#x2F;H）计算</td>
+</tr>
+<tr>
+<td><strong>依赖关系</strong></td>
+<td>依赖批量大小</td>
+<td>与批量大小无关</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>CNN</td>
+<td>RNN、Transformer</td>
+</tr>
+</tbody></table></div>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/05/07/LayerNorm/">https://1artemise.github.io/2026/05/07/LayerNorm/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/Transformer/">Transformer</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/AI/">AI</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2026/05/07/BatchNorm/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">BatchNorm</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/"><span class="paginator-prev__text">梯度消失</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LayerNorm%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">
+          LayerNorm做了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LayNorm%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">
+          LayNorm解决了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LayerNorm%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">
+          LayerNorm的具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LayerNorm%E5%9C%A8Transformer%E9%87%8C%E7%9A%84%E8%BF%90%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          LayerNorm在Transformer里的运用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Add-Norm%E5%B1%82"><span class="toc-number">4.0.1.</span> <span class="toc-text">
+          [[Add]] &amp; Norm层</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2-2-%E4%B8%8E-BatchNorm-%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">4.0.1.0.1.</span> <span class="toc-text">
+          2.2 与[[BatchNorm]]的对比</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">artemis</p><p class="sidebar-ov-author__quote">I am rooted,but i am flowing</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="javascript:void(0)" data-popover="需要保留一点神秘感" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
