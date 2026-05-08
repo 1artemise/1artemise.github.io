@@ -4586,6 +4586,7 @@ body::before {
   list-style: none;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 .custompage .about-page .timeline-item {
   display: -webkit-box;
@@ -4594,20 +4595,41 @@ body::before {
   display: -ms-flexbox;
   display: box;
   display: flex;
-  gap: 12px;
+  gap: 14px;
   -webkit-box-align: start;
   -moz-box-align: start;
   -o-box-align: start;
   -ms-flex-align: start;
   -webkit-align-items: flex-start;
   align-items: flex-start;
-  padding: 10px 0;
+  position: relative;
+  padding: 0 0 18px;
+}
+.custompage .about-page .timeline-item:not(:last-child):before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: 14px;
+  width: 1px;
+  height: calc(100% - 20px);
+  background: -webkit-linear-gradient(270deg, rgba(73,177,245,0.45), rgba(73,177,245,0));
+  background: -moz-linear-gradient(270deg, rgba(73,177,245,0.45), rgba(73,177,245,0));
+  background: -o-linear-gradient(270deg, rgba(73,177,245,0.45), rgba(73,177,245,0));
+  background: -ms-linear-gradient(270deg, rgba(73,177,245,0.45), rgba(73,177,245,0));
+  background: linear-gradient(180deg, rgba(73,177,245,0.45), rgba(73,177,245,0));
 }
 .custompage .about-page .timeline-icon {
-  min-width: 22px;
-  width: 22px;
-  height: 22px;
-  margin-top: 2px;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  margin-top: 8px;
   display: -webkit-inline-box;
   display: -moz-inline-box;
   display: -webkit-inline-flex;
@@ -4642,8 +4664,47 @@ body::before {
   animation: timeline-pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .custompage .about-page .timeline-body {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 16px;
   color: #374151;
   line-height: 1.75;
+  background: rgba(248,251,255,0.9);
+  border: 1px solid rgba(148,163,184,0.14);
+  -webkit-box-shadow: 0 8px 22px rgba(15,23,42,0.04);
+  box-shadow: 0 8px 22px rgba(15,23,42,0.04);
+}
+.custompage .about-page .timeline-period {
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-box;
+  display: inline-flex;
+  margin-bottom: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #1d75b9;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(73,177,245,0.12);
+}
+.custompage .about-page .timeline-title {
+  margin: 0 0 6px;
+  color: #172033;
+  font-size: 1.02rem;
+}
+.custompage .about-page .timeline-text {
+  margin: 0;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.82;
 }
 .category {
   width: 100%;

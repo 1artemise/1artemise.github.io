@@ -50,18 +50,7 @@ Batch Normalization（批量归一化） 是一种标准化技术，用于深�
 
         
           LayerNorm做了什么
-      对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。让模...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/LayerNorm/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">梯度爆炸</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
-        
-          一、一句话定义
-      梯度爆炸：反向传播时，梯度随着网络层数加深而指数级增长，变成天文数字（如 10^8 甚至 inf），导致参数更新步长巨大，模型直接崩溃。
-
-
-        
-          二、具体是怎样发生的？
-      
-        
-          2.1 核心原因：连乘效应
-      反向传播时，梯度从输出层往输入层传播...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/">梯度消失</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
+      对于一个样本的几个特征，也许他们的特征值分布太分散。比如一个人的年收入是10000000，但是他的身高体重是180cm和70kg。那么这个数据传递给下一个网络时，年收入的权重就会远远盖过身高体重等。让模...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/LayerNorm/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/">梯度消失</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
         
           一、一句话定义
       梯度消失：反向传播时，梯度随着网络层数加深而指数级衰减，逐渐趋近于 0，导致浅层（靠近输入层）的参数几乎不更新，模型学不到底层的特征。
@@ -72,7 +61,18 @@ Batch Normalization（批量归一化） 是一种标准化技术，用于深�
       
         
           2.1 核心原因：也是连乘效应
-      和梯度爆炸一样，梯度消失也是链式法...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/04/28/PV/">os之PV</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-04-27T16:00:00.000Z">2026-04-28</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><div class="post-excerpt">本文将从定义，如何实现互斥，同步，pv实操三个部分讲解。后补现代cpp的channal
+      和梯度爆炸一样，梯度消失也是链式法...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">梯度爆炸</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-06T16:00:00.000Z">2026-05-07</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body"><div class="post-excerpt">
+        
+          一、一句话定义
+      梯度爆炸：反向传播时，梯度随着网络层数加深而指数级增长，变成天文数字（如 10^8 甚至 inf），导致参数更新步长巨大，模型直接崩溃。
+
+
+        
+          二、具体是怎样发生的？
+      
+        
+          2.1 核心原因：连乘效应
+      反向传播时，梯度从输出层往输入层传播...</div><div class="post-readmore"><a class="post-readmore__link" href="/2026/05/07/%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/"><span class="post-readmore__text">阅读全文</span><span class="post-readmore__icon"><i class="fas fa-long-arrow-alt-right"></i></span></a></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-header-title"><a class="post-header-title__link" href="/2026/04/28/PV/">os之PV</a></h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-04-27T16:00:00.000Z">2026-04-28</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body"><div class="post-excerpt">本文将从定义，如何实现互斥，同步，pv实操三个部分讲解。后补现代cpp的channal
 
         
           信号量
