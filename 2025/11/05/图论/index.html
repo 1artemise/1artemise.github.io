@@ -92,7 +92,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
 <p>我们自然的想到可以建一个二维数组，<strong>用对应位置的0&#x2F;1来表示有无边连接。</strong></p>
 <p>假设关系：A认识B, A认识C, B认识D, C认识D</p>
 <p>那么对应的邻接矩阵就是这样的</p>
-<p><img src="/../images/image-20251105194021935.png" alt="image-20251105194021935"></p>
+<p><img src="/images/image-20251105194021935.png" alt="image-20251105194021935"></p>
 <p>所以它的精髓就是，<strong>用二维表格清晰表达顶点间关系，通过行列索引判断连通性。</strong></p>
 <p>所以有了一个最显著的优点，o1判断是否存在边</p>
 <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find_edge</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;<span class="keyword">return</span> adj[u][v];&#125;</span><br></pre></td></tr></table></div></figure>

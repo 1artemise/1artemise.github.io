@@ -80,7 +80,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
 <li>一个表示数组形状（shape）的元组，表示各维度大小的元组。</li>
 <li>一个跨度元组（stride），其中的整数指的是为了前进到当前维度下一个元素需要”跨过”的字节数。</li>
 </ul>
-<p><img src="/../images/image-20250929093614818.png" alt="image-20250929093614818"></p>
+<p><img src="/images/image-20250929093614818.png" alt="image-20250929093614818"></p>
 <p>创建一个 ndarray 只需调用 NumPy 的 array 函数即可：</p>
 <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numpy.array(<span class="built_in">object</span>, dtype = <span class="literal">None</span>, copy = <span class="literal">True</span>, order = <span class="literal">None</span>, subok = <span class="literal">False</span>, ndmin = <span class="number">0</span>)</span><br></pre></td></tr></table></div></figure>
 
@@ -720,8 +720,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
           <a href="#4-1-concatenate" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-concatenate" class="headerlink" title="4.1 concatenate"></a>4.1 concatenate</h4>
       <p><strong>沿指定轴连接数组</strong></p>
 <p>注意：垂直堆叠要求垂直方向两个数组有对应的数字，若如下图则报错</p>
-<p><img src="/../images/image-20251012141510642.png" alt="image-20251012141510642"></p>
-<p><img src="/../images/image-20251012141615418.png" alt="image-20251012141615418"></p>
+<p><img src="/images/image-20251012141510642.png" alt="image-20251012141510642"></p>
+<p><img src="/images/image-20251012141615418.png" alt="image-20251012141615418"></p>
 <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">b = np.array([[<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 沿轴0连接（垂直堆叠）</span></span><br><span class="line"><span class="built_in">print</span>(np.concatenate((a,b)))        <span class="comment"># [[1 2] [3 4] [5 6] [7 8]]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 沿轴1连接（水平堆叠）</span></span><br><span class="line"><span class="built_in">print</span>(np.concatenate((a,b),axis=<span class="number">1</span>)) <span class="comment"># [[1 2 5 6] [3 4 7 8]]</span></span><br></pre></td></tr></table></div></figure>
 
 

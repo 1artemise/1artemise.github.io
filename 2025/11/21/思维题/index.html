@@ -64,7 +64,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
 <ul>
 <li>初始序列：[1, 2, 3, 4]</li>
 <li>目标序列：[3, 1, 4, 2]</li>
-<li><img src="/../images/image-20251121102336069.png" alt="image-20251121102336069"></li>
+<li><img src="/images/image-20251121102336069.png" alt="image-20251121102336069"></li>
 </ul>
 <p>可以看到这样会打乱我们已经匹配好的。所以我们需要避免这个问题。</p>
 <p>我们每次把目标牌移到顶部，然后不断操作二，其实可以看作是在调整底部牌，为什么要调整底部牌呢？</p>
@@ -79,7 +79,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
 <li>这样b[i-1]和b[i]的相对位置就固定了</li>
 </ol>
 <p><strong>直观理解一下。</strong></p>
-<p><img src="/../images/image-20251121103040791.png" alt="image-20251121103040791"></p>
+<p><img src="/images/image-20251121103040791.png" alt="image-20251121103040791"></p>
 <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="comment">// 步骤1：旋转直到顶部是目标第i张牌</span></span><br><span class="line">    <span class="keyword">while</span>(顶部牌 != b[i]) 执行操作<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 步骤2：调整直到底部是目标第i-1张牌  </span></span><br><span class="line">    <span class="keyword">while</span>(底部牌 != b[i<span class="number">-1</span>]) 执行操作<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后调整：旋转直到顶部是目标第一张牌</span></span><br><span class="line"><span class="keyword">while</span>(顶部牌 != b[<span class="number">1</span>]) 执行操作<span class="number">1</span>;</span><br></pre></td></tr></table></div></figure>
 
 <p>附上AC代码</p>
@@ -89,7 +89,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></he
         <h1 id="B-Memory"   >
           <a href="#B-Memory" class="heading-link"><i class="fas fa-link"></i></a><a href="#B-Memory" class="headerlink" title="B.Memory"></a>B.Memory</h1>
       <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/gym/104813/problem/L" >2023哈尔滨ccpc</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-<p><img src="/../images/image-20251121130940238.png" alt="image-20251121130940238"></p>
+<p><img src="/images/image-20251121130940238.png" alt="image-20251121130940238"></p>
 <p>给一串数字，求Mood。</p>
 <p>一眼暴力的话，其实很简单写。你可能会注意到小数的精度问题。（心存侥幸的话你会这么写）</p>
 <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = n;i &gt;= <span class="number">1</span>;i--)&#123;</span><br><span class="line">    result = a[i] * <span class="built_in">pow</span>(<span class="number">2</span>,zz);</span><br><span class="line">    zz--;</span><br><span class="line">    sum += result;</span><br><span class="line">&#125;</span><br><span class="line">b[n] = sum;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = n;i &gt;= <span class="number">1</span>;i--)&#123;</span><br><span class="line">    b[i<span class="number">-1</span>]=(b[i]-a[i])*<span class="number">2.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
