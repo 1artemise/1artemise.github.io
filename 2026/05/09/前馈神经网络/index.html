@@ -1,0 +1,639 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="什么是前馈神经网络       前馈神经网络（FFN），神经网络中最简单基础的一种   信息只向前流动，经过输入层，隐藏层，输出层。没有任何反馈回路，是最基础的神经网络。它的每一层只做一件事，输入，线性变换（加权求和），非线性激活，输出给下一层。  线性组合: z &#x3D; w₁x₁ + w₂x₂ + w₃x₃ + b  非线性激活: a &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前馈神经网络（理论和从0手搓）">
+<meta property="og:url" content="https://1artemise.github.io/2026/05/09/%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是前馈神经网络       前馈神经网络（FFN），神经网络中最简单基础的一种   信息只向前流动，经过输入层，隐藏层，输出层。没有任何反馈回路，是最基础的神经网络。它的每一层只做一件事，输入，线性变换（加权求和），非线性激活，输出给下一层。  线性组合: z &#x3D; w₁x₁ + w₂x₂ + w₃x₃ + b  非线性激活: a &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509215819065.png">
+<meta property="og:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509215908970.png">
+<meta property="og:image" content="https://1artemise.github.io/images/image-20260509215939713.png">
+<meta property="og:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509220036098.png">
+<meta property="og:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509220047929.png">
+<meta property="og:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509220059876.png">
+<meta property="article:published_time" content="2026-05-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-09T14:01:29.681Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1artemise.github.io/2026/05/09/images/image-20260509215819065.png"><title>前馈神经网络（理论和从0手搓） | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/05/09/%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__placeholder">搜索文章 / 分类 / 标签</span></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见。</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">前馈神经网络（理论和从0手搓）</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-08T16:00:00.000Z">2026-05-09</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/AI/">AI</a></span></div></header><div class="post-body">
+        <h2 id="什么是前馈神经网络"   >
+          <a href="#什么是前馈神经网络" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是前馈神经网络" class="headerlink" title="什么是前馈神经网络"></a>什么是前馈神经网络</h2>
+      <p>前馈神经网络（FFN），神经网络中最简单基础的一种</p>
+<img src="../images/image-20260509215819065.png" alt="image-20260509215819065" style="zoom:33%;" />
+
+<p>信息只向前流动，经过输入层，隐藏层，输出层。没有任何反馈回路，是最基础的神经网络。<br>它的每一层只做一件事，输入，线性变换（加权求和），非线性激活，输出给下一层。</p>
+<ol>
+<li><p>线性组合: z &#x3D; w₁x₁ + w₂x₂ + w₃x₃ + b</p>
+</li>
+<li><p>非线性激活: a &#x3D; σ(z)   (σ是[[激活函数]]，如ReLU、Sigmoid)</p>
+</li>
+</ol>
+
+        <h2 id="为什么这么简单可以完成复杂任务？"   >
+          <a href="#为什么这么简单可以完成复杂任务？" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么这么简单可以完成复杂任务？" class="headerlink" title="为什么这么简单可以完成复杂任务？"></a>为什么这么简单可以完成复杂任务？</h2>
+      <p>因为很多个神经元堆叠后，第一层网络识别颜色边缘，第二层识别形状纹理，第三层识别物体部件，等等。靠着层数的叠加来完成复杂识别。</p>
+
+        <h2 id="它有哪些缺陷"   >
+          <a href="#它有哪些缺陷" class="heading-link"><i class="fas fa-link"></i></a><a href="#它有哪些缺陷" class="headerlink" title="它有哪些缺陷"></a>它有哪些缺陷</h2>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>说明</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>全连接参数爆炸</strong></td>
+<td>输入1000维，隐藏层1000，就有1M参数</td>
+<td>CNN&#x2F;局部连接</td>
+</tr>
+<tr>
+<td><strong>无法处理序列</strong></td>
+<td>输入长度必须固定</td>
+<td>RNN&#x2F;Transformer</td>
+</tr>
+<tr>
+<td><strong>梯度消失&#x2F;爆炸</strong></td>
+<td>深层网络难训练</td>
+<td>残差连接 + LayerNorm</td>
+</tr>
+<tr>
+<td><strong>过拟合</strong></td>
+<td>参数多，容易记住数据</td>
+<td>Dropout + 正则化</td>
+</tr>
+<tr>
+<td><strong>忽略空间结构</strong></td>
+<td>把图像展平会丢失邻域关系</td>
+<td>CNN</td>
+</tr>
+<tr>
+<td>虽然有着缺陷，但它仍旧很重要。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>前馈神经网络加上卷积是CNN，加上循环是RNN，加自注意力机制是Transformer</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="FNN的纬度问题-初始化部分怎么写"   >
+          <a href="#FNN的纬度问题-初始化部分怎么写" class="heading-link"><i class="fas fa-link"></i></a><a href="#FNN的纬度问题-初始化部分怎么写" class="headerlink" title="FNN的纬度问题(初始化部分怎么写)"></a>FNN的纬度问题(初始化部分怎么写)</h2>
+      <p><strong>公式</strong>：<code>Z = X @ W + b</code></p>
+<p>实现矩阵乘法，<code>X @ W</code> 要能相乘，<code>X</code>的<strong>最后一维</strong>必须等于<code>W</code>的<strong>第一维</strong>。</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>形状</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>输入</td>
+<td><code>[batch, 输入维度]</code></td>
+</tr>
+<tr>
+<td><code>W</code></td>
+<td>权重</td>
+<td><code>[输入维度, 输出维度]</code></td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>偏置</td>
+<td><code>[1, 输出维度]</code> 或 <code>[输出维度]</code></td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>输出</td>
+<td><code>[batch, 输出维度]</code></td>
+</tr>
+<tr>
+<td>假设现在三个神经元（输出三个值），输入纬度784</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table></div>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设</span></span><br><span class="line">batch = <span class="number">5</span><span class="comment">#表示一次处理的数据样本数量</span></span><br><span class="line">X = np.random.randn(<span class="number">5</span>, <span class="number">784</span>)   <span class="comment"># [5, 784]</span></span><br><span class="line">W = np.random.randn(<span class="number">784</span>, <span class="number">3</span>)   <span class="comment"># [784, 3]</span></span><br><span class="line">b = np.random.randn(<span class="number">3</span>)        <span class="comment"># [3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算</span></span><br><span class="line">Z = X @ W + b   <span class="comment"># [5, 784] @ [784, 3] = [5, 3] + [3] = [5, 3]</span></span><br></pre></td></tr></table></div></figure>
+
+<p>给你一个<strong>3层网络</strong>：</p>
+<ul>
+<li>输入层：784维</li>
+<li>隐藏层1：128个神经元</li>
+<li>隐藏层2：64个神经元</li>
+<li>输出层：10个神经元</li>
+</ul>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">W1.shape = [784, 128]   # 输入 → 隐藏层1</span><br><span class="line">b1.shape = [128]        或 (1, 128)</span><br><span class="line"></span><br><span class="line">W2.shape = [128, 64]    # 隐藏层1 → 隐藏层2  </span><br><span class="line">b2.shape = [64]         或 (1, 64)</span><br><span class="line"></span><br><span class="line">W3.shape = [64, 10]     # 隐藏层2 → 输出层</span><br><span class="line">b3.shape = [10]         或 (1, 10)</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h2 id="前向传播"   >
+          <a href="#前向传播" class="heading-link"><i class="fas fa-link"></i></a><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X → Z1 → A1 → Z2 → A2 → Z3 → A3 (输出)</span><br><span class="line">      ↓         ↓         ↓</span><br><span class="line">     ReLU      ReLU     Softmax</span><br></pre></td></tr></table></div></figure>
+<p>除了最后一层输出层，都是线性变换然后激活，由于我要写的是分类任务所以需要softmax把数值转为概率分布</p>
+
+        <h4 id="前向传播的softmax怎么写"   >
+          <a href="#前向传播的softmax怎么写" class="heading-link"><i class="fas fa-link"></i></a><a href="#前向传播的softmax怎么写" class="headerlink" title="前向传播的softmax怎么写"></a>前向传播的softmax怎么写</h4>
+      <img src="../images/image-20260509215908970.png" alt="image-20260509215908970" style="zoom: 67%;" />
+代码是这样的
+
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exp_z3 = np.exp(z3 - np.<span class="built_in">max</span>(z3, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">a3 = exp_z3 / np.<span class="built_in">sum</span>(exp_z3, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h4 id="为什么要减去一个最大值呢（z3-np-max）"   >
+          <a href="#为什么要减去一个最大值呢（z3-np-max）" class="heading-link"><i class="fas fa-link"></i></a><a href="#为什么要减去一个最大值呢（z3-np-max）" class="headerlink" title="为什么要减去一个最大值呢（z3-np.max）"></a>为什么要减去一个最大值呢（z3-np.max）</h4>
+      <p>因为直接e^z3 可能会溢出，然后分子分母同除不会改变大小（在e的指数上操作的所以是减）<br>axis&#x3D;1沿着列的方向走，在每一行也就是每个样本里操作。<br>keepdims&#x3D;true是因为需要保持维度，作减法时需要维度对齐<br><img src="/../images/image-20260509215939713.png" alt="image-20260509215939713"><br>softmax之后，可以通过a3得出[[损失函数]]<br>损失: L &#x3D; CrossEntropy(y_true, A₃)  (一个数字)<br>怎么直观理解呢，y_true表示实际类别（标签)</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y_true = [0,0,0,0,0,1,0,0,0,0]（第5类）在数字识别里代表数字5</span><br></pre></td></tr></table></div></figure>
+<p>那</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L=-log(a3[5])</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h2 id="反向传播"   >
+          <a href="#反向传播" class="heading-link"><i class="fas fa-link"></i></a><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2>
+      <p>反向传播就是把前向传播倒着来一遍更新参数,也就是说，每一层反向传播，我们都要计算三个东西</p>
+<ol>
+<li>dw2:w2的梯度用来更新w2</li>
+<li>db2:b2的梯度用来更新b2</li>
+<li>dA1:传递给前一层的梯度<br>本质是链式法则，从后往前一层层计算梯度，然后根据每层梯度大小改变权重。</li>
+</ol>
+
+        <h3 id="输出层"   >
+          <a href="#输出层" class="heading-link"><i class="fas fa-link"></i></a><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h3>
+      <p>从输出层开始传播，由之前的前向传播我们知道b3,w3,loss。由定义可知</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">W3&#x27; = W3 - 学习率 × ∂Loss/∂W3（这一块是w3梯度）</span><br></pre></td></tr></table></div></figure>
+<p>经过一系列数学化简<br><img src="../images/image-20260509220036098.png" alt="image-20260509220036098" style="zoom:50%;" /><br><img src="../images/image-20260509220047929.png" alt="image-20260509220047929" style="zoom:50%;" /><br>但这里有形状问题：<code>dZ3</code> 是 <code>[batch, 10]</code>，而 <code>db3</code> 应该是 <code>[10]</code>。<br>所以必须<strong>把 batch 维度消掉</strong>，最简单的方法就是<strong>求和（或平均)</strong>。</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dZ3 = [</span><br><span class="line">    [<span class="number">0.01</span>, <span class="number">0.02</span>, -<span class="number">0.10</span>],   <span class="comment"># 样本1</span></span><br><span class="line">    [<span class="number">0.03</span>, <span class="number">0.01</span>, -<span class="number">0.05</span>]    <span class="comment"># 样本2</span></span><br><span class="line">]</span><br><span class="line"><span class="comment"># 对 axis=0 求和</span></span><br><span class="line">sum_dZ3 = [<span class="number">0.01</span>+<span class="number">0.03</span>=<span class="number">0.04</span>, <span class="number">0.02</span>+<span class="number">0.01</span>=<span class="number">0.03</span>, -<span class="number">0.10</span>-<span class="number">0.05</span>=-<span class="number">0.15</span>]</span><br><span class="line"><span class="comment"># 除以 m=2</span></span><br><span class="line">db3 = [<span class="number">0.02</span>, <span class="number">0.015</span>, -<span class="number">0.075</span>]</span><br></pre></td></tr></table></div></figure>
+<p>所以我们写出代码，注意字母d代表求导</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dW3 = (A₂.T @ dZ3) / m</span><br><span class="line">db3 = np.<span class="built_in">sum</span>(dZ3, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>) / m</span><br></pre></td></tr></table></div></figure>
+<p>&#x2F;<code>m</code> 是因为我们计算的是<strong>平均梯度</strong>，而不是总梯度。损失函数是平均值。<br><img src="../images/image-20260509220059876.png" alt="image-20260509220059876" style="zoom:67%;" /></p>
+
+        <h3 id="后续层"   >
+          <a href="#后续层" class="heading-link"><i class="fas fa-link"></i></a><a href="#后续层" class="headerlink" title="后续层"></a>后续层</h3>
+      <p>以下的都是数学推导，由链式法则求导得出，转置则是因为维度不匹配</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dA2 = dZ3 @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W3&#x27;</span>].T</span><br><span class="line">dZ2 = dA2 * (z2 &gt; <span class="number">0</span>).astype(<span class="built_in">float</span>)<span class="comment">#relu函数，因为(z2&gt;0)的结果是布尔值，需要显示转换float，当然不转也行。</span></span><br><span class="line"></span><br><span class="line">dW2 = (a1.T @ dZ2) / m</span><br><span class="line">db2 = np.<span class="built_in">sum</span>(dZ2, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>) / m</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="代码实现"   >
+          <a href="#代码实现" class="heading-link"><i class="fas fa-link"></i></a><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2>
+      <figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> gzip</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelBinarizer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置随机种子（随机是为了打破对称，全0初始化为让同一层的神经元完全相同。设定固定种子是保证结果可复现）</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FFN</span>:  <span class="comment"># 注意：class 是小写</span></span><br><span class="line">    <span class="comment"># 初始化</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, layer_sizes</span>):</span><br><span class="line">        <span class="variable language_">self</span>.params = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(layer_sizes)):</span><br><span class="line">            in_dim = layer_sizes[i-<span class="number">1</span>]  <span class="comment"># 输入维度</span></span><br><span class="line">            out_dim = layer_sizes[i]   <span class="comment"># 输出维度</span></span><br><span class="line">            <span class="comment"># np.random.randn(in_dim,out_dim)生成一个形状为(in_dim, out_dim)的数组，元素符合标准正态分布</span></span><br><span class="line">            <span class="comment"># np.sqrt(2.0/in_dim)是He初始化，把随机数缩小到合适的范围，以避免激活函数饱和（尤其是ReLU）。让每一层输出的方差保持一致，防止信号消失爆炸</span></span><br><span class="line">            <span class="comment"># 原来w的数是[-1,1]，×上He初始化，假设in_dim=100，那么数就变成了[-0.141,0.141]，这样就更适合ReLU激活函数了</span></span><br><span class="line">            <span class="variable language_">self</span>.params[<span class="string">f&#x27;W<span class="subst">&#123;i&#125;</span>&#x27;</span>] = np.random.randn(in_dim, out_dim) * np.sqrt(<span class="number">2.0</span> / in_dim)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># b初始化为0，因为偏置项不参与对称性破坏,纬度为(1,out_dim)，前置知识有讲</span></span><br><span class="line">            <span class="variable language_">self</span>.params[<span class="string">f&#x27;b<span class="subst">&#123;i&#125;</span>&#x27;</span>] = np.zeros((<span class="number">1</span>, out_dim))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 前向传播</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="comment"># 第一层是输入层到隐藏层,z1=x@W1+b1</span></span><br><span class="line">        z1 = X @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W1&#x27;</span>] + <span class="variable language_">self</span>.params[<span class="string">&#x27;b1&#x27;</span>]</span><br><span class="line">        <span class="comment"># 激活函数，ReLU</span></span><br><span class="line">        a1 = np.maximum(<span class="number">0</span>, z1)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 以此类推，第二层</span></span><br><span class="line">        z2 = a1 @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W2&#x27;</span>] + <span class="variable language_">self</span>.params[<span class="string">&#x27;b2&#x27;</span>]</span><br><span class="line">        a2 = np.maximum(<span class="number">0</span>, z2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 第三层是输出层,没有激活函数而是softmax,因为输出层是分类问题，softmax可以把输出转化为概率分布</span></span><br><span class="line">        z3 = a2 @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W3&#x27;</span>] + <span class="variable language_">self</span>.params[<span class="string">&#x27;b3&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算softmax</span></span><br><span class="line">        <span class="comment"># softmax(x_i) = exp(x_i) / sum(exp(x_j))是计算公式，axis=1是按行计算，keepdims=True是保持维度不变，这样输出的a3的形状和z3一样</span></span><br><span class="line">        exp = np.exp(z3 - np.<span class="built_in">max</span>(z3, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">        a3 = exp / np.<span class="built_in">sum</span>(exp, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 你是不是觉得到这里就结束？如果只有前向传播是这样，但是为了后面的反向传播，我们还需要把每一层的输入输出都保存下来，这样在反向传播的时候才能用到这些值来计算梯度。所以我们可以把这些值保存在一个字典里，比如self.cache，这样就可以在反向传播的时候访问到它们了。 </span></span><br><span class="line">        <span class="comment"># 保存 cache（注意：把 a3 也存进去，反向传播要用）</span></span><br><span class="line">        cache = &#123;</span><br><span class="line">            <span class="string">&#x27;X&#x27;</span>: X,</span><br><span class="line">            <span class="string">&#x27;z1&#x27;</span>: z1, <span class="string">&#x27;a1&#x27;</span>: a1,</span><br><span class="line">            <span class="string">&#x27;z2&#x27;</span>: z2, <span class="string">&#x27;a2&#x27;</span>: a2,</span><br><span class="line">            <span class="string">&#x27;z3&#x27;</span>: z3, <span class="string">&#x27;a3&#x27;</span>: a3   <span class="comment"># 加上 a3</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> a3, cache   <span class="comment"># 返回两个东西</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">backward</span>(<span class="params">self, y_true, cache</span>):</span><br><span class="line">        <span class="comment">#y_true: 真实标签 [batch, 10]</span></span><br><span class="line">        <span class="comment">#cache: 前向传播保存的中间值</span></span><br><span class="line">        </span><br><span class="line">        m = y_true.shape[<span class="number">0</span>]  <span class="comment"># 样本数量，比如 batch_size</span></span><br><span class="line">        gradients = &#123;&#125;</span><br><span class="line">        X = cache[<span class="string">&#x27;X&#x27;</span>]</span><br><span class="line">        a1 = cache[<span class="string">&#x27;a1&#x27;</span>]</span><br><span class="line">        a2 = cache[<span class="string">&#x27;a2&#x27;</span>]</span><br><span class="line">        a3 = cache[<span class="string">&#x27;a3&#x27;</span>]</span><br><span class="line">        z1 = cache[<span class="string">&#x27;z1&#x27;</span>]</span><br><span class="line">        z2 = cache[<span class="string">&#x27;z2&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 输出层，softmax和交叉熵的组合</span></span><br><span class="line">        dz3 = a3 - y_true  <span class="comment"># 输出层的误差，a3是预测值，y_true是真实值</span></span><br><span class="line">        dW3 = a2.T @ dz3 / m  <span class="comment"># 输出层权重的梯度，a2是隐藏层的输出</span></span><br><span class="line">        db3 = np.<span class="built_in">sum</span>(dz3, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>) / m  <span class="comment"># 输出层偏置的梯度</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 隐藏层2</span></span><br><span class="line">        dA2 = dz3 @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W3&#x27;</span>].T  <span class="comment"># 注意：W3 是大写</span></span><br><span class="line">        dz2 = dA2 * (z2 &gt; <span class="number">0</span>).astype(<span class="built_in">float</span>)  <span class="comment"># ReLU的梯度，z2&gt;0是ReLU的导数</span></span><br><span class="line">        dW2 = (a1.T @ dz2) / m</span><br><span class="line">        db2 = np.<span class="built_in">sum</span>(dz2, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>) / m</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 隐藏层1</span></span><br><span class="line">        dA1 = dz2 @ <span class="variable language_">self</span>.params[<span class="string">&#x27;W2&#x27;</span>].T  <span class="comment"># 注意：W2 是大写</span></span><br><span class="line">        dz1 = dA1 * (z1 &gt; <span class="number">0</span>).astype(<span class="built_in">float</span>)  <span class="comment"># ReLU的梯度</span></span><br><span class="line">        dW1 = (X.T @ dz1) / m</span><br><span class="line">        db1 = np.<span class="built_in">sum</span>(dz1, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>) / m</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 存梯度</span></span><br><span class="line">        gradients[<span class="string">&#x27;dW3&#x27;</span>] = dW3</span><br><span class="line">        gradients[<span class="string">&#x27;db3&#x27;</span>] = db3</span><br><span class="line">        gradients[<span class="string">&#x27;dW2&#x27;</span>] = dW2</span><br><span class="line">        gradients[<span class="string">&#x27;db2&#x27;</span>] = db2</span><br><span class="line">        gradients[<span class="string">&#x27;dW1&#x27;</span>] = dW1</span><br><span class="line">        gradients[<span class="string">&#x27;db1&#x27;</span>] = db1</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> gradients</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 参数更新</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, gradients, lr</span>):</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;W1&#x27;</span>] -= lr * gradients[<span class="string">&#x27;dW1&#x27;</span>]</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;b1&#x27;</span>] -= lr * gradients[<span class="string">&#x27;db1&#x27;</span>]</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;W2&#x27;</span>] -= lr * gradients[<span class="string">&#x27;dW2&#x27;</span>]</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;b2&#x27;</span>] -= lr * gradients[<span class="string">&#x27;db2&#x27;</span>]</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;W3&#x27;</span>] -= lr * gradients[<span class="string">&#x27;dW3&#x27;</span>]</span><br><span class="line">        <span class="variable language_">self</span>.params[<span class="string">&#x27;b3&#x27;</span>] -= lr * gradients[<span class="string">&#x27;db3&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 预测</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">self, X</span>):</span><br><span class="line">        a3, _ = <span class="variable language_">self</span>.forward(X)</span><br><span class="line">        <span class="keyword">return</span> np.argmax(a3, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算准确率</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">accuracy</span>(<span class="params">self, X, y</span>):</span><br><span class="line">        y_pred = <span class="variable language_">self</span>.predict(X)</span><br><span class="line">        <span class="keyword">return</span> np.mean(y_pred == y)</span><br></pre></td></tr></table></div></figure></div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/05/09/%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">https://1artemise.github.io/2026/05/09/%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/Transformer/">Transformer</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/AI/">AI</a></span></div><nav class="post-paginator paginator"><div class="post-nav-cards"><a class="post-nav-card post-nav-card--next" href="/2026/05/07/Add/"><span class="post-nav-card__label">下一篇<i class="fas fa-angle-right"></i></span><strong class="post-nav-card__title">Add(残差连接)</strong></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是前馈神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E7%AE%80%E5%8D%95%E5%8F%AF%E4%BB%A5%E5%AE%8C%E6%88%90%E5%A4%8D%E6%9D%82%E4%BB%BB%E5%8A%A1%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          为什么这么简单可以完成复杂任务？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%83%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E9%99%B7"><span class="toc-number">3.</span> <span class="toc-text">
+          它有哪些缺陷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FNN%E7%9A%84%E7%BA%AC%E5%BA%A6%E9%97%AE%E9%A2%98-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%83%A8%E5%88%86%E6%80%8E%E4%B9%88%E5%86%99"><span class="toc-number">4.</span> <span class="toc-text">
+          FNN的纬度问题(初始化部分怎么写)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">5.</span> <span class="toc-text">
+          前向传播</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%9A%84softmax%E6%80%8E%E4%B9%88%E5%86%99"><span class="toc-number">5.0.1.</span> <span class="toc-text">
+          前向传播的softmax怎么写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%87%8F%E5%8E%BB%E4%B8%80%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%80%BC%E5%91%A2%EF%BC%88z3-np-max%EF%BC%89"><span class="toc-number">5.0.2.</span> <span class="toc-text">
+          为什么要减去一个最大值呢（z3-np.max）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">6.</span> <span class="toc-text">
+          反向传播</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E5%B1%82"><span class="toc-number">6.1.</span> <span class="toc-text">
+          输出层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E5%B1%82"><span class="toc-number">6.2.</span> <span class="toc-text">
+          后续层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">7.</span> <span class="toc-text">
+          代码实现</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">artemis</p><p class="sidebar-ov-author__quote">I am rooted,but i am flowing</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="javascript:void(0)" data-popover="需要保留一点神秘感" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-panel-title"><span class="search-panel-title__icon"><i class="fas fa-search"></i></span><span class="search-panel-title__text">站内搜索</span></div><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-suggestions"><span class="search-suggestions__label">常搜：</span><button type="button" data-keyword="算法">算法</button><button type="button" data-keyword="AI">AI</button><button type="button" data-keyword="Python">Python</button><button type="button" data-keyword="随笔">随笔</button></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script>function initSearch() {
+  if (window.__stunLocalSearchReady) {
+    return;
+  }
+  window.__stunLocalSearchReady = true;
+
+  var isXML = true;
+  var search_path = 'search.xml';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  function escapeHtml(text) {
+    return String(text || '').replace(/[&<>"']/g, function (ch) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch];
+    });
+  }
+
+  function normalizeUrl(url) {
+    return url && decodeURI(url).replace(/\/{2,}/g, '/');
+  }
+
+  function stripContent(content) {
+    return (content || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function highlight(text, keywords) {
+    var safe = escapeHtml(text);
+    keywords.forEach(function (keyword) {
+      if (!keyword) return;
+      var escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      safe = safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<b>$1</b>');
+    });
+    return safe;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+
+      function renderEmpty(message) {
+        $result.html('<div class="search-results-none"><i class="far fa-meh"></i><p>' + message + '</p></div>');
+      }
+
+      function searchPost() {
+        var searchText = $input.val().trim();
+        var lowerSearchText = searchText.toLowerCase();
+        var keywords = lowerSearchText.split(/[\s]+/).filter(Boolean);
+        var matchPosts = [];
+
+        if (!keywords.length) {
+          renderEmpty('输入关键词，找回一段旧笔记。');
+          return;
+        }
+
+        datas.forEach(function (data) {
+          var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+          var titleLower = title.toLowerCase();
+          var content = stripContent(data.content);
+          var contentLower = content.toLowerCase();
+          var url = normalizeUrl(data.url);
+          var titleHits = 0;
+          var contentHits = 0;
+
+          keywords.forEach(function (keyword) {
+            if (titleLower.indexOf(keyword) !== -1) titleHits += 1;
+            if (contentLower.indexOf(keyword) !== -1) contentHits += 1;
+          });
+
+          if (titleHits || contentHits) {
+            var firstIndex = -1;
+            keywords.some(function (keyword) {
+              firstIndex = contentLower.indexOf(keyword);
+              return firstIndex !== -1;
+            });
+            var start = firstIndex > 28 ? firstIndex - 28 : 0;
+            var snippet = content.slice(start, start + 180);
+            matchPosts.push({
+              title: highlight(title, keywords),
+              content: highlight(snippet, keywords),
+              url: url,
+              weight: titleHits * 100 + contentHits
+            });
+          }
+        });
+
+        if (!matchPosts.length) {
+          renderEmpty('暂时没有找到相关内容。');
+          return;
+        }
+
+        matchPosts.sort(function (left, right) {
+          return right.weight - left.weight;
+        });
+
+        var html = '<div class="search-results-summary">找到 ' + matchPosts.length + ' 条结果</div><ul>';
+        matchPosts.slice(0, 12).forEach(function (post) {
+          html += '<li><a class="search-results-title" href="' + post.url + '">' + post.title + '</a>';
+          html += '<div class="search-results-content">' + post.content + '</div></li>';
+        });
+        html += '</ul>';
+        $result.html(html);
+      }
+
+      $('.search-suggestions button').on('click', function () {
+        $input.val($(this).data('keyword'));
+        searchPost();
+        $input.focus();
+      });
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+      renderEmpty('输入关键词，找回一段旧笔记。');
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><script type="application/json" src="/search.xml"></script></body></html>
