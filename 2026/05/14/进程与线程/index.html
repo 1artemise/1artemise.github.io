@@ -1,0 +1,561 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="1.有了进程之后为什么发明线程       进程最开始负责两块功能  资源占有：拥有独立的内存空间和I&#x2F;O资源 执行单元：在CPU执行指令   [!CAUTION] 后来人们发现这样太笨重了，如果我需要一个程序内部的功能同时运行（比如一边打字一边自动保存一边代码审查），就需要创建多个进程，但这样做系统开销非常大。  采用任务细分的思想，人们设计了线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="；六个问题弄懂线程与进程">
+<meta property="og:url" content="https://1artemise.github.io/2026/05/14/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.有了进程之后为什么发明线程       进程最开始负责两块功能  资源占有：拥有独立的内存空间和I&#x2F;O资源 执行单元：在CPU执行指令   [!CAUTION] 后来人们发现这样太笨重了，如果我需要一个程序内部的功能同时运行（比如一边打字一边自动保存一边代码审查），就需要创建多个进程，但这样做系统开销非常大。  采用任务细分的思想，人们设计了线">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-14T03:40:27.845Z">
+<meta property="article:author" content="artemis">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary"><title>；六个问题弄懂线程与进程 | Hexo</title><link ref="canonical" href="https://1artemise.github.io/2026/05/14/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: undefined,
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"220px","gapX":"10px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-book-open"></i></span><span class="header-nav-menu-item__text">文章</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friends/"><span class="header-nav-menu-item__icon"><i class="fas fa-handshake"></i></span><span class="header-nav-menu-item__text">友链</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/gallery/"><span class="header-nav-menu-item__icon"><i class="fas fa-camera"></i></span><span class="header-nav-menu-item__text">相册</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于我</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__placeholder">搜索文章 / 分类 / 标签</span></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">欢迎来到我的世界</div><div class="header-banner-info__subtitle">也许我们未曾相逢，也不会见面，但陌生人，愿你平和而勇敢；
+也许我们相识已久，也常常遇见，我的朋友，愿我们总如初见。</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-header-title">；六个问题弄懂线程与进程</h1><div class="post-header-meta"><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-calendar-alt"></i></span><time class="post-header-meta__text" datetime="2026-05-13T16:00:00.000Z">2026-05-14</time></span><span class="post-header-meta__item"><span class="post-header-meta__icon"><i class="fas fa-folder"></i></span><a class="post-header-meta__text" href="/categories/csdiy%E5%AE%9E%E9%AA%8C/">csdiy实验</a></span></div></header><div class="post-body">
+        <h1 id="1-有了进程之后为什么发明线程"   >
+          <a href="#1-有了进程之后为什么发明线程" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-有了进程之后为什么发明线程" class="headerlink" title="1.有了进程之后为什么发明线程"></a>1.有了进程之后为什么发明线程</h1>
+      <p>进程最开始负责两块功能</p>
+<ul>
+<li><strong>资源占有</strong>：拥有独立的内存空间和I&#x2F;O资源</li>
+<li><strong>执行单元</strong>：在CPU执行指令</li>
+</ul>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>后来人们发现这样太<strong>笨重</strong>了，如果我需要一个程序内部的功能同时运行（比如一边打字一边自动保存一边代码审查），<strong>就需要创建多个进程</strong>，但这样做系统开销非常大。</p>
+</blockquote>
+<p>采用<strong>任务细分</strong>的思想，人们设计了线程，把<strong>存储和执行</strong>分开。</p>
+<p>此后进程就像是一个<strong>资源容器</strong>，负责提供地址空间、文件、锁等资源。</p>
+<p>而线程就负责当<strong>轻量级的活动者</strong>，只负责在CPU上执行代码。它需要拥有的是保证它能运行的最小资源：<strong>一组寄存器、一个栈、一个状态</strong>。</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>所以进程像工厂，线程像工人。</p>
+</blockquote>
+<p>这里你是不是可以理解：</p>
+<ul>
+<li>线程更好的实现了<strong>并发</strong></li>
+<li>线程极大的减小了<strong>系统开销</strong></li>
+</ul>
+
+        <h1 id="2-进程负责实现代码吗？"   >
+          <a href="#2-进程负责实现代码吗？" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-进程负责实现代码吗？" class="headerlink" title="2.进程负责实现代码吗？"></a>2.进程负责实现代码吗？</h1>
+      <p>不是</p>
+<blockquote>
+<p>[!WARNING]</p>
+<p>有个常见<strong>误解</strong>：<strong>进程是正在运行的程序，所以它当然是在执行代码</strong></p>
+</blockquote>
+<p>从第一个问题可以看出，在现代操作系统中：</p>
+<ul>
+<li><strong>进程是资源拥有的基本单位</strong>（管理内存、文件、外设等）。</li>
+<li><strong>线程是CPU调度和分派的基本单位</strong>（真正在CPU上执行指令）。</li>
+</ul>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>所以一个“正在运行的进程”，<strong>本质上是该进程内的至少一个线程正在被CPU执行</strong></p>
+</blockquote>
+
+        <h1 id="3-进程和线程是否有自己独立的内存空间，为什么这么设计？"   >
+          <a href="#3-进程和线程是否有自己独立的内存空间，为什么这么设计？" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-进程和线程是否有自己独立的内存空间，为什么这么设计？" class="headerlink" title="3.进程和线程是否有自己独立的内存空间，为什么这么设计？"></a>3.进程和线程是否有自己独立的内存空间，为什么这么设计？</h1>
+      <p><strong>它们都有内存空间，但是前者是独立，后者是共享。</strong></p>
+<p>同一进程内的所有线程<strong>共享</strong>该进程的整个内存空间（代码段、数据段、堆等）。每个线程只独立拥有：</p>
+<ul>
+<li>一组<strong>寄存器</strong>的值（硬件上下文）</li>
+<li>一个<strong>栈</strong>（存放局部变量、函数调用信息）</li>
+</ul>
+<p>进程是因为需要<strong>安全和隔离</strong>。<strong>相互不干扰、独立崩溃、数据私密</strong>。</p>
+<p>而进程是因为需要<strong>高效的通信和切换</strong>。符合轻量化设计理念。</p>
+
+        <h1 id="4-进程和线程的崩溃有什么区别？为什么会有这个区别？"   >
+          <a href="#4-进程和线程的崩溃有什么区别？为什么会有这个区别？" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-进程和线程的崩溃有什么区别？为什么会有这个区别？" class="headerlink" title="4.进程和线程的崩溃有什么区别？为什么会有这个区别？"></a>4.进程和线程的崩溃有什么区别？为什么会有这个区别？</h1>
+      <p>一个进程崩溃了，一般<strong>不会影响其他进程</strong>。</p>
+<p>但是一个线程崩溃了，往往会导致<strong>它所属的整个进程崩溃</strong>。</p>
+<p>原因就是第三个问题提到的，进程有自己独立的内存空间，而线程是共享的。</p>
+<ul>
+<li><strong>进程之间</strong>：拥有<strong>独立的内存空间</strong>。一个进程崩溃后，操作系统回收其占用的资源，其他进程的内存不受任何影响。</li>
+<li><strong>线程之间</strong>：共享所属进程的<strong>整个内存空间</strong>。当一个线程执行非法操作（如访问野指针、数组越界、除零、栈溢出）时，会<strong>破坏进程的地址空间</strong>。操作系统检测到该进程的内存被破坏或产生非法访问，为了系统稳定，会<strong>终止整个进程</strong>。</li>
+</ul>
+
+        <h1 id="5-线程被称为“轻量级进程”这个说法对吗？"   >
+          <a href="#5-线程被称为“轻量级进程”这个说法对吗？" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-线程被称为“轻量级进程”这个说法对吗？" class="headerlink" title="5.线程被称为“轻量级进程”这个说法对吗？"></a>5.线程被称为“轻量级进程”这个说法对吗？</h1>
+      <blockquote>
+<p>[!WARNING]</p>
+<p><strong>在调度层面成立，在资源层面不成立</strong></p>
+</blockquote>
+<p><strong>准确的方面</strong>：</p>
+<ol>
+<li>线程和进程都是<strong>执行流</strong>，有程序计数器、寄存器、栈。</li>
+<li><strong>进程是对程序的“隔离拆分”，线程是对进程的“并发拆分”。</strong></li>
+<li>线程和进程都有<strong>状态</strong>（就绪、运行、阻塞等）。</li>
+<li>线程和进程都是<strong>调度实体</strong>（虽然现代OS以线程为调度单位）。</li>
+</ol>
+<p>**可能造成的误解：</p>
+<ol>
+<li><strong>资源拥有</strong>：进程拥有独立资源；线程不拥有资源，共享进程的资源。</li>
+<li><strong>独立性</strong>：进程之间高度独立；同一进程内的线程紧密耦合，一个崩溃影响整个进程。</li>
+<li><strong>切换开销</strong>：进程切换重，线程切换轻。</li>
+<li><strong>创建开销</strong>：进程创建需要复制&#x2F;分配资源表、内存空间；线程只需要创建栈和TCB。</li>
+</ol>
+
+        <h1 id="6-线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程"   >
+          <a href="#6-线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程" class="headerlink" title="6.线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程"></a>6.线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程</h1>
+      <blockquote>
+<p>[!IMPORTANT]</p>
+<p>不是，需要<strong>隔离和安全</strong>用进程，需要<strong>高效协作</strong>用线程。</p>
+</blockquote>
+<p><strong>多进程更合适的场景</strong>：</p>
+<ol>
+<li><strong>需要高可靠性和隔离性</strong>：如Chrome浏览器每个标签页独立进程，一个崩溃不影响其他。</li>
+<li><strong>安全性要求高</strong>：不同用户、不同权限的任务，进程间隔离防止数据泄露。</li>
+<li><strong>分布式&#x2F;多机系统</strong>：进程可以跨机器运行，线程不能跨机器。</li>
+<li><strong>任务独立性高、交互少</strong>：如编译多个源文件。</li>
+</ol>
+<p><strong>多线程更合适的场景</strong>：</p>
+<ol>
+<li><strong>需要频繁共享数据</strong>：如生产者-消费者模型。</li>
+<li><strong>I&#x2F;O密集且有交互</strong>：如GUI程序（一边响应点击，一边后台计算）。</li>
+<li><strong>需要低开销并发</strong>：创建和切换频繁的场景。</li>
+</ol>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1></div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://1artemise.github.io">artemis</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://1artemise.github.io/2026/05/14/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">https://1artemise.github.io/2026/05/14/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E5%8D%9A%E5%AE%A2/">博客</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://1artemise.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span></div><nav class="post-paginator paginator"><div class="post-nav-cards"><a class="post-nav-card post-nav-card--next" href="/2026/05/09/%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><span class="post-nav-card__label">下一篇<i class="fas fa-angle-right"></i></span><strong class="post-nav-card__title">前馈神经网络（理论和从0手搓）</strong></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="giscus-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%9C%89%E4%BA%86%E8%BF%9B%E7%A8%8B%E4%B9%8B%E5%90%8E%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%91%E6%98%8E%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          1.有了进程之后为什么发明线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E8%B4%9F%E8%B4%A3%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E5%90%97%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          2.进程负责实现代码吗？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E6%9C%89%E8%87%AA%E5%B7%B1%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E8%AE%BE%E8%AE%A1%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">
+          3.进程和线程是否有自己独立的内存空间，为什么这么设计？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%B4%A9%E6%BA%83%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E8%BF%99%E4%B8%AA%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">
+          4.进程和线程的崩溃有什么区别？为什么会有这个区别？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E7%BA%BF%E7%A8%8B%E8%A2%AB%E7%A7%B0%E4%B8%BA%E2%80%9C%E8%BD%BB%E9%87%8F%E7%BA%A7%E8%BF%9B%E7%A8%8B%E2%80%9D%E8%BF%99%E4%B8%AA%E8%AF%B4%E6%B3%95%E5%AF%B9%E5%90%97%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">
+          5.线程被称为“轻量级进程”这个说法对吗？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%BA%BF%E7%A8%8B%E5%88%87%E6%8D%A2%E6%AF%94%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2%E5%BF%AB%EF%BC%8C%E9%82%A3%E6%98%AF%E5%90%A6%E4%BB%BB%E4%BD%95%E6%97%B6%E5%80%99%E9%83%BD%E8%AF%A5%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%80%8C%E4%B8%8D%E6%98%AF%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">
+          6.线程切换比进程切换快，那是否任何时候都该用多线程而不是多进程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text"></span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/背景.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">artemis</p><p class="sidebar-ov-author__quote">I am rooted,but i am flowing</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/1artemise" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a><a class="sidebar-ov-social-item" href="javascript:void(0)" data-popover="需要保留一点神秘感" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="2985725866" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>artemis</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v7.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="访问人数"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon" data-popover-pos="up" data-popover="浏览总量"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><!-- 在 footer.pug 文件末尾添加以下代码--><script>// 点击特效代码
+(function() {
+    // 创建爱心特效
+    function createHeartEffect(x, y) {
+        const heart = document.createElement('div');
+        heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff4757"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        `;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.style.opacity = '0';
+            heart.style.transform = `translate(-50%, -100px) scale(0.5)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(heart);
+        }, 1000);
+    }
+
+    // 创建文字特效
+    function createTextEffect(x, y, text) {
+        const textEl = document.createElement('div');
+        textEl.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            color: #87ceeb;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 1s ease-out;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        `;
+        textEl.textContent = text;
+        document.body.appendChild(textEl);
+        
+        setTimeout(() => {
+            textEl.style.opacity = '0';
+            textEl.style.transform = `translate(-50%, -80px) scale(0.8)`;
+        }, 50);
+        
+        setTimeout(() => {
+            document.body.removeChild(textEl);
+        }, 1000);
+    }
+
+    // 点击事件处理
+    document.addEventListener('click', function(e) {
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(e.clientX, e.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(e.clientX, e.clientY, randomText);
+        }
+    });
+
+    // 移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        const effects = ['heart', 'text'];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        if (randomEffect === 'heart') {
+            createHeartEffect(touch.clientX, touch.clientY);
+        } else {
+            const texts = ['今日方知我是我', '宁作我，岂其卿', '高山仰止', '霁月光风', '我心清且微', '犹怜草木青'];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createTextEffect(touch.clientX, touch.clientY, randomText);
+        }
+    });
+})();
+// 鼠标跟随粒子特效</script><script>(function() {
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = `hsl(${Math.random() * 60 + 180}, 70%, 60%)`; // 蓝色系
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    let particles = [];
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    let mouseX = 0;
+    let mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    });
+
+    window.addEventListener('resize', init);
+})();</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-panel-title"><span class="search-panel-title__icon"><i class="fas fa-search"></i></span><span class="search-panel-title__text">站内搜索</span></div><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-suggestions"><span class="search-suggestions__label">常搜：</span><button type="button" data-keyword="算法">算法</button><button type="button" data-keyword="AI">AI</button><button type="button" data-keyword="Python">Python</button><button type="button" data-keyword="随笔">随笔</button></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script>function initSearch() {
+  if (window.__stunLocalSearchReady) {
+    return;
+  }
+  window.__stunLocalSearchReady = true;
+
+  var isXML = true;
+  var search_path = 'search.xml';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  function escapeHtml(text) {
+    return String(text || '').replace(/[&<>"']/g, function (ch) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch];
+    });
+  }
+
+  function normalizeUrl(url) {
+    return url && decodeURI(url).replace(/\/{2,}/g, '/');
+  }
+
+  function stripContent(content) {
+    return (content || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function highlight(text, keywords) {
+    var safe = escapeHtml(text);
+    keywords.forEach(function (keyword) {
+      if (!keyword) return;
+      var escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      safe = safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<b>$1</b>');
+    });
+    return safe;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+
+      function renderEmpty(message) {
+        $result.html('<div class="search-results-none"><i class="far fa-meh"></i><p>' + message + '</p></div>');
+      }
+
+      function searchPost() {
+        var searchText = $input.val().trim();
+        var lowerSearchText = searchText.toLowerCase();
+        var keywords = lowerSearchText.split(/[\s]+/).filter(Boolean);
+        var matchPosts = [];
+
+        if (!keywords.length) {
+          renderEmpty('输入关键词，找回一段旧笔记。');
+          return;
+        }
+
+        datas.forEach(function (data) {
+          var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+          var titleLower = title.toLowerCase();
+          var content = stripContent(data.content);
+          var contentLower = content.toLowerCase();
+          var url = normalizeUrl(data.url);
+          var titleHits = 0;
+          var contentHits = 0;
+
+          keywords.forEach(function (keyword) {
+            if (titleLower.indexOf(keyword) !== -1) titleHits += 1;
+            if (contentLower.indexOf(keyword) !== -1) contentHits += 1;
+          });
+
+          if (titleHits || contentHits) {
+            var firstIndex = -1;
+            keywords.some(function (keyword) {
+              firstIndex = contentLower.indexOf(keyword);
+              return firstIndex !== -1;
+            });
+            var start = firstIndex > 28 ? firstIndex - 28 : 0;
+            var snippet = content.slice(start, start + 180);
+            matchPosts.push({
+              title: highlight(title, keywords),
+              content: highlight(snippet, keywords),
+              url: url,
+              weight: titleHits * 100 + contentHits
+            });
+          }
+        });
+
+        if (!matchPosts.length) {
+          renderEmpty('暂时没有找到相关内容。');
+          return;
+        }
+
+        matchPosts.sort(function (left, right) {
+          return right.weight - left.weight;
+        });
+
+        var html = '<div class="search-results-summary">找到 ' + matchPosts.length + ' 条结果</div><ul>';
+        matchPosts.slice(0, 12).forEach(function (post) {
+          html += '<li><a class="search-results-title" href="' + post.url + '">' + post.title + '</a>';
+          html += '<div class="search-results-content">' + post.content + '</div></li>';
+        });
+        html += '</ul>';
+        $result.html(html);
+      }
+
+      $('.search-suggestions button').on('click', function () {
+        $input.val($(this).data('keyword'));
+        searchPost();
+        $input.focus();
+      });
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+      renderEmpty('输入关键词，找回一段旧笔记。');
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadGiscus() {
+  var container = document.getElementById('giscus-container');
+  
+  if (!container) {
+    return;
+  }
+
+  // 清空容器内容，防止重复加载
+  container.innerHTML = '';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '1artemise/-for_comment');
+  script.setAttribute('data-repo-id', 'R_kgDOP1AvRA');
+  script.setAttribute('data-category', 'Announcements');
+  script.setAttribute('data-category-id', 'DIC_kwDOP1AvRM4Cvx7c');
+  script.setAttribute('data-mapping', 'pathname');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '1');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', 'light');
+  script.setAttribute('data-lang', 'zh-CN');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.setAttribute('async', '');
+  
+  if (false) {
+    script.setAttribute('data-pjax-rm', '');
+  }
+  
+  container.appendChild(script);
+}
+
+if (false) {
+  loadGiscus();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGiscus, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><script type="application/json" src="/search.xml"></script></body></html>
